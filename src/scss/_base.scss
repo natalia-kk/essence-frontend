@@ -1,0 +1,232 @@
+// Base
+
+* {
+  box-sizing: border-box; // ("paramount for any moder css")
+  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); // for mobile viewing
+}
+
+body { // bring in base body styles
+  padding: 0;  
+  margin: 0;
+  color: var(--base-txt-color); // (sass variables set in _vars.scss file)
+  font-family: var(--base-font-family);
+  font-weight: 300;
+  background: var(--body-bg);
+  height: 100vh;
+}
+
+
+// headings ------------
+h1,h2,h3,h5,h6 {
+  margin: 0 0 .5em;
+  color: var(--heading-color);
+}
+
+// links ---------------
+a {
+  color: var(--link-color);
+}
+
+
+// app splash screen -------
+.app-splash {
+  position: fixed;
+  background: #fff;
+  color: #777;
+  display: flex;
+  left: 0;
+  top:0;
+  right: 0;
+  bottom: 0;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  .app-logo {
+    width: 180px;
+    display: block;
+    margin-bottom: 1em;
+  }
+}
+
+
+// helper classes ---------
+.calign {
+  text-align: center;
+}
+
+.large-text {
+  font-size: 1.6em;
+}
+
+.brand-color {
+  color: var(--brand-color);
+}
+
+// generic-entry ------------
+.generic-entry {
+  box-shadow: 0px 3px 5px rgba(0,0,0,0.07);
+  border-radius: 5px;
+  margin-bottom: .5em;
+  padding: 1em;
+  background: #fff;
+}
+
+// root ---------------
+// (styling for root div)
+#root {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;  
+  overflow: hidden;
+}
+
+// page --------------------
+.page-content {
+  position: absolute;
+  top: var(--app-header-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  padding: 2.25em;
+  &.no-pad {
+    padding: 0;
+  }
+}
+
+.view-content 
+.page-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// sign in + sign up pages ----------
+.signinup-box,
+.signup-box {  
+  max-width: 320px;
+  text-align: center;
+}
+
+.signinup-logo {
+  width: 200px;
+  margin-bottom: 1em;
+}
+
+// guide page ---------------
+.guide-step {
+  padding: 1em;
+  margin: 1.5em auto;
+  max-width: 600px;
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+
+
+// Explore page styles ------------------------------------------
+
+// Listing cards *******
+// (sl-card for each listing displayed on Explore view)
+.listings-grid {
+  display: flex;
+  flex-wrap: wrap; // allows flex items to wrap onto the next row
+  width: 100%;
+
+  .listing-card { 
+    width: calc(25% - 1em);
+    max-width: 350px; 
+    min-width: 200px;
+    margin: 0.5em;
+    display: block;
+  } 
+
+  /*.profile-photo {
+    max-width: 500px;
+    height: 100%;
+  } */
+}
+
+
+// Filter menu ******
+.filter-menu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-menu > div {
+  margin-right: 1em;
+}
+#clear-filters {
+  float: right;
+  padding-right: 2em;
+}
+
+// RESPONSIVE - MOBILE 
+@media all and (max-width: 850px){ 
+
+  // Filter menu
+  .filter-menu {
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    
+  }
+  .filter-menu > div {
+    margin-top: 0.5em;
+    display: block;
+  }
+  #clear-filters {
+    padding-right: 0.5em;
+  }
+
+}
+
+
+
+// Listing page styles ------------------------------------------
+.flex-container {
+  display: flex;
+}
+.display-flex {
+  width: calc(50% - 5em);
+  margin: 1.5em;
+  padding-right: 1.5em;
+}
+
+
+.listing-image {
+  max-width: 500px;
+  min-width: 200px;
+  height: auto;
+} 
+
+// RESPONSIVE - MOBILE 
+@media all and (max-width: 768px){ 
+
+  .flex-container {
+    flex-wrap: wrap;
+  }
+  .display-flex {
+    width: 100%;
+  }
+
+}
+
+
+
+// Other --------------------------------------------------------
+
+// RESPONSIVE - MOBILE 
+@media all and (max-width: 768px){ 
+
+  .signinup-box {
+    width: 90%;
+    max-width: none;
+  }
+
+}
