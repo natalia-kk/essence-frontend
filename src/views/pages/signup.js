@@ -50,7 +50,7 @@ class SignUpView{
                 <sl-menu-item value="2">Yoga Teacher</sl-menu-item>
               </sl-select>
             </div>            
-            <sl-button type="primary" class="submit-btn" submit style="width: 100%;">Sign Up</sl-button>
+            <sl-button type="primary" class="submit-btn" submit style="width: 100%;">SIGN UP</sl-button>
           </sl-form>
           <p>Have an account? <a href="/signin" @click=${anchorRoute}>Sign In</a></p>
         </div>

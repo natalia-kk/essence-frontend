@@ -28,7 +28,8 @@ class SignInView {
     const template = html`      
       <div class="page-content page-centered">
         <div class="signinup-box">
-          <img class="signinup-logo" src="/images/logo.svg">          
+          <img class="signinup-logo" src="/images/logo.svg">    
+          <h1>Sign In</h1>      
           <sl-form class="form-signup dark-theme" @sl-submit=${this.signInSubmitHandler}>          
             <div class="input-group">
               <sl-input name="email" type="email" placeholder="Email" required></sl-input>
@@ -36,9 +37,9 @@ class SignInView {
             <div class="input-group">
               <sl-input name="password" type="password" placeholder="Password" required toggle-password></sl-input>
             </div>
-            <sl-button class="submit-btn" type="primary" submit style="width: 100%;">Sign In</sl-button>
+            <sl-button class="submit-btn" type="primary" submit style="width: 100%;">SIGN IN</sl-button>
           </sl-form>
-          <p>No Account? <a href="/signup" @click=${anchorRoute}>Sign Up</a></p>
+          <p>New user? <a href="/signup" @click=${anchorRoute}>Sign Up</a></p>
         </div>
       </div>
     `

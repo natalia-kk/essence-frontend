@@ -107,7 +107,7 @@ a {
   padding: 0;
 }
 
-.view-content .page-centered {
+.page-centered {
   display: flex;
   align-items: center;
   justify-content: center;
