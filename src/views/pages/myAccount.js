@@ -15,23 +15,6 @@ class MyAccountView {
 
   render(){
     const template = html`
-    <style>
-      .profile-heading {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-      }
-      .profile-heading > h1 {
-        color: var(--brand-color);
-        padding-right: 0.25em;
-      }
-      .account-box {
-        max-width: 500px;
-        margin-right: auto;
-        margin-left: auto;
-      }
-    </style>
-
       <va-app-header title="Account" user="${JSON.stringify(Auth.currentUser)}"></va-app-header>
       <div class="page-content calign"> <!-- start page content div -->
       
@@ -57,7 +40,6 @@ class MyAccountView {
         ${Auth.currentUser.accessLevel == 2 ? html `
         <sl-button type="primary" pill style="width: 150px;" @click=${()=> gotoRoute('/newListing')}>Create a Listing</sl-button>
         ` : html ``} 
-
         </div>
 
       </div> <!-- end page content div -->     

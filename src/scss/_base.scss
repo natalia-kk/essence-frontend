@@ -170,6 +170,41 @@ h1 {
 }
 
 
+// welcome page styles --------------------------------------------
+.welcome-image {
+  max-width: 400px;
+  height: auto;
+  margin-bottom: 1em;
+} 
+.content-left {
+  text-align: left;
+  .spacing {
+    padding-top: 0.5em;
+  }
+}
+
+// flex items for welcome page
+.welcome-items {
+  width: 50%;
+}
+
+@media all and (max-width: 900px){ 
+  .welcome-items {
+    width: 100%;
+  }
+  .welcome-image {
+    max-width: 300px;
+    height: auto;
+  } 
+}
+@media all and (max-width: 360px){ 
+  .welcome-image {
+    max-width: 200px;
+    height: auto;
+  }
+}
+
+
 // Explore page styles ------------------------------------------
 
 // Listing cards *******

@@ -14,8 +14,9 @@ import newListingView from './views/pages/newListing'
 
 // define routes
 const routes = {
-	'/welcome': welcomeView,
+	'/': exploreView,
 	'/explore': exploreView,
+	'/welcome': welcomeView,
 	'/teachersLounge': teachersLoungeView,
 	'/favourites': favouritesView,
 	'/listing': listingView,

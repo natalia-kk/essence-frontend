@@ -7836,7 +7836,7 @@ var _Toast = _interopRequireDefault(require("../../Toast"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n      <va-app-header title=\"Welcome\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\">\n              \n        <!-- Wk8 Pastebin content start -->\n        <h3 class=\"brand-color\">Welcome ", "!</h3>\n        <p>This is a quick tour to teach you the basics of using Haircuts ...</p>\n\n        <div class=\"guide-step\">\n          <h4>Search Hairdressers</h4>\n          <img src=\"https://plchldr.co/i/500x300?&bg=dddddd&fc=666666&text=IMAGE\">\n        </div>\n\n        <div class=\"guide-step\">\n          <h4>Find a haircut</h4>\n          <img src=\"https://plchldr.co/i/500x300?&bg=dddddd&fc=666666&text=IMAGE\">\n        </div>\n\n        <div class=\"guide-step\">\n          <h4>Save haircuts to favourites</h4>\n          <img src=\"https://plchldr.co/i/500x300?&bg=dddddd&fc=666666&text=IMAGE\">\n        </div>\n\n        <sl-button type=\"primary\" @click=", ">Okay got it!</sl-button>\n        <!-- Wk8 Pastebin content end -->\n\n      </div>      \n    "]);
+  const data = _taggedTemplateLiteral(["\n    <style>\n\n    </style>\n      <va-app-header title=\"Welcome\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\">\n        <div class=\"flex-container\">\n\n        <section class=\"welcome-items\">\n            <img class=\"welcome-image\" src=\"", "/images/welcome-mats.jpg\">\n          </section>\n          \n          <section class=\"welcome-items\">\n          <div class=\"content-left\">\n            <h1 class=\"brand-color\">Welcome, ", "!</h1>\n            <p class=\"spacing\">\n              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, \n              totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. \n            </p>\n            <p>\n              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores\n              eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, \n              adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. \n            </p>\n            <sl-button class=\"spacing\" type=\"primary\" @click=", " pill style=\"width: 200px\">Okay got it!</sl-button>\n            </div>\n          </section>\n        \n\n        </div> <!-- end flex-container div -->\n      </div> <!-- end page-contend div -->    \n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -7872,7 +7872,7 @@ class WelcomeView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), _Auth.default.currentUser.firstName, () => (0, _Router.gotoRoute)('/'));
+    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), _App.default.apiBase, _Auth.default.currentUser.firstName, () => (0, _Router.gotoRoute)('/explore'));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -14405,7 +14405,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <style>\n      .profile-heading {\n        display: flex;\n        flex-direction: row;\n        justify-content: center;\n      }\n      .profile-heading > h1 {\n        color: var(--brand-color);\n        padding-right: 0.25em;\n      }\n      .account-box {\n        max-width: 500px;\n        margin-right: auto;\n        margin-left: auto;\n      }\n    </style>\n\n      <va-app-header title=\"Account\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\"> <!-- start page content div -->\n      \n      <div class=\"account-box\">\n        <div class=\"profile-heading\">   \n          <h1>My Profile</h1>  \n          <sl-icon-button name=\"pencil\" label=\"Edit\" style=\"font-size: 1.5rem;\" @click=", ">Edit Profile</sl-icon-button>\n        </div>  \n        ", "\n        <h2>", " ", "</h2>\n        <p>", "</p>\n        \n        <p>Updated: ", "</p>\n        ", "\n      \n        ", " \n\n        </div>\n\n      </div> <!-- end page content div -->     \n    "]);
+  const data = _taggedTemplateLiteral(["\n      <va-app-header title=\"Account\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\"> <!-- start page content div -->\n      \n      <div class=\"account-box\">\n        <div class=\"profile-heading\">   \n          <h1>My Profile</h1>  \n          <sl-icon-button name=\"pencil\" label=\"Edit\" style=\"font-size: 1.5rem;\" @click=", ">Edit Profile</sl-icon-button>\n        </div>  \n        ", "\n        <h2>", " ", "</h2>\n        <p>", "</p>\n        \n        <p>Updated: ", "</p>\n        ", "\n      \n        ", " \n        </div>\n\n      </div> <!-- end page content div -->     \n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -14750,8 +14750,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // import views
 // define routes
 const routes = {
-  '/welcome': _welcome.default,
+  '/': _explore.default,
   '/explore': _explore.default,
+  '/welcome': _welcome.default,
   '/teachersLounge': _teachersLounge.default,
   '/favourites': _favourites.default,
   '/listing': _listing.default,
@@ -17031,7 +17032,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57682" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62617" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

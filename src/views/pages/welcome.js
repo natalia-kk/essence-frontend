@@ -28,32 +28,36 @@ class WelcomeView {
 
   render(){ 
     const template = html`
+    <style>
+
+    </style>
       <va-app-header title="Welcome" user="${JSON.stringify(Auth.currentUser)}"></va-app-header>
       <div class="page-content calign">
-              
-        <!-- Wk8 Pastebin content start -->
-        <h3 class="brand-color">Welcome ${Auth.currentUser.firstName}!</h3>
-        <p>This is a quick tour to teach you the basics of using Haircuts ...</p>
+        <div class="flex-container">
 
-        <div class="guide-step">
-          <h4>Search Hairdressers</h4>
-          <img src="https://plchldr.co/i/500x300?&bg=dddddd&fc=666666&text=IMAGE">
-        </div>
+        <section class="welcome-items">
+            <img class="welcome-image" src="${App.apiBase}/images/welcome-mats.jpg">
+          </section>
+          
+          <section class="welcome-items">
+          <div class="content-left">
+            <h1 class="brand-color">Welcome, ${Auth.currentUser.firstName}!</h1>
+            <p class="spacing">
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
+              totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. 
+            </p>
+            <p>
+              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores
+              eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, 
+              adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. 
+            </p>
+            <sl-button class="spacing" type="primary" @click=${() => gotoRoute('/explore')} pill style="width: 200px">Okay got it!</sl-button>
+            </div>
+          </section>
+        
 
-        <div class="guide-step">
-          <h4>Find a haircut</h4>
-          <img src="https://plchldr.co/i/500x300?&bg=dddddd&fc=666666&text=IMAGE">
-        </div>
-
-        <div class="guide-step">
-          <h4>Save haircuts to favourites</h4>
-          <img src="https://plchldr.co/i/500x300?&bg=dddddd&fc=666666&text=IMAGE">
-        </div>
-
-        <sl-button type="primary" @click=${() => gotoRoute('/')}>Okay got it!</sl-button>
-        <!-- Wk8 Pastebin content end -->
-
-      </div>      
+        </div> <!-- end flex-container div -->
+      </div> <!-- end page-contend div -->    
     `
     render(template, App.rootEl)
   }
