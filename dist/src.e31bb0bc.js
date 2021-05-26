@@ -7676,58 +7676,7 @@ class Utils {
 var _default = new Utils();
 
 exports.default = _default;
-},{"gsap":"../node_modules/gsap/index.js"}],"views/pages/home.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _App = _interopRequireDefault(require("./../../App"));
-
-var _litHtml = require("lit-html");
-
-var _Router = require("./../../Router");
-
-var _Auth = _interopRequireDefault(require("./../../Auth"));
-
-var _Utils = _interopRequireDefault(require("./../../Utils"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n      <va-app-header title=\"Home\" user=", "></va-app-header>\n      \n      <div class=\"page-content\">\n        <h1 class=\"anim-in\">Hey ", "</h1>\n\n        <h3>Button example:</h3>\n        <sl-button class=\"anim-in\" @click=", ">View Profile</sl-button>\n        <p>&nbsp;</p>\n        <h3>Link example</h3>\n        <a href=\"/profile\" @click=", ">View Profile</a>\n\n        <p></p>\n\n        <sl-button>Test</sl-button>\n        \n      </div>\n     \n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-class HomeView {
-  init() {
-    console.log('HomeView.init');
-    document.title = 'Home';
-    this.render();
-
-    _Utils.default.pageIntroAnim();
-  }
-
-  render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), _Auth.default.currentUser.firstName, () => (0, _Router.gotoRoute)('/profile'), _Router.anchorRoute);
-    (0, _litHtml.render)(template, _App.default.rootEl);
-  }
-
-}
-
-var _default = new HomeView();
-
-exports.default = _default;
-},{"./../../App":"App.js","lit-html":"../node_modules/lit-html/lit-html.js","./../../Router":"Router.js","./../../Auth":"Auth.js","./../../Utils":"Utils.js"}],"UserAPI.js":[function(require,module,exports) {
+},{"gsap":"../node_modules/gsap/index.js"}],"UserAPI.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14772,8 +14721,6 @@ exports.gotoRoute = gotoRoute;
 exports.anchorRoute = anchorRoute;
 exports.default = void 0;
 
-var _home = _interopRequireDefault(require("./views/pages/home"));
-
 var _welcome = _interopRequireDefault(require("./views/pages/welcome"));
 
 var _explore = _interopRequireDefault(require("./views/pages/explore"));
@@ -14803,7 +14750,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // import views
 // define routes
 const routes = {
-  '/': _home.default,
   '/welcome': _welcome.default,
   '/explore': _explore.default,
   '/teachersLounge': _teachersLounge.default,
@@ -14876,7 +14822,7 @@ function anchorRoute(e) {
   const pathname = e.target.closest('a').pathname;
   AppRouter.gotoRoute(pathname);
 }
-},{"./views/pages/home":"views/pages/home.js","./views/pages/welcome":"views/pages/welcome.js","./views/pages/explore":"views/pages/explore.js","./views/pages/teachersLounge":"views/pages/teachersLounge.js","./views/pages/favourites":"views/pages/favourites.js","./views/pages/listing":"views/pages/listing.js","./views/pages/404":"views/pages/404.js","./views/pages/signin":"views/pages/signin.js","./views/pages/signup":"views/pages/signup.js","./views/pages/myAccount":"views/pages/myAccount.js","./views/pages/myListing":"views/pages/myListing.js","./views/pages/editProfile":"views/pages/editProfile.js","./views/pages/newListing":"views/pages/newListing.js"}],"App.js":[function(require,module,exports) {
+},{"./views/pages/welcome":"views/pages/welcome.js","./views/pages/explore":"views/pages/explore.js","./views/pages/teachersLounge":"views/pages/teachersLounge.js","./views/pages/favourites":"views/pages/favourites.js","./views/pages/listing":"views/pages/listing.js","./views/pages/404":"views/pages/404.js","./views/pages/signin":"views/pages/signin.js","./views/pages/signup":"views/pages/signup.js","./views/pages/myAccount":"views/pages/myAccount.js","./views/pages/myListing":"views/pages/myListing.js","./views/pages/editProfile":"views/pages/editProfile.js","./views/pages/newListing":"views/pages/newListing.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

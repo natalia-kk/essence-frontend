@@ -1,5 +1,4 @@
 // import views
-import homeView from './views/pages/home'
 import welcomeView from './views/pages/welcome'
 import exploreView from './views/pages/explore'
 import teachersLoungeView from './views/pages/teachersLounge'
@@ -15,7 +14,6 @@ import newListingView from './views/pages/newListing'
 
 // define routes
 const routes = {
-	'/': homeView,	
 	'/welcome': welcomeView,
 	'/explore': exploreView,
 	'/teachersLounge': teachersLoungeView,
