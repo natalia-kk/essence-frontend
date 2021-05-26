@@ -120,6 +120,15 @@ a {
 }
 
 
+// font styles
+h1 {
+  text-transform: uppercase;
+  font-size: 2.5em;
+}
+
+
+// VIEW STYLES -----------------------------------------------------------
+
 // sign in + sign up pages ----------
 .signinup-box,
 .signup-box {  
@@ -143,10 +152,21 @@ a {
   }
 }
 
-// font styles
-h1 {
-  text-transform: uppercase;
-  font-size: 2.5em;
+
+// Account page styles -----------------------------------------
+.profile-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.profile-heading > h1 {
+  color: var(--brand-color);
+  padding-right: 0.25em;
+}
+.account-box {
+  max-width: 500px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 

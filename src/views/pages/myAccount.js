@@ -25,9 +25,17 @@ class MyAccountView {
         color: var(--brand-color);
         padding-right: 0.25em;
       }
+      .account-box {
+        max-width: 500px;
+        margin-right: auto;
+        margin-left: auto;
+      }
     </style>
+
       <va-app-header title="Account" user="${JSON.stringify(Auth.currentUser)}"></va-app-header>
-      <div class="page-content calign"> 
+      <div class="page-content calign"> <!-- start page content div -->
+      
+      <div class="account-box">
         <div class="profile-heading">   
           <h1>My Profile</h1>  
           <sl-icon-button name="pencil" label="Edit" style="font-size: 1.5rem;" @click=${()=> gotoRoute('/editProfile')}>Edit Profile</sl-icon-button>
@@ -44,15 +52,15 @@ class MyAccountView {
         ${Auth.currentUser.bio ? html`
           <h3>Bio</h3>
             <p>${Auth.currentUser.bio}</p>
-        ` : html`
-          <h3>Bio</h3>
-            <p>You have not added a bio yet</p>
-        `}
+        ` : html` `}
       
         ${Auth.currentUser.accessLevel == 2 ? html `
-        <sl-button type="primary" pill style="width: 150px;" @click=${()=> gotoRoute('/myListing')}>My Listing</sl-button>
+        <sl-button type="primary" pill style="width: 150px;" @click=${()=> gotoRoute('/newListing')}>Create a Listing</sl-button>
         ` : html ``} 
-      </div>      
+
+        </div>
+
+      </div> <!-- end page content div -->     
     `
     render(template, App.rootEl)
   }

@@ -8496,7 +8496,7 @@ var _litHtml = require("lit-html");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["    \n      <div class=\"calign\">\n        <h1>Opps!</h1>\n        <p>Sorry, we couldn't find that.</p>\n      </div>\n    "]);
+  const data = _taggedTemplateLiteral(["    \n      <div class=\"calign\">\n        <h1>Oops!</h1>\n        <p>Sorry, we couldn't find that.</p>\n      </div>\n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -14355,7 +14355,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  const data = _taggedTemplateLiteral(["\n        <sl-button type=\"primary\" pill style=\"width: 150px;\" @click=", ">My Listing</sl-button>\n        "]);
+  const data = _taggedTemplateLiteral(["\n        <sl-button type=\"primary\" pill style=\"width: 150px;\" @click=", ">Create a Listing</sl-button>\n        "]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -14365,7 +14365,7 @@ function _templateObject6() {
 }
 
 function _templateObject5() {
-  const data = _taggedTemplateLiteral(["\n          <h3>Bio</h3>\n            <p>You have not added a bio yet</p>\n        "]);
+  const data = _taggedTemplateLiteral([" "]);
 
   _templateObject5 = function _templateObject5() {
     return data;
@@ -14405,7 +14405,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <style>\n      .profile-heading {\n        display: flex;\n        flex-direction: row;\n        justify-content: center;\n      }\n      .profile-heading > h1 {\n        color: var(--brand-color);\n        padding-right: 0.25em;\n      }\n    </style>\n      <va-app-header title=\"Account\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\"> \n        <div class=\"profile-heading\">   \n          <h1>My Profile</h1>  \n          <sl-icon-button name=\"pencil\" label=\"Edit\" style=\"font-size: 1.5rem;\" @click=", ">Edit Profile</sl-icon-button>\n        </div>  \n        ", "\n        <h2>", " ", "</h2>\n        <p>", "</p>\n        \n        <p>Updated: ", "</p>\n        ", "\n      \n        ", " \n      </div>      \n    "]);
+  const data = _taggedTemplateLiteral(["\n    <style>\n      .profile-heading {\n        display: flex;\n        flex-direction: row;\n        justify-content: center;\n      }\n      .profile-heading > h1 {\n        color: var(--brand-color);\n        padding-right: 0.25em;\n      }\n      .account-box {\n        max-width: 500px;\n        margin-right: auto;\n        margin-left: auto;\n      }\n    </style>\n\n      <va-app-header title=\"Account\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\"> <!-- start page content div -->\n      \n      <div class=\"account-box\">\n        <div class=\"profile-heading\">   \n          <h1>My Profile</h1>  \n          <sl-icon-button name=\"pencil\" label=\"Edit\" style=\"font-size: 1.5rem;\" @click=", ">Edit Profile</sl-icon-button>\n        </div>  \n        ", "\n        <h2>", " ", "</h2>\n        <p>", "</p>\n        \n        <p>Updated: ", "</p>\n        ", "\n      \n        ", " \n\n        </div>\n\n      </div> <!-- end page content div -->     \n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -14426,7 +14426,7 @@ class MyAccountView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), () => (0, _Router.gotoRoute)('/editProfile'), _Auth.default.currentUser && _Auth.default.currentUser.avatar ? (0, _litHtml.html)(_templateObject2(), _Auth.default.currentUser && _Auth.default.currentUser.avatar ? "".concat(_App.default.apiBase, "/images/").concat(_Auth.default.currentUser.avatar) : '') : (0, _litHtml.html)(_templateObject3()), _Auth.default.currentUser.firstName, _Auth.default.currentUser.lastName, _Auth.default.currentUser.email, (0, _moment.default)(_Auth.default.currentUser.updatedAt).format('MMMM Do YYYY, @ h:mm a'), _Auth.default.currentUser.bio ? (0, _litHtml.html)(_templateObject4(), _Auth.default.currentUser.bio) : (0, _litHtml.html)(_templateObject5()), _Auth.default.currentUser.accessLevel == 2 ? (0, _litHtml.html)(_templateObject6(), () => (0, _Router.gotoRoute)('/myListing')) : (0, _litHtml.html)(_templateObject7()));
+    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), () => (0, _Router.gotoRoute)('/editProfile'), _Auth.default.currentUser && _Auth.default.currentUser.avatar ? (0, _litHtml.html)(_templateObject2(), _Auth.default.currentUser && _Auth.default.currentUser.avatar ? "".concat(_App.default.apiBase, "/images/").concat(_Auth.default.currentUser.avatar) : '') : (0, _litHtml.html)(_templateObject3()), _Auth.default.currentUser.firstName, _Auth.default.currentUser.lastName, _Auth.default.currentUser.email, (0, _moment.default)(_Auth.default.currentUser.updatedAt).format('MMMM Do YYYY, @ h:mm a'), _Auth.default.currentUser.bio ? (0, _litHtml.html)(_templateObject4(), _Auth.default.currentUser.bio) : (0, _litHtml.html)(_templateObject5()), _Auth.default.currentUser.accessLevel == 2 ? (0, _litHtml.html)(_templateObject6(), () => (0, _Router.gotoRoute)('/newListing')) : (0, _litHtml.html)(_templateObject7()));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -16631,26 +16631,6 @@ var _App = _interopRequireDefault(require("./../App"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _templateObject10() {
-  const data = _taggedTemplateLiteral([""]);
-
-  _templateObject10 = function _templateObject10() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject9() {
-  const data = _taggedTemplateLiteral(["\n        <a href=\"/myListing\" @click=\"", "\">My Listing</a>\n        "]);
-
-  _templateObject9 = function _templateObject9() {
-    return data;
-  };
-
-  return data;
-}
-
 function _templateObject8() {
   const data = _taggedTemplateLiteral([""]);
 
@@ -16702,7 +16682,7 @@ function _templateObject4() {
 }
 
 function _templateObject3() {
-  const data = _taggedTemplateLiteral(["\n        <a href=\"/myListing\" @click=\"", "\">My Listing</a>\n        "]);
+  const data = _taggedTemplateLiteral(["\n        <a href=\"/newListing\" @click=\"", "\">Create a Listing</a>\n        "]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -16722,7 +16702,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <!-- start styling -->\n    <style>  \n      * {\n        box-sizing: border-box;\n      }\n      .app-header {\n        background: var(--brand-color);\n        position: fixed;\n        top: 0;\n        right: 0;\n        left: 0;\n        height: var(--app-header-height);\n        color: #fff;\n        display: flex;\n        z-index: 9;\n        box-shadow: 4px 0px 10px rgba(0,0,0,0.2);\n        align-items: center;\n        padding-left: 1.75em;\n        padding-right: 1.75em;\n      }\n      \n\n      .app-header-main {\n        flex-grow: 1;\n        display: flex;\n        align-items: center;\n      }\n\n      .app-header-main::slotted(h1){\n        color: #fff;\n      }\n\n      .app-logo a {\n        color: #fff;\n        text-decoration: none;\n        font-weight: bold;\n        font-size: 1.2em;\n        padding: .6em;\n        display: inline-block;        \n      }\n\n      .app-logo img {\n        width: 90px;\n      }\n      \n      .hamburger-btn::part(base) {\n        color: #fff;\n      }\n\n      .app-top-nav {\n        display: flex;\n        height: 100%;\n        align-items: center;\n      }\n\n      .app-top-nav a {\n        display: inline-block;\n        padding: .8em;\n        text-decoration: none;\n        color: #fff;\n      }\n      \n      .app-side-menu-items a {\n        display: block;\n        padding: .5em;\n        text-decoration: none;\n        font-size: 1.3em;\n        color: #333;\n      }\n\n      .app-side-menu-logo {\n        width: 120px;\n        margin-bottom: 1em;\n        position: absolute;\n        top: 2em;\n        left: 1.5em;\n      }\n\n      .page-title {\n        color: var(--app-header-txt-color);\n        margin-right: 0.5em;\n        font-size: var(--app-header-title-font-size);\n      }\n\n      /* active nav links */\n      .app-top-nav a.active,\n      .app-side-menu-items a.active {\n        font-weight: bold;\n      }\n\n      /* RESPONSIVE - MOBILE ------------------- */\n      @media all and (max-width: 768px){       \n        \n        .app-top-nav {\n          display: none;\n        }\n      }\n\n    </style>\n    <!-- end styling -->\n\n    <!-- Start HTML (what will be seen on the webpage) -->\n    <!-- Start header -->\n    <header class=\"app-header\">\n      <!-- 'this' refers to the class we're inside (AppHeader) -->       \n      <sl-icon-button class=\"hamburger-btn\" name=\"list\" @click=\"", "\" style=\"font-size: 1.5em;\"></sl-icon-button>       \n      \n      <div class=\"app-header-main\">\n        ", "\n        <slot></slot>\n      </div>\n\n      <nav class=\"app-top-nav\">\n        <a href=\"/explore\" @click=\"", "\">Explore</a> \n        ", " \n        ", " \n\n        <sl-dropdown>\n          <a slot=\"trigger\" href=\"#\" @click=\"", "\">\n            <sl-avatar style=\"--size: 24px;\" image=", "></sl-avatar> ", "\n          </a>\n          <sl-menu>            \n            <sl-menu-item @click=\"", "\">My Account</sl-menu-item>\n            <sl-menu-item @click=\"", "\">Edit Profile</sl-menu-item>\n            <sl-menu-item @click=\"", "\">Sign Out</sl-menu-item>\n          </sl-menu>\n        </sl-dropdown>\n      </nav> \n    </header> <!-- End header --> \n\n    <sl-drawer class=\"app-side-menu\" placement=\"left\">\n      <img class=\"app-side-menu-logo\" src=\"/images/logo.svg\">\n      <nav class=\"app-side-menu-items\">\n        <a href=\"/explore\" @click=\"", "\">Explore</a>\n        <a href=\"/favourites\" @click=\"", "\">My Favourites</a>\n        ", " \n        <sl-menu-divider></sl-menu-divider>\n        ", " \n        <a href=\"/myAccount\" @click=\"", "\">My Account</a>\n        <a href=\"#\" @click=\"", "\">Sign Out</a>\n      </nav>  \n    </sl-drawer>\n    <!-- end HTML (what will be seen on the webpage) -->\n    "]);
+  const data = _taggedTemplateLiteral(["\n    <!-- start styling -->\n    <style>  \n      * {\n        box-sizing: border-box;\n      }\n      .app-header {\n        background: var(--brand-color);\n        position: fixed;\n        top: 0;\n        right: 0;\n        left: 0;\n        height: var(--app-header-height);\n        color: #fff;\n        display: flex;\n        z-index: 9;\n        box-shadow: 4px 0px 10px rgba(0,0,0,0.2);\n        align-items: center;\n        padding-left: 1.75em;\n        padding-right: 1.75em;\n      }\n      \n\n      .app-header-main {\n        flex-grow: 1;\n        display: flex;\n        align-items: center;\n      }\n\n      .app-header-main::slotted(h1){\n        color: #fff;\n      }\n\n      .app-logo a {\n        color: #fff;\n        text-decoration: none;\n        font-weight: bold;\n        font-size: 1.2em;\n        padding: .6em;\n        display: inline-block;        \n      }\n\n      .app-logo img {\n        width: 90px;\n      }\n      \n      .hamburger-btn::part(base) {\n        color: #fff;\n      }\n\n      .app-top-nav {\n        display: flex;\n        height: 100%;\n        align-items: center;\n      }\n\n      .app-top-nav a {\n        display: inline-block;\n        padding: .8em;\n        text-decoration: none;\n        color: #fff;\n      }\n      \n      .app-side-menu-items a {\n        display: block;\n        padding: .5em;\n        text-decoration: none;\n        font-size: 1.3em;\n        color: #333;\n      }\n\n      .app-side-menu-logo {\n        width: 120px;\n        margin-bottom: 1em;\n        position: absolute;\n        top: 2em;\n        left: 1.5em;\n      }\n\n      .page-title {\n        color: var(--app-header-txt-color);\n        margin-right: 0.5em;\n        font-size: var(--app-header-title-font-size);\n      }\n\n      /* active nav links */\n      .app-top-nav a.active,\n      .app-side-menu-items a.active {\n        font-weight: bold;\n      }\n\n      /* RESPONSIVE - MOBILE ------------------- */\n      @media all and (max-width: 768px){       \n        \n        .app-top-nav {\n          display: none;\n        }\n      }\n\n    </style>\n    <!-- end styling -->\n\n    <!-- Start HTML (what will be seen on the webpage) -->\n    <!-- Start header -->\n    <header class=\"app-header\">\n      <!-- 'this' refers to the class we're inside (AppHeader) -->       \n      <sl-icon-button class=\"hamburger-btn\" name=\"list\" @click=\"", "\" style=\"font-size: 1.5em;\"></sl-icon-button>       \n      \n      <div class=\"app-header-main\">\n        ", "\n        <slot></slot>\n      </div>\n\n      <nav class=\"app-top-nav\">\n        <a href=\"/explore\" @click=\"", "\">Explore</a> \n        ", " \n        ", " \n\n        <sl-dropdown>\n          <a slot=\"trigger\" href=\"#\" @click=\"", "\">\n            <sl-avatar style=\"--size: 24px;\" image=", "></sl-avatar> ", "\n          </a>\n          <sl-menu>            \n            <sl-menu-item @click=\"", "\">My Account</sl-menu-item>\n            <sl-menu-item @click=\"", "\">Edit Profile</sl-menu-item>\n            <sl-menu-item @click=\"", "\">Sign Out</sl-menu-item>\n          </sl-menu>\n        </sl-dropdown>\n      </nav> \n    </header> <!-- End header --> \n\n    <sl-drawer class=\"app-side-menu\" placement=\"left\">\n      <img class=\"app-side-menu-logo\" src=\"/images/logo.svg\">\n      <nav class=\"app-side-menu-items\">\n        <a href=\"/explore\" @click=\"", "\">Explore</a>\n        <a href=\"/favourites\" @click=\"", "\">My Favourites</a>\n        ", " \n        <sl-menu-divider></sl-menu-divider>\n        <a href=\"/myAccount\" @click=\"", "\">My Account</a>\n        <a href=\"#\" @click=\"", "\">Sign Out</a>\n      </nav>  \n    </sl-drawer>\n    <!-- end HTML (what will be seen on the webpage) -->\n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -16804,7 +16784,7 @@ customElements.define('va-app-header', class AppHeader extends _litElement.LitEl
 
 
   render() {
-    return (0, _litElement.html)(_templateObject(), this.hamburgerClick, this.title ? (0, _litElement.html)(_templateObject2(), this.title) : "", _Router.anchorRoute, this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject3(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject4()), this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject5(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject6()), e => e.preventDefault(), this.user && this.user.avatar ? "".concat(_App.default.apiBase, "/images/").concat(this.user.avatar) : '', this.user && this.user.firstName, () => (0, _Router.gotoRoute)('/myAccount'), () => (0, _Router.gotoRoute)('/editProfile'), () => _Auth.default.signOut(), this.menuClick, this.menuClick, this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject7(), _Router.anchorRoute, _Router.anchorRoute) : (0, _litElement.html)(_templateObject8()), this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject9(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject10()), this.menuClick, () => _Auth.default.signOut());
+    return (0, _litElement.html)(_templateObject(), this.hamburgerClick, this.title ? (0, _litElement.html)(_templateObject2(), this.title) : "", _Router.anchorRoute, this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject3(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject4()), this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject5(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject6()), e => e.preventDefault(), this.user && this.user.avatar ? "".concat(_App.default.apiBase, "/images/").concat(this.user.avatar) : '', this.user && this.user.firstName, () => (0, _Router.gotoRoute)('/myAccount'), () => (0, _Router.gotoRoute)('/editProfile'), () => _Auth.default.signOut(), this.menuClick, this.menuClick, this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject7(), _Router.anchorRoute, _Router.anchorRoute) : (0, _litElement.html)(_templateObject8()), this.menuClick, () => _Auth.default.signOut());
   } // end render()
 
 
@@ -17051,7 +17031,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56423" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57682" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

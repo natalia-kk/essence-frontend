@@ -192,7 +192,7 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
       <nav class="app-top-nav">
         <a href="/explore" @click="${anchorRoute}">Explore</a> 
         ${this.user.accessLevel == 2 ? html `
-        <a href="/myListing" @click="${anchorRoute}">My Listing</a>
+        <a href="/newListing" @click="${anchorRoute}">Create a Listing</a>
         ` : html ``} 
         ${this.user.accessLevel == 2 ? html `
         <a href="/teachersLounge" @click="${anchorRoute}">Teacher's Lounge</a>
@@ -222,9 +222,6 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
         <a href="/teachersLounge" @click="${anchorRoute}">Teacher's Lounge</a>
         ` : html ``} 
         <sl-menu-divider></sl-menu-divider>
-        ${this.user.accessLevel == 2 ? html `
-        <a href="/myListing" @click="${anchorRoute}">My Listing</a>
-        ` : html ``} 
         <a href="/myAccount" @click="${this.menuClick}">My Account</a>
         <a href="#" @click="${() => Auth.signOut()}">Sign Out</a>
       </nav>  
