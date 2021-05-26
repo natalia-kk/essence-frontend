@@ -28,6 +28,7 @@ class TeachersLoungeView {
         .lounge-image {
           max-width: 400px;
           height: auto;
+          animation: fadeIn ease 5s;
         } 
         .page-content {
           margin-top: -3em;

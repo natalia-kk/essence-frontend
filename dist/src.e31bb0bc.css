@@ -46,6 +46,10 @@ a {
   color: var(--link-color);
 }
 
+a:hover {
+  opacity: 80%;
+}
+
 .app-splash {
   position: fixed;
   background: #fff;
@@ -130,8 +134,27 @@ a {
 h1 {
   text-transform: uppercase;
   font-size: 2.5em;
+  animation-name: grow;
+  animation-duration: 2s;
+  font-size: 2em;
 }
 
+@keyframes grow {
+  from {
+    font-size: 1em;
+  }
+  to {
+    font-size: 2em;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 .signinup-box,
 .signup-box {
   max-width: 320px;
@@ -143,6 +166,12 @@ h1 {
   margin-bottom: 1em;
 }
 
+@media all and (max-width: 768px) {
+  .signinup-box {
+    width: 90%;
+    max-width: none;
+  }
+}
 .guide-step {
   padding: 1em;
   margin: 1.5em auto;
@@ -158,8 +187,7 @@ h1 {
   flex-direction: row;
   justify-content: center;
 }
-
-.profile-heading > h1 {
+.profile-heading h1 {
   color: var(--brand-color);
   padding-right: 0.25em;
 }
@@ -174,6 +202,7 @@ h1 {
   max-width: 400px;
   height: auto;
   margin-bottom: 1em;
+  animation: fadeIn;
 }
 
 .content-left {
@@ -195,6 +224,7 @@ h1 {
   .welcome-image {
     max-width: 300px;
     height: auto;
+    animation: fadeIn ease 5s;
   }
 }
 @media all and (max-width: 360px) {
@@ -207,10 +237,6 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  /*.profile-photo {
-    max-width: 500px;
-    height: 100%;
-  } */
 }
 .listings-grid .listing-card {
   width: calc(25% - 1em);
@@ -218,6 +244,11 @@ h1 {
   min-width: 300px;
   margin: 0.5em;
   display: block;
+}
+.listings-grid .listing-card:hover {
+  -webkit-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  transform: scale(0.95);
 }
 
 .filter-menu {
@@ -258,12 +289,6 @@ h1 {
 
   .display-flex {
     width: 100%;
-  }
-}
-@media all and (max-width: 768px) {
-  .signinup-box {
-    width: 90%;
-    max-width: none;
   }
 }
 .input-group {

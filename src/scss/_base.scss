@@ -1,7 +1,7 @@
 // Base
 
 * {
-  box-sizing: border-box; // ("paramount for any moder css")
+  box-sizing: border-box; // ("paramount for any modern css")
   -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); // for mobile viewing
 }
 
@@ -25,6 +25,9 @@ h1,h2,h3,h5,h6 {
 // links ---------------
 a {
   color: var(--link-color);
+}
+a:hover {
+  opacity: 80%;
 }
 
 
@@ -124,6 +127,26 @@ a {
 h1 {
   text-transform: uppercase;
   font-size: 2.5em;
+  animation-name: grow;
+  animation-duration: 2s;
+  font-size: 2em;
+}
+
+
+// keyframes animations
+@keyframes grow {
+  from {font-size: 1em;}
+  to {font-size: 2em;}
+}
+
+
+@keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
 }
 
 
@@ -141,6 +164,15 @@ h1 {
   margin-bottom: 1em;
 }
 
+// RESPONSIVE - MOBILE 
+@media all and (max-width: 768px){ 
+  .signinup-box {
+    width: 90%;
+    max-width: none;
+  }
+}
+
+
 // guide page ---------------
 .guide-step {
   padding: 1em;
@@ -153,16 +185,17 @@ h1 {
 }
 
 
-// Account page styles -----------------------------------------
+// Account page styles ----------------
 .profile-heading {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  h1 {
+    color: var(--brand-color);
+    padding-right: 0.25em;
+  }
 }
-.profile-heading > h1 {
-  color: var(--brand-color);
-  padding-right: 0.25em;
-}
+
 .account-box {
   max-width: 500px;
   margin-right: auto;
@@ -170,11 +203,12 @@ h1 {
 }
 
 
-// welcome page styles --------------------------------------------
+// welcome page styles ----------------
 .welcome-image {
   max-width: 400px;
   height: auto;
   margin-bottom: 1em;
+  animation: fadeIn;
 } 
 .content-left {
   text-align: left;
@@ -195,6 +229,7 @@ h1 {
   .welcome-image {
     max-width: 300px;
     height: auto;
+    animation: fadeIn ease 5s;
   } 
 }
 @media all and (max-width: 360px){ 
@@ -205,7 +240,7 @@ h1 {
 }
 
 
-// Explore page styles ------------------------------------------
+// Explore page styles -----------------
 
 // Listing cards *******
 // (sl-card for each listing displayed on Explore view)
@@ -221,11 +256,12 @@ h1 {
     margin: 0.5em;
     display: block;
   } 
+  .listing-card:hover {
+    -webkit-transform: scale(0.95);
+    -ms-transform: scale(0.95);
+    transform: scale(0.95);
+  }
 
-  /*.profile-photo {
-    max-width: 500px;
-    height: 100%;
-  } */
 }
 
 
@@ -265,8 +301,7 @@ h1 {
 
 
 
-// Listing page styles ------------------------------------------
-
+// Listing page styles ---------------
 
 // RESPONSIVE - MOBILE 
 @media all and (max-width: 768px){ 
@@ -276,20 +311,6 @@ h1 {
   }
   .display-flex {
     width: 100%;
-  }
-
-}
-
-
-
-// Other --------------------------------------------------------
-
-// RESPONSIVE - MOBILE 
-@media all and (max-width: 768px){ 
-
-  .signinup-box {
-    width: 90%;
-    max-width: none;
   }
 
 }

@@ -137,7 +137,6 @@ class ExploreView {
         font-size: 1em;
       }
     </style>
-    
       <va-app-header title="Explore" user="${JSON.stringify(Auth.currentUser)}"></va-app-header>
       
       <!-- page-content div start -->

@@ -136,6 +136,10 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
         text-decoration: none;
         color: #fff;
       }
+      .app-top-nav a:hover {
+        color: black;
+        font-weight: 800;
+      }
       
       .app-side-menu-items a {
         display: block;
@@ -144,6 +148,11 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
         font-size: 1.3em;
         color: #333;
       }
+      .app-side-menu-items a:hover {
+        color: var(--brand-color);
+        font-weight: 400;
+      }
+      
 
       .app-side-menu-logo {
         width: 120px;

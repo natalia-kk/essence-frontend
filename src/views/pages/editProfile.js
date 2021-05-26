@@ -51,16 +51,17 @@ class EditProfileView {
         ${(this.user == null) ? html`
           <sl-spinner></sl-spinner>
         `:html`
+          <h1>Teacher's Lounge</h1>
           <p>Updated: ${moment(Auth.currentUser.updatedAt).format('MMMM Do YYYY, @ h:mm a')}</p>
           <sl-form class="page-form" @sl-submit=${this.updateProfileSubmitHandler.bind(this)}>
             <div class="input-group">
-              <sl-input type="text" name="firstName" value="${this.user.firstName}" placeholder="First Name"></sl-input>
+              <sl-input label="Last name" type="text" name="firstName" value="${this.user.firstName}" placeholder="First Name"></sl-input>
             </div>
             <div class="input-group">
-              <sl-input type="text" name="lastName" value="${this.user.lastName}" placeholder="Last Name"></sl-input>
+              <sl-input label="First name" type="text" name="lastName" value="${this.user.lastName}" placeholder="Last Name"></sl-input>
             </div>
             <div class="input-group">
-              <sl-input type="text" name="email" value="${this.user.email}" placeholder="Email Address"></sl-input>
+              <sl-input label="Email" type="text" name="email" value="${this.user.email}" placeholder="Email Address"></sl-input>
             </div>
             <div class="input-group">
               <sl-textarea name="bio" resize="auto" value="${this.user.bio}" label="Add your bio here"></sl-textarea>

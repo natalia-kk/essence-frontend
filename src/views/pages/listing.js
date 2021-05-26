@@ -95,6 +95,7 @@ class listingView {
         max-width: 450px;
         min-width: 200px;
         height: auto;
+        animation: fadeIn ease 5s;;
       } 
     </style>
       <va-app-header title="Essence Listing" user="${JSON.stringify(Auth.currentUser)}"></va-app-header>

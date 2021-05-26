@@ -15,13 +15,18 @@ class MyAccountView {
 
   render(){
     const template = html`
+    <style>
+      .edit-icon:hover {
+        transform: scale(1.3);
+      }
+    </style>
       <va-app-header title="Account" user="${JSON.stringify(Auth.currentUser)}"></va-app-header>
       <div class="page-content calign"> <!-- start page content div -->
       
       <div class="account-box">
         <div class="profile-heading">   
           <h1>My Profile</h1>  
-          <sl-icon-button name="pencil" label="Edit" style="font-size: 1.5rem;" @click=${()=> gotoRoute('/editProfile')}>Edit Profile</sl-icon-button>
+          <sl-icon-button class="edit-icon" name="pencil" label="Edit" style="font-size: 1.5rem;" @click=${()=> gotoRoute('/editProfile')}>Edit Profile</sl-icon-button>
         </div>  
         ${Auth.currentUser && Auth.currentUser.avatar ? html`
           <sl-avatar style="--size: 200px; margin-bottom: 1em;" image=${(Auth.currentUser && Auth.currentUser.avatar) ? `${App.apiBase}/images/${Auth.currentUser.avatar}` : ''}></sl-avatar>
