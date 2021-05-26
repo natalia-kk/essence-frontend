@@ -43,7 +43,16 @@ class listingView {
    
     // sl-dialog content - using html function (lit-html library)
     const dialogContent = html `
-    <h2>Test</h2>
+    <h2>Contact ${this.listing.teacherName}</h2>
+    <sl-form class="form-overview">
+      <sl-input name="name" type="text" label="Your name"></sl-input>
+      <br>
+      <sl-input name="name" type="text" label="Your email"></sl-input>
+      <br>
+      <sl-textarea name="comment" label="Question or comment"></sl-textarea>
+      <br>
+      <sl-button type="primary" pill submit style="width: 200px">Submit</sl-button>
+    </sl-form>
     `
     // render dialog content inside dialog element (dialogEl)
     // render(render this content, inside this element)

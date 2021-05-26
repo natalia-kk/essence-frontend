@@ -94,7 +94,7 @@ class UserAPI {
     // validate
     if(!listingId) return
 
-    // send fetch request to backend - fetch the json data
+    // send fetch request to backend 
     const response = await fetch(`${App.apiBase}/user/favouriteListing`, {
       method: "PUT",
       headers: { "Authorization": `Bearer ${localStorage.accessToken}`, "Content-Type": 'application/json'},

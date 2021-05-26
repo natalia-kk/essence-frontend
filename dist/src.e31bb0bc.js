@@ -7779,7 +7779,7 @@ class UserAPI {
 
   async addFavListing(listingId) {
     // validate
-    if (!listingId) return; // send fetch request to backend - fetch the json data
+    if (!listingId) return; // send fetch request to backend 
 
     const response = await fetch("".concat(_App.default.apiBase, "/user/favouriteListing"), {
       method: "PUT",
@@ -8389,7 +8389,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <h2>Test</h2>\n    "]);
+  const data = _taggedTemplateLiteral(["\n    <h2>Contact ", "</h2>\n    <sl-form class=\"form-overview\">\n      <sl-input name=\"name\" type=\"text\" label=\"Your name\"></sl-input>\n      <br>\n      <sl-input name=\"name\" type=\"text\" label=\"Your email\"></sl-input>\n      <br>\n      <sl-textarea name=\"comment\" label=\"Question or comment\"></sl-textarea>\n      <br>\n      <sl-button type=\"primary\" pill submit style=\"width: 200px\">Submit</sl-button>\n    </sl-form>\n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -8436,7 +8436,7 @@ class listingView {
 
     dialogEl.className = 'contact-dialog'; // sl-dialog content - using html function (lit-html library)
 
-    const dialogContent = (0, _litHtml.html)(_templateObject()); // render dialog content inside dialog element (dialogEl)
+    const dialogContent = (0, _litHtml.html)(_templateObject(), this.listing.teacherName); // render dialog content inside dialog element (dialogEl)
     // render(render this content, inside this element)
 
     (0, _litHtml.render)(dialogContent, dialogEl); // append dialogEl to document.body
@@ -17032,7 +17032,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62617" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62837" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
