@@ -36,7 +36,9 @@ class MyAccountView {
         `}
         
         <sl-button @click=${()=> gotoRoute('/editProfile')}>Edit Profile</sl-button>
+        ${Auth.currentUser.accessLevel == 2 ? html `
         <sl-button @click=${()=> gotoRoute('/myListing')}>My Listing</sl-button>
+        ` : html ``} 
       </div>      
     `
     render(template, App.rootEl)

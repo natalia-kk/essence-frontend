@@ -190,9 +190,12 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
       </div>
 
       <nav class="app-top-nav">
-        <a href="/" @click="${anchorRoute}">Home</a> 
+        <a href="/explore" @click="${anchorRoute}">Explore</a> 
         ${this.user.accessLevel == 2 ? html `
-        <a href="/newListing" @click="${anchorRoute}">Create a Listing</a>
+        <a href="/myListing" @click="${anchorRoute}">My Listing</a>
+        ` : html ``} 
+        ${this.user.accessLevel == 2 ? html `
+        <a href="/teachersLounge" @click="${anchorRoute}">Teacher's Lounge</a>
         ` : html ``} 
 
         <sl-dropdown>
@@ -200,21 +203,28 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
             <sl-avatar style="--size: 24px;" image=${(this.user && this.user.avatar) ? `${App.apiBase}/images/${this.user.avatar}` : ''}></sl-avatar> ${this.user && this.user.firstName}
           </a>
           <sl-menu>            
-            <sl-menu-item @click="${() => gotoRoute('/profile')}">Profile</sl-menu-item>
+            <sl-menu-item @click="${() => gotoRoute('/myAccount')}">My Account</sl-menu-item>
             <sl-menu-item @click="${() => gotoRoute('/editProfile')}">Edit Profile</sl-menu-item>
             <sl-menu-item @click="${() => Auth.signOut()}">Sign Out</sl-menu-item>
           </sl-menu>
         </sl-dropdown>
       </nav> 
-    </header> <!-- End header -->
+    </header> <!-- End header --> 
 
     <sl-drawer class="app-side-menu" placement="left">
       <img class="app-side-menu-logo" src="/images/logo.svg">
       <nav class="app-side-menu-items">
-        <a href="/" @click="${this.menuClick}">Home</a>
         <a href="/explore" @click="${this.menuClick}">Explore</a>
-        <a href="/teachersLounge" @click="${this.menuClick}">Teacher's Lounge</a>
         <a href="/favourites" @click="${this.menuClick}">My Favourites</a>
+        ${this.user.accessLevel == 2 ? html `
+        <sl-menu-divider></sl-menu-divider>
+        <a href="/newListing" @click="${anchorRoute}">Create a Listing</a>
+        <a href="/teachersLounge" @click="${anchorRoute}">Teacher's Lounge</a>
+        ` : html ``} 
+        <sl-menu-divider></sl-menu-divider>
+        ${this.user.accessLevel == 2 ? html `
+        <a href="/myListing" @click="${anchorRoute}">My Listing</a>
+        ` : html ``} 
         <a href="/myAccount" @click="${this.menuClick}">My Account</a>
         <a href="#" @click="${() => Auth.signOut()}">Sign Out</a>
       </nav>  

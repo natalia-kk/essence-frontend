@@ -76,7 +76,7 @@ class Auth {
       gotoRoute('/welcome')
     }else{
       // existing user - redirect to home page
-      gotoRoute('/') 
+      gotoRoute('/explore') 
     }
 
   }
