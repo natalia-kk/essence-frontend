@@ -7,7 +7,7 @@ class App {
   constructor(){
     this.name = "Essence"
     this.version = "1.0.0"
-    this.apiBase = 'http://localhost:3000' // backend API address
+    this.apiBase = 'https://nkloppers-essence-backend.herokuapp.com' // backend API address
     this.rootEl = document.getElementById("root") // the index.html root div that everything will be inserted into
     this.version = "1.0.0"
   }
