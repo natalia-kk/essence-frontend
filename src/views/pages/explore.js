@@ -126,9 +126,18 @@ class ExploreView {
     - Can’t use forEach in JS literals (lit html):
       use .map to loop through each object (listing)
   */
- // note: styles in _base.scss
   render(){
     const template = html`
+    <style>
+      .filter-menu {
+        margin-bottom: 1em;
+      }
+      h5 {
+        color: var(--brand-color);
+        font-size: 1em;
+      }
+    </style>
+    
       <va-app-header title="Explore" user="${JSON.stringify(Auth.currentUser)}"></va-app-header>
       
       <!-- page-content div start -->
@@ -141,7 +150,7 @@ class ExploreView {
         
         <!-- Filter menu -->
         <!-- Button groups from Shoelace library group related filter buttons -->
-        <h5>Filter by</h5>
+        <h5>Filter by:</h5>
         <div class="filter-menu">
           <div>
             <strong>Gender</strong>

@@ -102,6 +102,24 @@ a {
   justify-content: center;
 }
 
+
+// flexbox styles
+.flex-container {
+  display: flex;
+}
+.display-flex {
+  width: calc(50% - 5em);
+  margin: 1.5em;
+  padding-right: 1.5em;
+}
+
+
+// buttons
+.btn-shadow {
+  box-shadow: 0px 3px 5px rgba(0,0,0,0.09);
+}
+
+
 // sign in + sign up pages ----------
 .signinup-box,
 .signup-box {  
@@ -125,6 +143,11 @@ a {
   }
 }
 
+// font styles
+h1 {
+  text-transform: uppercase;
+  font-size: 2.5em;
+}
 
 
 // Explore page styles ------------------------------------------
@@ -138,8 +161,8 @@ a {
 
   .listing-card { 
     width: calc(25% - 1em);
-    max-width: 350px; 
-    min-width: 200px;
+    max-width: 40px; 
+    min-width: 300px;
     margin: 0.5em;
     display: block;
   } 
@@ -188,20 +211,7 @@ a {
 
 
 // Listing page styles ------------------------------------------
-.flex-container {
-  display: flex;
-}
-.display-flex {
-  width: calc(50% - 5em);
-  margin: 1.5em;
-  padding-right: 1.5em;
-}
 
-.listing-image {
-  max-width: 500px;
-  min-width: 200px;
-  height: auto;
-} 
 
 // RESPONSIVE - MOBILE 
 @media all and (max-width: 768px){ 

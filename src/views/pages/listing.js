@@ -67,8 +67,27 @@ class listingView {
   }
 
   render(){
-  // note: styled in _base.scss
     const template = html`
+    <!-- styles specific to this view here: -->
+    <style>
+      h3, h4 {
+        color: var(--brand-color);
+        margin-bottom: 0px;
+        margin-top: 2em;
+      }
+      h4 {
+        font-weight: 550;
+      }
+      .listing-btns {
+        margin-top: 2em;
+        justify-content: center;
+      }
+      .listing-image {
+        max-width: 450px;
+        min-width: 200px;
+        height: auto;
+      } 
+    </style>
       <va-app-header title="Essence Listing" user="${JSON.stringify(Auth.currentUser)}"></va-app-header>
       <div class="page-content"> 
         <!-- f this.listing == empty ? do this : else do this -->
@@ -78,6 +97,7 @@ class listingView {
           <div class="flex-container">
             <section class="display-flex">
               <h1>${this.listing.teacherName}</h1>
+              <h3>Based in ${this.listing.location}</h3>
               <p>${this.listing.certified}hr certified | ${this.listing.gender}</p>
               
               <h4>Class Type</h4>
@@ -91,12 +111,12 @@ class listingView {
 
               <!-- Contact button = show contact info in sl-dialog -->
               <!-- note: .bind(this) = binds .this to the class (listingView) rather than the button the event handler is being called from -->
-              <div>
-                <sl-button @click=${this.addFavHandler}>
+              <div class="listing-btns">
+                <sl-button class="btn-shadow" @click=${this.addFavHandler}>
                   <sl-icon slot="prefix" name="suit-heart-fill"></sl-icon>
                   Add to Favourites
                 </sl-button>
-                <sl-button @click=${this.contactHandler.bind(this)}>Contact</sl-button>
+                <sl-button class="btn-shadow" @click=${this.contactHandler.bind(this)}>Contact</sl-button>
               </div>
             </section>
             

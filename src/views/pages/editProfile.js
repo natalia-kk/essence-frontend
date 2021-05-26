@@ -74,7 +74,7 @@ class EditProfileView {
                 <input type="file" name="avatar" />
               `}
             </div>
-            <sl-button type="primary" class="submit-btn" submit>Update Profile</sl-button>
+            <sl-button type="primary" class="submit-btn" submit pill style="width: 250px">Update Profile</sl-button>
           </sl-form>
         `}
       </div>

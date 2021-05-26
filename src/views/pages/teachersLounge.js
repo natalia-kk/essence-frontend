@@ -54,7 +54,7 @@ class TeachersLoungeView {
 
           <section class="display-flex">
             <img class="lounge-image" src="${App.apiBase}/images/teachers-lounge.jpg">
-          </section>
+          </section> 
           
         </div>
       </div>      

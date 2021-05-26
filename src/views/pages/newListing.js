@@ -118,7 +118,7 @@ class newListingView {
             </sl-radio-group>
           </div>
           
-          <sl-button type="primary" class="submit-btn" submit>Create my Listing</sl-button>
+          <sl-button type="primary" class="submit-btn" submit pill style="width: 250px">Create my Listing</sl-button>
         
         </sl-form> <!-- END create a new listing form -->
 

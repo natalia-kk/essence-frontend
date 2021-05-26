@@ -80,21 +80,32 @@ customElements.define('va-listing-card', class Listing extends LitElement {
   render() {    
     return html`
     <style>
-        .listing-card-image {
-            max-width: 400px;
-            height: auto;
-        }
+      h2 {
+        text-transform: uppercase;
+        
+      }
+      h3 {
+        color: var(--brand-color);
+      }
+      h4 {
+        color: grey;
+        font-weight: 550;
+      }
+      sl-icon-button {
+        float: right;
+        font-size: 1.5em;
+      }
     </style>
 
     <sl-card>
         <img class="listing-card-image" slot="image" src="${App.apiBase}/images/${this.image}">
         <h2 class="author">${this.user.firstName} ${this.user.lastName} </h2>
         <h3>${this.location}</h3>
-        <h4>${this.classType} | ${this.level}</h4>
+        <h4>${this.classType} classes | ${this.level}</h4>
         <p>${this.certified}hr certified | ${this.gender}</p>
 
-        <sl-button @click=${this.viewListingHandler.bind(this)}>See More</sl-button>
-        <sl-icon-button name="suit-heart-fill" label="Add to Favourites" @click=${this.addFavHandler.bind(this)}></sl-icon-button>
+        <sl-button @click=${this.viewListingHandler.bind(this)}>See More ...</sl-button>
+        <sl-icon-button name="suit-heart" label="Add to Favourites" @click=${this.addFavHandler.bind(this)}></sl-icon-button>
     </sl-card>
    
     `
