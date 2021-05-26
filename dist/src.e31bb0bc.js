@@ -8258,7 +8258,7 @@ var _Utils = _interopRequireDefault(require("./../../Utils"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n      <va-app-header title=\"Teacher's Lounge\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\">        \n        <h1>Teacher's Lounge</h1>\n        <p>Page content ...</p>\n        \n      </div>      \n    "]);
+  const data = _taggedTemplateLiteral(["\n      <style>\n        \n        .icon, .display-flex > h2 {\n          color: var(--brand-color); \n        }\n        .lounge-content-left > h2, h3, div {\n          margin-top: 3em;\n        }\n        .display-flex > h1 {\n          font-size: 2em;\n        }\n        .lounge-image {\n          max-width: 400px;\n          height: auto;\n        } \n        .page-content {\n          margin-top: -3em;\n          padding-top: 0;\n        }\n        \n      </style>\n\n      <va-app-header title=\"Teacher's Lounge\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\"> \n        \n        <div class=\"flex-container\">\n          <section class=\"display-flex\" class=\"lounge-content-left\">\n            <h1>Teacher's Lounge</h1>\n            <h2 class=\"anim-in\">Namaste, ", "</h2>\n            <h3><a href=\"/myAccount\" @click=", ">Go to my Account <sl-icon class=\"icon\" name=\"arrow-right-circle-fill\"></sl-icon></a></h3>\n            \n            <div>\n              <h3><a href=\"/myAccount\" @click=", ">View my Listing <sl-icon class=\"icon\" name=\"arrow-right-circle-fill\"></sl-icon></a></h3>\n              <p>Haven't made a listing yet?</p>\n              <sl-button type=\"primary\" @click=", " style=\"width: 70%;\" pill>Create a Listing</sl-button>\n            </div>\n          </section>  \n\n          <section class=\"display-flex\">\n            <img class=\"lounge-image\" src=\"", "/images/teachers-lounge.jpg\">\n          </section>\n          \n        </div>\n      </div>      \n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -8279,7 +8279,7 @@ class TeachersLoungeView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser));
+    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), _Auth.default.currentUser.firstName, _Router.anchorRoute, _Router.anchorRoute, () => (0, _Router.gotoRoute)('/newListing'), _App.default.apiBase);
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -14408,7 +14408,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  const data = _taggedTemplateLiteral(["\n        <sl-button @click=", ">My Listing</sl-button>\n        "]);
+  const data = _taggedTemplateLiteral(["\n        <sl-button type=\"primary\" pill style=\"width: 150px;\" @click=", ">My Listing</sl-button>\n        "]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -14458,7 +14458,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n      <va-app-header title=\"Account\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\">        \n        ", "\n        <h2>", " ", "</h2>\n        <p>", "</p>\n        \n        <p>Updated: ", "</p>\n\n        ", "\n        \n        <sl-button @click=", ">Edit Profile</sl-button>\n        ", " \n      </div>      \n    "]);
+  const data = _taggedTemplateLiteral(["\n    <style>\n      .profile-heading {\n        display: flex;\n        flex-direction: row;\n        justify-content: center;\n      }\n      .profile-heading > h1 {\n        color: var(--brand-color);\n        padding-right: 0.25em;\n      }\n\n    </style>\n      <va-app-header title=\"Account\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\"> \n        <div class=\"profile-heading\">   \n          <h1>My Profile</h1>  \n          <sl-icon-button name=\"pencil\" label=\"Edit\" style=\"font-size: 1.5rem;\" @click=", ">Edit Profile</sl-icon-button>\n        </div>  \n\n        ", "\n        <h2>", " ", "</h2>\n        <p>", "</p>\n        \n        <p>Updated: ", "</p>\n\n        ", "\n      \n        ", " \n      </div>      \n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -14479,7 +14479,7 @@ class MyAccountView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), _Auth.default.currentUser && _Auth.default.currentUser.avatar ? (0, _litHtml.html)(_templateObject2(), _Auth.default.currentUser && _Auth.default.currentUser.avatar ? "".concat(_App.default.apiBase, "/images/").concat(_Auth.default.currentUser.avatar) : '') : (0, _litHtml.html)(_templateObject3()), _Auth.default.currentUser.firstName, _Auth.default.currentUser.lastName, _Auth.default.currentUser.email, (0, _moment.default)(_Auth.default.currentUser.updatedAt).format('MMMM Do YYYY, @ h:mm a'), _Auth.default.currentUser.bio ? (0, _litHtml.html)(_templateObject4(), _Auth.default.currentUser.bio) : (0, _litHtml.html)(_templateObject5()), () => (0, _Router.gotoRoute)('/editProfile'), _Auth.default.currentUser.accessLevel == 2 ? (0, _litHtml.html)(_templateObject6(), () => (0, _Router.gotoRoute)('/myListing')) : (0, _litHtml.html)(_templateObject7()));
+    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), () => (0, _Router.gotoRoute)('/editProfile'), _Auth.default.currentUser && _Auth.default.currentUser.avatar ? (0, _litHtml.html)(_templateObject2(), _Auth.default.currentUser && _Auth.default.currentUser.avatar ? "".concat(_App.default.apiBase, "/images/").concat(_Auth.default.currentUser.avatar) : '') : (0, _litHtml.html)(_templateObject3()), _Auth.default.currentUser.firstName, _Auth.default.currentUser.lastName, _Auth.default.currentUser.email, (0, _moment.default)(_Auth.default.currentUser.updatedAt).format('MMMM Do YYYY, @ h:mm a'), _Auth.default.currentUser.bio ? (0, _litHtml.html)(_templateObject4(), _Auth.default.currentUser.bio) : (0, _litHtml.html)(_templateObject5()), _Auth.default.currentUser.accessLevel == 2 ? (0, _litHtml.html)(_templateObject6(), () => (0, _Router.gotoRoute)('/myListing')) : (0, _litHtml.html)(_templateObject7()));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -14511,7 +14511,7 @@ var _moment = _interopRequireDefault(require("moment"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n      <va-app-header title=\"My Listing\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\">        \n\n      </div>      \n    "]);
+  const data = _taggedTemplateLiteral(["\n      <va-app-header title=\"My Listing\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\">        \n        <h1>My Listing</h1>\n        <label>Haven't made a listing yet?</label>\n        <sl-button type=\"primary\" @click=", " style=\"width: 200px;\" pill>Create a Listing</sl-button>\n      </div>      \n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -14532,7 +14532,7 @@ class MyListingView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser));
+    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), () => (0, _Router.gotoRoute)('/newListing'));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 

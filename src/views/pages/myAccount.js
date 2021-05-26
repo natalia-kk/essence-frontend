@@ -15,8 +15,25 @@ class MyAccountView {
 
   render(){
     const template = html`
+    <style>
+      .profile-heading {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+      .profile-heading > h1 {
+        color: var(--brand-color);
+        padding-right: 0.25em;
+      }
+
+    </style>
       <va-app-header title="Account" user="${JSON.stringify(Auth.currentUser)}"></va-app-header>
-      <div class="page-content calign">        
+      <div class="page-content calign"> 
+        <div class="profile-heading">   
+          <h1>My Profile</h1>  
+          <sl-icon-button name="pencil" label="Edit" style="font-size: 1.5rem;" @click=${()=> gotoRoute('/editProfile')}>Edit Profile</sl-icon-button>
+        </div>  
+
         ${Auth.currentUser && Auth.currentUser.avatar ? html`
           <sl-avatar style="--size: 200px; margin-bottom: 1em;" image=${(Auth.currentUser && Auth.currentUser.avatar) ? `${App.apiBase}/images/${Auth.currentUser.avatar}` : ''}></sl-avatar>
         `:html`
@@ -34,10 +51,9 @@ class MyAccountView {
           <h3>Bio</h3>
             <p>You have not added a bio yet</p>
         `}
-        
-        <sl-button @click=${()=> gotoRoute('/editProfile')}>Edit Profile</sl-button>
+      
         ${Auth.currentUser.accessLevel == 2 ? html `
-        <sl-button @click=${()=> gotoRoute('/myListing')}>My Listing</sl-button>
+        <sl-button type="primary" pill style="width: 150px;" @click=${()=> gotoRoute('/myListing')}>My Listing</sl-button>
         ` : html ``} 
       </div>      
     `
