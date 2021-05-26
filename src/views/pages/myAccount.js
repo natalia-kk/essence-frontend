@@ -25,7 +25,6 @@ class MyAccountView {
         color: var(--brand-color);
         padding-right: 0.25em;
       }
-
     </style>
       <va-app-header title="Account" user="${JSON.stringify(Auth.currentUser)}"></va-app-header>
       <div class="page-content calign"> 
@@ -33,7 +32,6 @@ class MyAccountView {
           <h1>My Profile</h1>  
           <sl-icon-button name="pencil" label="Edit" style="font-size: 1.5rem;" @click=${()=> gotoRoute('/editProfile')}>Edit Profile</sl-icon-button>
         </div>  
-
         ${Auth.currentUser && Auth.currentUser.avatar ? html`
           <sl-avatar style="--size: 200px; margin-bottom: 1em;" image=${(Auth.currentUser && Auth.currentUser.avatar) ? `${App.apiBase}/images/${Auth.currentUser.avatar}` : ''}></sl-avatar>
         `:html`
@@ -43,7 +41,6 @@ class MyAccountView {
         <p>${Auth.currentUser.email}</p>
         
         <p>Updated: ${moment(Auth.currentUser.updatedAt).format('MMMM Do YYYY, @ h:mm a')}</p>
-
         ${Auth.currentUser.bio ? html`
           <h3>Bio</h3>
             <p>${Auth.currentUser.bio}</p>

@@ -14405,7 +14405,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <style>\n      .profile-heading {\n        display: flex;\n        flex-direction: row;\n        justify-content: center;\n      }\n      .profile-heading > h1 {\n        color: var(--brand-color);\n        padding-right: 0.25em;\n      }\n\n    </style>\n      <va-app-header title=\"Account\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\"> \n        <div class=\"profile-heading\">   \n          <h1>My Profile</h1>  \n          <sl-icon-button name=\"pencil\" label=\"Edit\" style=\"font-size: 1.5rem;\" @click=", ">Edit Profile</sl-icon-button>\n        </div>  \n\n        ", "\n        <h2>", " ", "</h2>\n        <p>", "</p>\n        \n        <p>Updated: ", "</p>\n\n        ", "\n      \n        ", " \n      </div>      \n    "]);
+  const data = _taggedTemplateLiteral(["\n    <style>\n      .profile-heading {\n        display: flex;\n        flex-direction: row;\n        justify-content: center;\n      }\n      .profile-heading > h1 {\n        color: var(--brand-color);\n        padding-right: 0.25em;\n      }\n    </style>\n      <va-app-header title=\"Account\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\"> \n        <div class=\"profile-heading\">   \n          <h1>My Profile</h1>  \n          <sl-icon-button name=\"pencil\" label=\"Edit\" style=\"font-size: 1.5rem;\" @click=", ">Edit Profile</sl-icon-button>\n        </div>  \n        ", "\n        <h2>", " ", "</h2>\n        <p>", "</p>\n        \n        <p>Updated: ", "</p>\n        ", "\n      \n        ", " \n      </div>      \n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -17051,7 +17051,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61799" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56423" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
