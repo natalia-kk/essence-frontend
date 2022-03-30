@@ -29,17 +29,18 @@ class SignInView {
       <div class="page-content page-centered">
         <div class="signinup-box">
           <img class="signinup-logo" src="/images/logo.svg">    
-          <h1>Sign In</h1>      
+          <h1 class='signinup'>Sign in</h1>      
           <sl-form class="form-signup dark-theme" @sl-submit=${this.signInSubmitHandler}>          
             <div class="input-group">
-              <sl-input name="email" type="email" placeholder="Email" required></sl-input>
+              <sl-input name="email" type="email" placeholder="Email" class='form-input' required></sl-input>
             </div>
             <div class="input-group">
-              <sl-input name="password" type="password" placeholder="Password" required toggle-password></sl-input>
+              <sl-input name="password" type="password" placeholder="Password" class='form-input' required toggle-password></sl-input>
             </div>
-            <sl-button class="submit-btn" type="primary" submit style="width: 100%;">SIGN IN</sl-button>
+            <sl-button class="submit-btn" type="primary" submit style="width: 100%;" pill>Sign in<sl-icon slot="suffix" name="arrow-right"></sl-icon></sl-button>
           </sl-form>
-          <p>New user? <a href="/signup" @click=${anchorRoute}>Sign Up</a></p>
+          <p class='line'>New user?</p> 
+          <a href="/signup" @click=${anchorRoute} class='link-txt'>Create an account</a>
         </div>
       </div>
     `

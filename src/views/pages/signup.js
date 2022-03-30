@@ -30,29 +30,30 @@ class SignUpView{
       <div class="page-content page-centered">      
         <div class="signinup-box">
         <img class="signinup-logo" src="/images/logo.svg">
-          <h1>Sign Up</h1>
+          <h1 class='signinup'>Sign Up</h1>
           <sl-form class="form-signup" @sl-submit=${this.signUpSubmitHandler}>
             <div class="input-group">
-              <sl-input name="firstName" type="text" placeholder="First Name" required></sl-input>
+              <sl-input name="firstName" type="text" placeholder="First Name" class='form-input' required></sl-input>
             </div>
             <div class="input-group">
-              <sl-input name="lastName" type="text" placeholder="Last Name" required></sl-input>
+              <sl-input name="lastName" type="text" placeholder="Last Name" class='form-input' required></sl-input>
             </div>
             <div class="input-group">
-              <sl-input name="email" type="email" placeholder="Email" required></sl-input>
+              <sl-input name="email" type="email" placeholder="Email" class='form-input' required></sl-input>
             </div>
             <div class="input-group">
-              <sl-input name="password" type="password" placeholder="Password" required toggle-password></sl-input>
+              <sl-input name="password" type="password" placeholder="Password" class='form-input' required toggle-password></sl-input>
             </div>
             <div class="input-group">
-              <sl-select name="accessLevel" placeholder="I am a ...">
+              <sl-select name="accessLevel" class='form-input' style="color: grey" placeholder="I am a ...">
                 <sl-menu-item value="1">Yoga Student</sl-menu-item>
                 <sl-menu-item value="2">Yoga Teacher</sl-menu-item>
               </sl-select>
             </div>            
-            <sl-button type="primary" class="submit-btn" submit style="width: 100%;">SIGN UP</sl-button>
+            <sl-button type="primary" class="submit-btn" submit style="width: 100%;" pill>Create account<sl-icon slot="suffix" name="arrow-right"></sl-icon></sl-button>
           </sl-form>
-          <p>Have an account? <a href="/signin" @click=${anchorRoute}>Sign In</a></p>
+          <p class='line'>Have an account?</p>
+          <a href="/signin" @click=${anchorRoute} class='link-txt'>Sign In</a>
         </div>
       </div>
     `
