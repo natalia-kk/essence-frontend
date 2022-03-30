@@ -135,7 +135,7 @@ h1 {
   text-transform: uppercase;
   font-size: 2.5em;
   animation-name: grow;
-  animation-duration: 2s;
+  animation-duration: 1s;
   font-size: 2em;
 }
 

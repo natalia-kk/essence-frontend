@@ -162,6 +162,10 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
         left: 1.5em;
       }
 
+      .nav-bar-logo {
+        width: 130px;
+      }
+
       .page-title {
         color: var(--app-header-txt-color);
         margin-right: 0.5em;
@@ -192,9 +196,12 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
       <sl-icon-button class="hamburger-btn" name="list" @click="${this.hamburgerClick}" style="font-size: 1.5em;"></sl-icon-button>       
       
       <div class="app-header-main">
-        ${this.title ? html`
+        <!--
+          n${this.title ? html`
           <h1 class="page-title">${this.title}</h1>
         `:``}
+        -->
+        <img class="nav-bar-logo" src="/images/logo-white.svg">
         <slot></slot>
       </div>
 
