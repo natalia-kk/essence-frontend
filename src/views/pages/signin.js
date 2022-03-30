@@ -25,9 +25,10 @@ class SignInView {
   }
 
   render(){    
-    const template = html`      
-      <div class="page-content page-centered">
+    const template = html`   
+      <div class="page-content page-centered" class="background">
         <div class="signinup-box">
+          <div class='signin-content-box'>
           <img class="signinup-logo" src="/images/logo.svg">    
           <h1 class='signinup'>Sign in</h1>      
           <sl-form class="form-signup dark-theme" @sl-submit=${this.signInSubmitHandler}>          

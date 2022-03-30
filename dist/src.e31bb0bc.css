@@ -194,10 +194,23 @@ p.line:after {
     opacity: 1;
   }
 }
-.signinup-box,
-.signup-box {
-  max-width: 320px;
+.signinup-box {
   text-align: center;
+  background-color: white;
+  padding: 30px 30px 20px 30px;
+  min-height: 80vh;
+  width: 100%;
+  max-width: 320px;
+  position: relative;
+}
+
+.signin-content-box {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 h1.signinup {
