@@ -27,7 +27,7 @@ class SignUpView{
 
   render(){
     const template = html`    
-      <div class="page-content page-centered">      
+      <div class="background page-centered">      
         <div class="signinup-box">
         <img class="signinup-logo" src="/images/logo.svg">
           <h1 class='signinup'>Sign Up</h1>
