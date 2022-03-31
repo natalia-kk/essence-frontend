@@ -30,7 +30,7 @@ class SignUpView{
       <div class="background page-centered">      
         <div class="signinup-box">
         <img class="signinup-logo" src="/images/logo.svg">
-          <h1 class='signinup'>Sign Up</h1>
+          <h1 class='signinup'>Sign up</h1>
           <sl-form class="form-signup" @sl-submit=${this.signUpSubmitHandler}>
             <div class="input-group">
               <sl-input name="firstName" type="text" placeholder="First Name" class='form-input' required></sl-input>
@@ -52,7 +52,7 @@ class SignUpView{
             </div>            
             <sl-button type="primary" class="submit-btn" submit style="width: 100%;" pill>Create account<sl-icon slot="suffix" name="arrow-right"></sl-icon></sl-button>
           </sl-form>
-          <p class='line'>Have an account?</p>
+          <p class="line">Have an account?</p>
           <a href="/signin" @click=${anchorRoute} class='link-txt'>Sign In</a>
         </div>
       </div>

@@ -143,10 +143,16 @@ sl-button::part(base) {
 // font styles
 h1 {
   //text-transform: uppercase;
-  font-size: 2.5em;
+  font-size: 3em;
   animation-name: grow;
   animation-duration: 0.5s;
   color: var(--heading-color);
+}
+
+@media all and (max-width: 500px) {
+  h1 {
+    font-size: 2em;
+  }
 }
 
 .link-txt {
@@ -163,10 +169,10 @@ p.line {
 }
 p.line:before,
 p.line:after {
- background-color: rgb(158, 158, 158);
+ background-color: var(--brand-color);
  content: "";
  display: inline-block;
- height: 0.07px;
+ height: 0.08px;
  position: relative;
  vertical-align: middle;
  width: 50%;
@@ -204,10 +210,10 @@ p.line:after {
 .signinup-box {  
   text-align: center;
   background-color: white;
-  padding: 30px 30px 20px 30px;
+  padding: 40px;
   min-height: 60vh;
   width: 100%;
-  max-width: 320px;
+  max-width: 350px;
   position: relative;
   box-shadow: 0px 3px 5px rgba(0,0,0,0.2);
 }
@@ -274,7 +280,7 @@ h1.signinup {
 
 // welcome page styles ----------------
 .welcome-image {
-  max-width: 400px;
+  max-width: 100%;
   height: auto;
   margin-bottom: 1em;
   animation: fadeIn;
@@ -288,7 +294,8 @@ h1.signinup {
 
 // flex items for welcome page
 .welcome-items {
-  width: 50%;
+  width: calc(50% - 1em);
+  margin: 1em;
 }
 
 @media all and (max-width: 900px){ 
@@ -317,13 +324,19 @@ h1.signinup {
   display: flex;
   flex-wrap: wrap; // allows flex items to wrap onto the next row
   width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  background-color: #f7f7f7;
+  padding: 20px 0;
 
   .listing-card { 
     width: calc(25% - 1em);
-    max-width: 40px; 
+    max-width: 400px; 
     min-width: 300px;
-    margin: 0.5em;
+    margin: 1em;
     display: block;
+    box-shadow: 0px 3px 5px rgba(0,0,0,0.17);
   } 
   .listing-card:hover {
     -webkit-transform: scale(0.95);

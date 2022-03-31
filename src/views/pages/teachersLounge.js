@@ -41,6 +41,10 @@ class TeachersLoungeView {
       <div class="page-content"> 
         
         <div class="flex-container">
+           <section class="display-flex">
+            <img class="lounge-image" src="${App.apiBase}/images/teachers-lounge.jpg">
+          </section> 
+
           <section class="display-flex" class="lounge-content-left">
             <h1>Teacher's Lounge</h1>
             <h2 class="anim-in">Namaste, ${Auth.currentUser.firstName}</h2>
@@ -52,10 +56,6 @@ class TeachersLoungeView {
               <sl-button type="primary" @click=${() => gotoRoute('/newListing')} style="width: 70%;" pill>Create a Listing</sl-button>
             </div>
           </section>  
-
-          <section class="display-flex">
-            <img class="lounge-image" src="${App.apiBase}/images/teachers-lounge.jpg">
-          </section> 
           
         </div>
       </div>      

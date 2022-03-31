@@ -206,13 +206,13 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
       </div>
 
       <nav class="app-top-nav">
-        <a href="/explore" @click="${anchorRoute}">Explore</a> 
+      ${this.user.accessLevel == 2 ? html `
+        <a href="/teachersLounge" @click="${anchorRoute}">Teacher's Lounge</a>
+        ` : html ``} 
         ${this.user.accessLevel == 2 ? html `
         <a href="/newListing" @click="${anchorRoute}">Create a Listing</a>
         ` : html ``} 
-        ${this.user.accessLevel == 2 ? html `
-        <a href="/teachersLounge" @click="${anchorRoute}">Teacher's Lounge</a>
-        ` : html ``} 
+        <a href="/explore" @click="${anchorRoute}">Explore</a> 
 
         <sl-dropdown>
           <a slot="trigger" href="#" @click="${(e) => e.preventDefault()}">
@@ -234,9 +234,9 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
         <a href="/favourites" @click="${this.menuClick}">My Favourites</a>
         ${this.user.accessLevel == 2 ? html `
         <sl-menu-divider></sl-menu-divider>
-        <a href="/newListing" @click="${anchorRoute}">Create a Listing</a>
         <a href="/teachersLounge" @click="${anchorRoute}">Teacher's Lounge</a>
         ` : html ``} 
+        <a href="/newListing" @click="${anchorRoute}">Create a Listing</a>
         <sl-menu-divider></sl-menu-divider>
         <a href="/myAccount" @click="${this.menuClick}">My Account</a>
         <a href="#" @click="${() => Auth.signOut()}">Sign Out</a>

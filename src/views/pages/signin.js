@@ -40,7 +40,7 @@ class SignInView {
             </div>
             <sl-button class="submit-btn" type="primary" submit style="width: 100%;" pill>Sign in<sl-icon slot="suffix" name="arrow-right"></sl-icon></sl-button>
           </sl-form>
-          <p class='line'>New user?</p> 
+          <p class="line">New user?</p> 
           <a href="/signup" @click=${anchorRoute} class='link-txt'>Create an account</a>
         </div>
       </div>

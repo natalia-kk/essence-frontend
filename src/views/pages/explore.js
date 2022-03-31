@@ -145,7 +145,7 @@ class ExploreView {
         <div id="clear-filters">
               <sl-button size="medium" @click=${this.clearFilters.bind(this)} pill>Clear filters</sl-button>
         </div> 
-        <h1>Explore</h1>  
+        <h1>Explore yoga</h1>  
         
         <!-- Filter menu -->
         <!-- Button groups from Shoelace library group related filter buttons -->
