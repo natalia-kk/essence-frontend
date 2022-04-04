@@ -199,7 +199,7 @@ exports.isDirective = isDirective;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.removeNodes = exports.reparentNodes = exports.isCEPolyfill = void 0;
+exports.reparentNodes = exports.removeNodes = exports.isCEPolyfill = void 0;
 
 /**
  * @license
@@ -291,7 +291,7 @@ exports.nothing = nothing;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.lastAttributeNameRegex = exports.createMarker = exports.isTemplatePartActive = exports.Template = exports.boundAttributeSuffix = exports.markerRegex = exports.nodeMarker = exports.marker = void 0;
+exports.nodeMarker = exports.markerRegex = exports.marker = exports.lastAttributeNameRegex = exports.isTemplatePartActive = exports.createMarker = exports.boundAttributeSuffix = exports.Template = void 0;
 
 /**
  * @license
@@ -373,144 +373,144 @@ class Template {
       if (node.nodeType === 1
       /* Node.ELEMENT_NODE */
       ) {
-          if (node.hasAttributes()) {
-            const attributes = node.attributes;
-            const {
-              length
-            } = attributes; // Per
-            // https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap,
-            // attributes are not guaranteed to be returned in document order.
-            // In particular, Edge/IE can return them out of order, so we cannot
-            // assume a correspondence between part index and attribute index.
+        if (node.hasAttributes()) {
+          const attributes = node.attributes;
+          const {
+            length
+          } = attributes; // Per
+          // https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap,
+          // attributes are not guaranteed to be returned in document order.
+          // In particular, Edge/IE can return them out of order, so we cannot
+          // assume a correspondence between part index and attribute index.
 
-            let count = 0;
+          let count = 0;
 
-            for (let i = 0; i < length; i++) {
-              if (endsWith(attributes[i].name, boundAttributeSuffix)) {
-                count++;
-              }
-            }
-
-            while (count-- > 0) {
-              // Get the template literal section leading up to the first
-              // expression in this attribute
-              const stringForPart = strings[partIndex]; // Find the attribute name
-
-              const name = lastAttributeNameRegex.exec(stringForPart)[2]; // Find the corresponding attribute
-              // All bound attributes have had a suffix added in
-              // TemplateResult#getHTML to opt out of special attribute
-              // handling. To look up the attribute value we also need to add
-              // the suffix.
-
-              const attributeLookupName = name.toLowerCase() + boundAttributeSuffix;
-              const attributeValue = node.getAttribute(attributeLookupName);
-              node.removeAttribute(attributeLookupName);
-              const statics = attributeValue.split(markerRegex);
-              this.parts.push({
-                type: 'attribute',
-                index,
-                name,
-                strings: statics
-              });
-              partIndex += statics.length - 1;
+          for (let i = 0; i < length; i++) {
+            if (endsWith(attributes[i].name, boundAttributeSuffix)) {
+              count++;
             }
           }
 
-          if (node.tagName === 'TEMPLATE') {
-            stack.push(node);
-            walker.currentNode = node.content;
-          }
-        } else if (node.nodeType === 3
-      /* Node.TEXT_NODE */
-      ) {
-          const data = node.data;
+          while (count-- > 0) {
+            // Get the template literal section leading up to the first
+            // expression in this attribute
+            const stringForPart = strings[partIndex]; // Find the attribute name
 
-          if (data.indexOf(marker) >= 0) {
-            const parent = node.parentNode;
-            const strings = data.split(markerRegex);
-            const lastIndex = strings.length - 1; // Generate a new text node for each literal section
-            // These nodes are also used as the markers for node parts
+            const name = lastAttributeNameRegex.exec(stringForPart)[2]; // Find the corresponding attribute
+            // All bound attributes have had a suffix added in
+            // TemplateResult#getHTML to opt out of special attribute
+            // handling. To look up the attribute value we also need to add
+            // the suffix.
 
-            for (let i = 0; i < lastIndex; i++) {
-              let insert;
-              let s = strings[i];
-
-              if (s === '') {
-                insert = createMarker();
-              } else {
-                const match = lastAttributeNameRegex.exec(s);
-
-                if (match !== null && endsWith(match[2], boundAttributeSuffix)) {
-                  s = s.slice(0, match.index) + match[1] + match[2].slice(0, -boundAttributeSuffix.length) + match[3];
-                }
-
-                insert = document.createTextNode(s);
-              }
-
-              parent.insertBefore(insert, node);
-              this.parts.push({
-                type: 'node',
-                index: ++index
-              });
-            } // If there's no text, we must insert a comment to mark our place.
-            // Else, we can trust it will stick around after cloning.
-
-
-            if (strings[lastIndex] === '') {
-              parent.insertBefore(createMarker(), node);
-              nodesToRemove.push(node);
-            } else {
-              node.data = strings[lastIndex];
-            } // We have a part for each match found
-
-
-            partIndex += lastIndex;
-          }
-        } else if (node.nodeType === 8
-      /* Node.COMMENT_NODE */
-      ) {
-          if (node.data === marker) {
-            const parent = node.parentNode; // Add a new marker node to be the startNode of the Part if any of
-            // the following are true:
-            //  * We don't have a previousSibling
-            //  * The previousSibling is already the start of a previous part
-
-            if (node.previousSibling === null || index === lastPartIndex) {
-              index++;
-              parent.insertBefore(createMarker(), node);
-            }
-
-            lastPartIndex = index;
+            const attributeLookupName = name.toLowerCase() + boundAttributeSuffix;
+            const attributeValue = node.getAttribute(attributeLookupName);
+            node.removeAttribute(attributeLookupName);
+            const statics = attributeValue.split(markerRegex);
             this.parts.push({
-              type: 'node',
-              index
-            }); // If we don't have a nextSibling, keep this node so we have an end.
-            // Else, we can remove it to save future costs.
-
-            if (node.nextSibling === null) {
-              node.data = '';
-            } else {
-              nodesToRemove.push(node);
-              index--;
-            }
-
-            partIndex++;
-          } else {
-            let i = -1;
-
-            while ((i = node.data.indexOf(marker, i + 1)) !== -1) {
-              // Comment node has a binding marker inside, make an inactive part
-              // The binding won't work, but subsequent bindings will
-              // TODO (justinfagnani): consider whether it's even worth it to
-              // make bindings in comments work
-              this.parts.push({
-                type: 'node',
-                index: -1
-              });
-              partIndex++;
-            }
+              type: 'attribute',
+              index,
+              name,
+              strings: statics
+            });
+            partIndex += statics.length - 1;
           }
         }
+
+        if (node.tagName === 'TEMPLATE') {
+          stack.push(node);
+          walker.currentNode = node.content;
+        }
+      } else if (node.nodeType === 3
+      /* Node.TEXT_NODE */
+      ) {
+        const data = node.data;
+
+        if (data.indexOf(marker) >= 0) {
+          const parent = node.parentNode;
+          const strings = data.split(markerRegex);
+          const lastIndex = strings.length - 1; // Generate a new text node for each literal section
+          // These nodes are also used as the markers for node parts
+
+          for (let i = 0; i < lastIndex; i++) {
+            let insert;
+            let s = strings[i];
+
+            if (s === '') {
+              insert = createMarker();
+            } else {
+              const match = lastAttributeNameRegex.exec(s);
+
+              if (match !== null && endsWith(match[2], boundAttributeSuffix)) {
+                s = s.slice(0, match.index) + match[1] + match[2].slice(0, -boundAttributeSuffix.length) + match[3];
+              }
+
+              insert = document.createTextNode(s);
+            }
+
+            parent.insertBefore(insert, node);
+            this.parts.push({
+              type: 'node',
+              index: ++index
+            });
+          } // If there's no text, we must insert a comment to mark our place.
+          // Else, we can trust it will stick around after cloning.
+
+
+          if (strings[lastIndex] === '') {
+            parent.insertBefore(createMarker(), node);
+            nodesToRemove.push(node);
+          } else {
+            node.data = strings[lastIndex];
+          } // We have a part for each match found
+
+
+          partIndex += lastIndex;
+        }
+      } else if (node.nodeType === 8
+      /* Node.COMMENT_NODE */
+      ) {
+        if (node.data === marker) {
+          const parent = node.parentNode; // Add a new marker node to be the startNode of the Part if any of
+          // the following are true:
+          //  * We don't have a previousSibling
+          //  * The previousSibling is already the start of a previous part
+
+          if (node.previousSibling === null || index === lastPartIndex) {
+            index++;
+            parent.insertBefore(createMarker(), node);
+          }
+
+          lastPartIndex = index;
+          this.parts.push({
+            type: 'node',
+            index
+          }); // If we don't have a nextSibling, keep this node so we have an end.
+          // Else, we can remove it to save future costs.
+
+          if (node.nextSibling === null) {
+            node.data = '';
+          } else {
+            nodesToRemove.push(node);
+            index--;
+          }
+
+          partIndex++;
+        } else {
+          let i = -1;
+
+          while ((i = node.data.indexOf(marker, i + 1)) !== -1) {
+            // Comment node has a binding marker inside, make an inactive part
+            // The binding won't work, but subsequent bindings will
+            // TODO (justinfagnani): consider whether it's even worth it to
+            // make bindings in comments work
+            this.parts.push({
+              type: 'node',
+              index: -1
+            });
+            partIndex++;
+          }
+        }
+      }
     } // Remove text binding nodes after the walk to not disturb the TreeWalker
 
 
@@ -734,7 +734,7 @@ exports.TemplateInstance = TemplateInstance;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SVGTemplateResult = exports.TemplateResult = void 0;
+exports.TemplateResult = exports.SVGTemplateResult = void 0;
 
 var _dom = require("./dom.js");
 
@@ -891,7 +891,7 @@ exports.SVGTemplateResult = SVGTemplateResult;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.EventPart = exports.PropertyPart = exports.PropertyCommitter = exports.BooleanAttributePart = exports.NodePart = exports.AttributePart = exports.AttributeCommitter = exports.isIterable = exports.isPrimitive = void 0;
+exports.isPrimitive = exports.isIterable = exports.PropertyPart = exports.PropertyCommitter = exports.NodePart = exports.EventPart = exports.BooleanAttributePart = exports.AttributePart = exports.AttributeCommitter = void 0;
 
 var _directive = require("./directive.js");
 
@@ -1192,11 +1192,11 @@ class NodePart {
     if (node === this.endNode.previousSibling && node.nodeType === 3
     /* Node.TEXT_NODE */
     ) {
-        // If we only have a single text node between the markers, we can just
-        // set its value, rather than replacing it.
-        // TODO(justinfagnani): Can we just check if this.value is primitive?
-        node.data = valueAsString;
-      } else {
+      // If we only have a single text node between the markers, we can just
+      // set its value, rather than replacing it.
+      // TODO(justinfagnani): Can we just check if this.value is primitive?
+      node.data = valueAsString;
+    } else {
       this.__commitNode(document.createTextNode(valueAsString));
     }
 
@@ -1545,8 +1545,8 @@ exports.defaultTemplateProcessor = defaultTemplateProcessor;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.templateFactory = templateFactory;
 exports.templateCaches = void 0;
+exports.templateFactory = templateFactory;
 
 var _template = require("./template.js");
 
@@ -1673,66 +1673,6 @@ exports.render = render;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-Object.defineProperty(exports, "DefaultTemplateProcessor", {
-  enumerable: true,
-  get: function () {
-    return _defaultTemplateProcessor.DefaultTemplateProcessor;
-  }
-});
-Object.defineProperty(exports, "defaultTemplateProcessor", {
-  enumerable: true,
-  get: function () {
-    return _defaultTemplateProcessor.defaultTemplateProcessor;
-  }
-});
-Object.defineProperty(exports, "SVGTemplateResult", {
-  enumerable: true,
-  get: function () {
-    return _templateResult.SVGTemplateResult;
-  }
-});
-Object.defineProperty(exports, "TemplateResult", {
-  enumerable: true,
-  get: function () {
-    return _templateResult.TemplateResult;
-  }
-});
-Object.defineProperty(exports, "directive", {
-  enumerable: true,
-  get: function () {
-    return _directive.directive;
-  }
-});
-Object.defineProperty(exports, "isDirective", {
-  enumerable: true,
-  get: function () {
-    return _directive.isDirective;
-  }
-});
-Object.defineProperty(exports, "removeNodes", {
-  enumerable: true,
-  get: function () {
-    return _dom.removeNodes;
-  }
-});
-Object.defineProperty(exports, "reparentNodes", {
-  enumerable: true,
-  get: function () {
-    return _dom.reparentNodes;
-  }
-});
-Object.defineProperty(exports, "noChange", {
-  enumerable: true,
-  get: function () {
-    return _part.noChange;
-  }
-});
-Object.defineProperty(exports, "nothing", {
-  enumerable: true,
-  get: function () {
-    return _part.nothing;
-  }
-});
 Object.defineProperty(exports, "AttributeCommitter", {
   enumerable: true,
   get: function () {
@@ -1751,22 +1691,16 @@ Object.defineProperty(exports, "BooleanAttributePart", {
     return _parts.BooleanAttributePart;
   }
 });
+Object.defineProperty(exports, "DefaultTemplateProcessor", {
+  enumerable: true,
+  get: function () {
+    return _defaultTemplateProcessor.DefaultTemplateProcessor;
+  }
+});
 Object.defineProperty(exports, "EventPart", {
   enumerable: true,
   get: function () {
     return _parts.EventPart;
-  }
-});
-Object.defineProperty(exports, "isIterable", {
-  enumerable: true,
-  get: function () {
-    return _parts.isIterable;
-  }
-});
-Object.defineProperty(exports, "isPrimitive", {
-  enumerable: true,
-  get: function () {
-    return _parts.isPrimitive;
   }
 });
 Object.defineProperty(exports, "NodePart", {
@@ -1787,10 +1721,95 @@ Object.defineProperty(exports, "PropertyPart", {
     return _parts.PropertyPart;
   }
 });
+Object.defineProperty(exports, "SVGTemplateResult", {
+  enumerable: true,
+  get: function () {
+    return _templateResult.SVGTemplateResult;
+  }
+});
+Object.defineProperty(exports, "Template", {
+  enumerable: true,
+  get: function () {
+    return _template.Template;
+  }
+});
+Object.defineProperty(exports, "TemplateInstance", {
+  enumerable: true,
+  get: function () {
+    return _templateInstance.TemplateInstance;
+  }
+});
+Object.defineProperty(exports, "TemplateResult", {
+  enumerable: true,
+  get: function () {
+    return _templateResult.TemplateResult;
+  }
+});
+Object.defineProperty(exports, "createMarker", {
+  enumerable: true,
+  get: function () {
+    return _template.createMarker;
+  }
+});
+Object.defineProperty(exports, "defaultTemplateProcessor", {
+  enumerable: true,
+  get: function () {
+    return _defaultTemplateProcessor.defaultTemplateProcessor;
+  }
+});
+Object.defineProperty(exports, "directive", {
+  enumerable: true,
+  get: function () {
+    return _directive.directive;
+  }
+});
+exports.html = void 0;
+Object.defineProperty(exports, "isDirective", {
+  enumerable: true,
+  get: function () {
+    return _directive.isDirective;
+  }
+});
+Object.defineProperty(exports, "isIterable", {
+  enumerable: true,
+  get: function () {
+    return _parts.isIterable;
+  }
+});
+Object.defineProperty(exports, "isPrimitive", {
+  enumerable: true,
+  get: function () {
+    return _parts.isPrimitive;
+  }
+});
+Object.defineProperty(exports, "isTemplatePartActive", {
+  enumerable: true,
+  get: function () {
+    return _template.isTemplatePartActive;
+  }
+});
+Object.defineProperty(exports, "noChange", {
+  enumerable: true,
+  get: function () {
+    return _part.noChange;
+  }
+});
+Object.defineProperty(exports, "nothing", {
+  enumerable: true,
+  get: function () {
+    return _part.nothing;
+  }
+});
 Object.defineProperty(exports, "parts", {
   enumerable: true,
   get: function () {
     return _render.parts;
+  }
+});
+Object.defineProperty(exports, "removeNodes", {
+  enumerable: true,
+  get: function () {
+    return _dom.removeNodes;
   }
 });
 Object.defineProperty(exports, "render", {
@@ -1799,6 +1818,13 @@ Object.defineProperty(exports, "render", {
     return _render.render;
   }
 });
+Object.defineProperty(exports, "reparentNodes", {
+  enumerable: true,
+  get: function () {
+    return _dom.reparentNodes;
+  }
+});
+exports.svg = void 0;
 Object.defineProperty(exports, "templateCaches", {
   enumerable: true,
   get: function () {
@@ -1811,31 +1837,6 @@ Object.defineProperty(exports, "templateFactory", {
     return _templateFactory.templateFactory;
   }
 });
-Object.defineProperty(exports, "TemplateInstance", {
-  enumerable: true,
-  get: function () {
-    return _templateInstance.TemplateInstance;
-  }
-});
-Object.defineProperty(exports, "createMarker", {
-  enumerable: true,
-  get: function () {
-    return _template.createMarker;
-  }
-});
-Object.defineProperty(exports, "isTemplatePartActive", {
-  enumerable: true,
-  get: function () {
-    return _template.isTemplatePartActive;
-  }
-});
-Object.defineProperty(exports, "Template", {
-  enumerable: true,
-  get: function () {
-    return _template.Template;
-  }
-});
-exports.svg = exports.html = void 0;
 
 var _defaultTemplateProcessor = require("./lib/default-template-processor.js");
 
@@ -1923,19 +1924,11 @@ exports.default = void 0;
 
 var _litHtml = require("lit-html");
 
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n\n  <div class=\"app-splash\">\n    <div class=\"inner\">\n      <img class=\"app-logo\" src=\"/images/logo.svg\" />\n      <sl-spinner style=\"font-size: 2em;\"></sl-spinner>\n    </div>\n  </div>\n"]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
+var _templateObject;
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-const splash = (0, _litHtml.html)(_templateObject());
+const splash = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n\n  <div class=\"app-splash\">\n    <div class=\"inner\">\n      <img class=\"app-logo\" src=\"/images/logo.svg\" />\n      <sl-spinner style=\"font-size: 2em;\"></sl-spinner>\n    </div>\n  </div>\n"])));
 var _default = splash;
 exports.default = _default;
 },{"lit-html":"../node_modules/lit-html/lit-html.js"}],"../node_modules/gsap/gsap-core.js":[function(require,module,exports) {
@@ -1944,7 +1937,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports._getCache = exports._getSetter = exports._missingPlugin = exports._round = exports._roundModifier = exports._config = exports._ticker = exports._plugins = exports._checkPlugin = exports._replaceRandom = exports._colorStringFilter = exports._sortPropTweensByPriority = exports._forEachName = exports._removeLinkedListItem = exports._setDefaults = exports._relExp = exports._renderComplexString = exports._isUndefined = exports._isString = exports._numWithUnitExp = exports._numExp = exports._getProperty = exports.shuffle = exports.interpolate = exports.unitize = exports.pipe = exports.mapRange = exports.toArray = exports.splitColor = exports.clamp = exports.getUnit = exports.normalize = exports.snap = exports.random = exports.distribute = exports.wrapYoyo = exports.wrap = exports.Circ = exports.Expo = exports.Sine = exports.Bounce = exports.SteppedEase = exports.Back = exports.Elastic = exports.Strong = exports.Quint = exports.Quart = exports.Cubic = exports.Quad = exports.Linear = exports.Power4 = exports.Power3 = exports.Power2 = exports.Power1 = exports.Power0 = exports.default = exports.gsap = exports.PropTween = exports.TweenLite = exports.TweenMax = exports.Tween = exports.TimelineLite = exports.TimelineMax = exports.Timeline = exports.Animation = exports.GSCache = void 0;
+exports.wrapYoyo = exports.wrap = exports.unitize = exports.toArray = exports.splitColor = exports.snap = exports.shuffle = exports.random = exports.pipe = exports.normalize = exports.mapRange = exports.interpolate = exports.gsap = exports.getUnit = exports.distribute = exports.default = exports.clamp = exports._ticker = exports._sortPropTweensByPriority = exports._setDefaults = exports._roundModifier = exports._round = exports._replaceRandom = exports._renderComplexString = exports._removeLinkedListItem = exports._relExp = exports._plugins = exports._numWithUnitExp = exports._numExp = exports._missingPlugin = exports._isUndefined = exports._isString = exports._getSetter = exports._getProperty = exports._getCache = exports._forEachName = exports._config = exports._colorStringFilter = exports._checkPlugin = exports.TweenMax = exports.TweenLite = exports.Tween = exports.TimelineMax = exports.TimelineLite = exports.Timeline = exports.Strong = exports.SteppedEase = exports.Sine = exports.Quint = exports.Quart = exports.Quad = exports.PropTween = exports.Power4 = exports.Power3 = exports.Power2 = exports.Power1 = exports.Power0 = exports.Linear = exports.GSCache = exports.Expo = exports.Elastic = exports.Cubic = exports.Circ = exports.Bounce = exports.Back = exports.Animation = void 0;
 
 function _assertThisInitialized(self) {
   if (self === void 0) {
@@ -5863,7 +5856,7 @@ exports.Power0 = Power0;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.checkPrefix = exports._createElement = exports._getBBox = exports.default = exports.CSSPlugin = void 0;
+exports.default = exports.checkPrefix = exports._getBBox = exports._createElement = exports.CSSPlugin = void 0;
 
 var _gsapCore = require("./gsap-core.js");
 
@@ -7259,6 +7252,54 @@ _gsapCore.gsap.registerPlugin(CSSPlugin);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+Object.defineProperty(exports, "Back", {
+  enumerable: true,
+  get: function () {
+    return _gsapCore.Back;
+  }
+});
+Object.defineProperty(exports, "Bounce", {
+  enumerable: true,
+  get: function () {
+    return _gsapCore.Bounce;
+  }
+});
+Object.defineProperty(exports, "CSSPlugin", {
+  enumerable: true,
+  get: function () {
+    return _CSSPlugin.CSSPlugin;
+  }
+});
+Object.defineProperty(exports, "Circ", {
+  enumerable: true,
+  get: function () {
+    return _gsapCore.Circ;
+  }
+});
+Object.defineProperty(exports, "Cubic", {
+  enumerable: true,
+  get: function () {
+    return _gsapCore.Cubic;
+  }
+});
+Object.defineProperty(exports, "Elastic", {
+  enumerable: true,
+  get: function () {
+    return _gsapCore.Elastic;
+  }
+});
+Object.defineProperty(exports, "Expo", {
+  enumerable: true,
+  get: function () {
+    return _gsapCore.Expo;
+  }
+});
+Object.defineProperty(exports, "Linear", {
+  enumerable: true,
+  get: function () {
+    return _gsapCore.Linear;
+  }
+});
 Object.defineProperty(exports, "Power0", {
   enumerable: true,
   get: function () {
@@ -7289,22 +7330,10 @@ Object.defineProperty(exports, "Power4", {
     return _gsapCore.Power4;
   }
 });
-Object.defineProperty(exports, "Linear", {
-  enumerable: true,
-  get: function () {
-    return _gsapCore.Linear;
-  }
-});
 Object.defineProperty(exports, "Quad", {
   enumerable: true,
   get: function () {
     return _gsapCore.Quad;
-  }
-});
-Object.defineProperty(exports, "Cubic", {
-  enumerable: true,
-  get: function () {
-    return _gsapCore.Cubic;
   }
 });
 Object.defineProperty(exports, "Quart", {
@@ -7319,22 +7348,10 @@ Object.defineProperty(exports, "Quint", {
     return _gsapCore.Quint;
   }
 });
-Object.defineProperty(exports, "Strong", {
+Object.defineProperty(exports, "Sine", {
   enumerable: true,
   get: function () {
-    return _gsapCore.Strong;
-  }
-});
-Object.defineProperty(exports, "Elastic", {
-  enumerable: true,
-  get: function () {
-    return _gsapCore.Elastic;
-  }
-});
-Object.defineProperty(exports, "Back", {
-  enumerable: true,
-  get: function () {
-    return _gsapCore.Back;
+    return _gsapCore.Sine;
   }
 });
 Object.defineProperty(exports, "SteppedEase", {
@@ -7343,34 +7360,10 @@ Object.defineProperty(exports, "SteppedEase", {
     return _gsapCore.SteppedEase;
   }
 });
-Object.defineProperty(exports, "Bounce", {
+Object.defineProperty(exports, "Strong", {
   enumerable: true,
   get: function () {
-    return _gsapCore.Bounce;
-  }
-});
-Object.defineProperty(exports, "Sine", {
-  enumerable: true,
-  get: function () {
-    return _gsapCore.Sine;
-  }
-});
-Object.defineProperty(exports, "Expo", {
-  enumerable: true,
-  get: function () {
-    return _gsapCore.Expo;
-  }
-});
-Object.defineProperty(exports, "Circ", {
-  enumerable: true,
-  get: function () {
-    return _gsapCore.Circ;
-  }
-});
-Object.defineProperty(exports, "TweenLite", {
-  enumerable: true,
-  get: function () {
-    return _gsapCore.TweenLite;
+    return _gsapCore.Strong;
   }
 });
 Object.defineProperty(exports, "TimelineLite", {
@@ -7385,13 +7378,13 @@ Object.defineProperty(exports, "TimelineMax", {
     return _gsapCore.TimelineMax;
   }
 });
-Object.defineProperty(exports, "CSSPlugin", {
+Object.defineProperty(exports, "TweenLite", {
   enumerable: true,
   get: function () {
-    return _CSSPlugin.CSSPlugin;
+    return _gsapCore.TweenLite;
   }
 });
-exports.TweenMax = exports.default = exports.gsap = void 0;
+exports.gsap = exports.default = exports.TweenMax = void 0;
 
 var _gsapCore = require("./gsap-core.js");
 
@@ -7480,9 +7473,9 @@ var _litHtml = require("lit-html");
 
 var _Toast = _interopRequireDefault(require("./Toast"));
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7833,17 +7826,9 @@ var _UserAPI = _interopRequireDefault(require("./../../UserAPI"));
 
 var _Toast = _interopRequireDefault(require("../../Toast"));
 
+var _templateObject;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <style>\n\n    </style>\n      <va-app-header title=\"Welcome\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\">\n        <div class=\"flex-container\">\n\n        <section class=\"welcome-items\">\n            <img class=\"welcome-image\" src=\"", "/images/welcome-mats.jpg\">\n          </section>\n          \n          <section class=\"welcome-items\">\n          <div class=\"content-left\">\n            <h1 class=\"brand-color\">Welcome, ", "!</h1>\n            <p class=\"spacing\">\n              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, \n              totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. \n            </p>\n            <p>\n              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores\n              eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, \n              adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. \n            </p>\n            <sl-button class=\"spacing\" type=\"primary\" @click=", " pill style=\"width: 200px\">Okay got it!</sl-button>\n            </div>\n          </section>\n        \n\n        </div> <!-- end flex-container div -->\n      </div> <!-- end page-contend div -->    \n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -7872,7 +7857,7 @@ class WelcomeView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), _App.default.apiBase, _Auth.default.currentUser.firstName, () => (0, _Router.gotoRoute)('/explore'));
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    <style>\n\n    </style>\n      <va-app-header title=\"Welcome\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\">\n        <div class=\"flex-container\">\n\n        <section class=\"welcome-items\">\n            <img class=\"welcome-image\" src=\"", "/images/welcome-mats.jpg\">\n          </section>\n          \n          <section class=\"welcome-items\">\n          <div class=\"content-left\">\n            <h1 class=\"brand-color\">Welcome, ", "!</h1>\n            <p class=\"spacing\">\n              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, \n              totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. \n            </p>\n            <p>\n              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores\n              eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, \n              adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. \n            </p>\n            <sl-button class=\"spacing\" type=\"primary\" @click=", " pill style=\"width: 200px\">Okay got it!</sl-button>\n            </div>\n          </section>\n        \n\n        </div> <!-- end flex-container div -->\n      </div> <!-- end page-contend div -->    \n    "])), JSON.stringify(_Auth.default.currentUser), _App.default.apiBase, _Auth.default.currentUser.firstName, () => (0, _Router.gotoRoute)('/explore'));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -8014,47 +7999,9 @@ var _ListingAPI = _interopRequireDefault(require("./../../ListingAPI"));
 
 var _Toast = _interopRequireDefault(require("../../Toast"));
 
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject4() {
-  const data = _taggedTemplateLiteral(["\n              <!-- custom component va-listing-card -->\n              <!-- note: when passing in an JSON object as an attriubte: need to stringify it -->\n              <va-listing-card class=\"listing-card\"\n                id=\"", "\"\n                user=\"", "\"\n                image=\"", "\"\n                location=\"", "\"\n                level=\"", "\"\n                certified=\"", "\"\n                essenceStatement=\"", "\"\n                classType=\"", "\"\n                gender=\"", "\"\n                > \n              </va-listing-card>     \n            "]);
-
-  _templateObject4 = function _templateObject4() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject3() {
-  const data = _taggedTemplateLiteral([" \n            <!-- else (must = not null, = populated with listings) use this html: -->\n            <!-- loop through each JSON array object (listing) and spit out the following html for each -->\n            ", "\n          "]);
-
-  _templateObject3 = function _templateObject3() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject2() {
-  const data = _taggedTemplateLiteral([" \n            <!-- If it's empty use this html: (show loading animation) -->\n            <sl-spinner></sl-spinner>\n          "]);
-
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <style>\n\n      h6 {\n        font-size: 1em;\n        color: #878787;\n        font-weight: normal;\n      }\n      h5 {\n        margin-top: 1.5em;\n        color: #878787;\n        font-size: 1em;\n      }\n      h2.explore {\n        color: var(--brand-color);\n        margin-bottom: 1em;\n      }\n      h2.explore {\n        color: var(--brand-color);\n        margin-bottom: 1.5em;\n      }\n      hr.explore-ruler {\n        border-top: 0.5px solid #E1E1E1;\n      }\n      @media all and (max-width: 500px) {\n        h2.explore {\n          font-size: 1.2em;\n        }\n      }\n      \n    </style>\n      <va-app-header title=\"Explore\" user=\"", "\"></va-app-header>\n      \n      <!-- page-content div start -->\n      <div class=\"page-content\">     \n        <h1>Explore yoga</h1> \n        <h2 class=\"explore\">Find the perfect yoga for you!</h2>\n        <hr class=\"explore-ruler\">\n        <div id=\"clear-filters\">\n              <sl-button size=\"medium\" @click=", " pill>Clear filters</sl-button>\n        </div> \n        \n        <!-- Filter menu -->\n        <!-- Button groups from Shoelace library group related filter buttons -->\n        <h5>FILTER BY:</h5>\n        <div class=\"filter-menu\">\n          <div>\n            <h6>Gender</h6>\n            <sl-button-group>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"gender\" data-match=\"Male\" @click=", ">Male</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"gender\" data-match=\"Female\" @click=", ">Female</sl-button>\n            </sl-button-group>\n          </div>\n          <div>\n            <h6>Level</h6>\n            <sl-button-group>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"level\" data-match=\"Beginner\" @click=", ">Beginner</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"level\" data-match=\"Intermediate\" @click=", ">Intermediate</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"level\" data-match=\"Advanced\" @click=", ">Advanced</sl-button>\n            </sl-button-group>\n          </div>\n          <div>\n            <h6>Class Type</h6>\n            <sl-button-group>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"classType\" data-match=\"Studio\" @click=", ">Studio</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"classType\" data-match=\"Private\" @click=", ">Private</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"classType\" data-match=\"Outdoor\" @click=", ">Outdoor</sl-button>\n            </sl-button-group>\n          </div>\n\n        </div>\n        \n        \n        <div class=\"listings-grid\">\n          <!-- check if this.listings = empty/null --> \n          ", "\n        </div>\n        \n      </div> <!-- page-content div end -->     \n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -8176,7 +8123,7 @@ class ExploreView {
 
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), this.clearFilters.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.listings == null ? (0, _litHtml.html)(_templateObject2()) : (0, _litHtml.html)(_templateObject3(), this.listings.map(listing => (0, _litHtml.html)(_templateObject4(), listing._id, JSON.stringify(listing.user), listing.image, listing.location, listing.level, listing.certified, listing.essenceStatement, listing.classType, listing.gender))));
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    <style>\n\n      h6 {\n        font-size: 1em;\n        color: #878787;\n        font-weight: normal;\n      }\n      h5 {\n        margin-top: 1.5em;\n        color: #878787;\n        font-size: 1em;\n      }\n      h2.explore {\n        color: var(--brand-color);\n        margin-bottom: 1em;\n      }\n      h2.explore {\n        color: var(--brand-color);\n        margin-bottom: 1.5em;\n      }\n      hr.explore-ruler {\n        border-top: 0.5px solid #E1E1E1;\n      }\n      @media all and (max-width: 500px) {\n        h2.explore {\n          font-size: 1.2em;\n        }\n      }\n      \n    </style>\n      <va-app-header title=\"Explore\" user=\"", "\"></va-app-header>\n      \n      <!-- page-content div start -->\n      <div class=\"page-content\">     \n        <h1>Explore yoga</h1> \n        <h2 class=\"explore\">Find the perfect yoga for you!</h2>\n        <hr class=\"explore-ruler\">\n        <div id=\"clear-filters\">\n              <sl-button size=\"medium\" @click=", " pill>Clear filters</sl-button>\n        </div> \n        \n        <!-- Filter menu -->\n        <!-- Button groups from Shoelace library group related filter buttons -->\n        <h5>FILTER BY:</h5>\n        <div class=\"filter-menu\">\n          <div>\n            <h6>Gender</h6>\n            <sl-button-group>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"gender\" data-match=\"Male\" @click=", ">Male</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"gender\" data-match=\"Female\" @click=", ">Female</sl-button>\n            </sl-button-group>\n          </div>\n          <div>\n            <h6>Level</h6>\n            <sl-button-group>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"level\" data-match=\"Beginner\" @click=", ">Beginner</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"level\" data-match=\"Intermediate\" @click=", ">Intermediate</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"level\" data-match=\"Advanced\" @click=", ">Advanced</sl-button>\n            </sl-button-group>\n          </div>\n          <div>\n            <h6>Class Type</h6>\n            <sl-button-group>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"classType\" data-match=\"Studio\" @click=", ">Studio</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"classType\" data-match=\"Private\" @click=", ">Private</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"classType\" data-match=\"Outdoor\" @click=", ">Outdoor</sl-button>\n            </sl-button-group>\n          </div>\n\n        </div>\n        \n        \n        <div class=\"listings-grid\">\n          <!-- check if this.listings = empty/null --> \n          ", "\n        </div>\n        \n      </div> <!-- page-content div end -->     \n    "])), JSON.stringify(_Auth.default.currentUser), this.clearFilters.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.handleFilterBtn.bind(this), this.listings == null ? (0, _litHtml.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral([" \n            <!-- If it's empty use this html: (show loading animation) -->\n            <sl-spinner></sl-spinner>\n          "]))) : (0, _litHtml.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral([" \n            <!-- else (must = not null, = populated with listings) use this html: -->\n            <!-- loop through each JSON array object (listing) and spit out the following html for each -->\n            ", "\n          "])), this.listings.map(listing => (0, _litHtml.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n              <!-- custom component va-listing-card -->\n              <!-- note: when passing in an JSON object as an attriubte: need to stringify it -->\n              <va-listing-card class=\"listing-card\"\n                id=\"", "\"\n                user=\"", "\"\n                image=\"", "\"\n                location=\"", "\"\n                level=\"", "\"\n                certified=\"", "\"\n                essenceStatement=\"", "\"\n                classType=\"", "\"\n                gender=\"", "\"\n                > \n              </va-listing-card>     \n            "])), listing._id, JSON.stringify(listing.user), listing.image, listing.location, listing.level, listing.certified, listing.essenceStatement, listing.classType, listing.gender))));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -8203,17 +8150,9 @@ var _Auth = _interopRequireDefault(require("./../../Auth"));
 
 var _Utils = _interopRequireDefault(require("./../../Utils"));
 
+var _templateObject;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n      <style>\n        \n        .icon, .display-flex > h2 {\n          color: var(--brand-color); \n        }\n        .lounge-content-left > h2, h3, div {\n          margin-top: 3em;\n        }\n        .lounge-image {\n          max-width: 100%;\n          height: auto;\n          animation: fadeIn ease 5s;\n        } \n        .page-content {\n          margin-top: -3em;\n          padding-top: 0;\n        }\n        .lounge-link {\n          text-decoration: none;\n        }\n        \n      </style>\n\n      <va-app-header title=\"Teacher's Lounge\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\"> \n        \n        <div class=\"flex-container\">\n           <section class=\"display-flex\">\n            <img class=\"lounge-image\" src=\"", "/images/teachers-lounge.jpg\" width=\"400\">\n          </section> \n\n          <section class=\"display-flex\" class=\"lounge-content-left\">\n            <h1>Teacher's Lounge</h1>\n            <h2 class=\"anim-in\">Namaste, ", "</h2>\n            <h3><a href=\"/myAccount\" @click=", " class=\"lounge-link\">Go to my Account <sl-icon class=\"icon\" name=\"arrow-right-circle-fill\"></sl-icon></a></h3>\n            \n            <div>\n              <h3><a href=\"/myAccount\" @click=", " class=\"lounge-link\">View my Listing <sl-icon class=\"icon\" name=\"arrow-right-circle-fill\"></sl-icon></a></h3>\n              <p>Haven't made a listing yet?</p>\n              <sl-button @click=", " style=\"width: 70%;\" pill>Create a Listing</sl-button>\n            </div>\n          </section>  \n          \n        </div>\n      </div>      \n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -8227,7 +8166,7 @@ class TeachersLoungeView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), _App.default.apiBase, _Auth.default.currentUser.firstName, _Router.anchorRoute, _Router.anchorRoute, () => (0, _Router.gotoRoute)('/newListing'));
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <style>\n        \n        .icon, .display-flex > h2 {\n          color: var(--brand-color); \n        }\n        .lounge-content-left > h2, h3, div {\n          margin-top: 3em;\n        }\n        .lounge-image {\n          max-width: 100%;\n          height: auto;\n          animation: fadeIn ease 5s;\n        } \n        .page-content {\n          margin-top: -3em;\n          padding-top: 0;\n        }\n        .lounge-link {\n          text-decoration: none;\n        }\n        \n      </style>\n\n      <va-app-header title=\"Teacher's Lounge\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\"> \n        \n        <div class=\"flex-container\">\n           <section class=\"display-flex\">\n            <img class=\"lounge-image\" src=\"", "/images/teachers-lounge.jpg\" width=\"400\">\n          </section> \n\n          <section class=\"display-flex\" class=\"lounge-content-left\">\n            <h1>Teacher's Lounge</h1>\n            <h2 class=\"anim-in\">Namaste, ", "</h2>\n            <h3><a href=\"/myAccount\" @click=", " class=\"lounge-link\">Go to my Account <sl-icon class=\"icon\" name=\"arrow-right-circle-fill\"></sl-icon></a></h3>\n            \n            <div>\n              <h3><a href=\"/myAccount\" @click=", " class=\"lounge-link\">View my Listing <sl-icon class=\"icon\" name=\"arrow-right-circle-fill\"></sl-icon></a></h3>\n              <p>Haven't made a listing yet?</p>\n              <sl-button @click=", " style=\"width: 70%;\" pill>Create a Listing</sl-button>\n            </div>\n          </section>  \n          \n        </div>\n      </div>      \n    "])), JSON.stringify(_Auth.default.currentUser), _App.default.apiBase, _Auth.default.currentUser.firstName, _Router.anchorRoute, _Router.anchorRoute, () => (0, _Router.gotoRoute)('/newListing'));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -8258,47 +8197,9 @@ var _Toast = _interopRequireDefault(require("./../../Toast"));
 
 var _UserAPI = _interopRequireDefault(require("./../../UserAPI"));
 
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject4() {
-  const data = _taggedTemplateLiteral(["\n              <va-listing-card class=\"listing-card\"\n                id=\"", "\"\n                user=\"", "\"\n                image=\"", "\"\n                location=\"", "\"\n                level=\"", "\"\n                certified=\"", "\"\n                essenceStatement=\"", "\"\n                classType=\"", "\"\n                gender=\"", "\"\n              >        \n              </va-listing-card>\n\n            "]);
-
-  _templateObject4 = function _templateObject4() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject3() {
-  const data = _taggedTemplateLiteral(["\n            ", "\n          "]);
-
-  _templateObject3 = function _templateObject3() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject2() {
-  const data = _taggedTemplateLiteral(["\n            <sl-spinner></sl-spinner>\n          "]);
-
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n      <va-app-header title=\"Favourites\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\">        \n        <h1>My Favourites</h1>\n        \n        <div class=\"listings-grid\">\n          ", "\n        </div>\n        \n      </div>      \n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -8327,7 +8228,7 @@ class FavouritesView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), this.favListings == null ? (0, _litHtml.html)(_templateObject2()) : (0, _litHtml.html)(_templateObject3(), this.favListings.map(listing => (0, _litHtml.html)(_templateObject4(), listing._id, JSON.stringify(listing.user), listing.image, listing.location, listing.level, listing.certified, listing.essenceStatement, listing.classType, listing.gender))));
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <va-app-header title=\"Favourites\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\">        \n        <h1>My Favourites</h1>\n        \n        <div class=\"listings-grid\">\n          ", "\n        </div>\n        \n      </div>      \n    "])), JSON.stringify(_Auth.default.currentUser), this.favListings == null ? (0, _litHtml.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n            <sl-spinner></sl-spinner>\n          "]))) : (0, _litHtml.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n            ", "\n          "])), this.favListings.map(listing => (0, _litHtml.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n              <va-listing-card class=\"listing-card\"\n                id=\"", "\"\n                user=\"", "\"\n                image=\"", "\"\n                location=\"", "\"\n                level=\"", "\"\n                certified=\"", "\"\n                essenceStatement=\"", "\"\n                classType=\"", "\"\n                gender=\"", "\"\n              >        \n              </va-listing-card>\n\n            "])), listing._id, JSON.stringify(listing.user), listing.image, listing.location, listing.level, listing.certified, listing.essenceStatement, listing.classType, listing.gender))));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -8356,47 +8257,9 @@ var _Utils = _interopRequireDefault(require("./../../Utils"));
 
 var _ListingAPI = _interopRequireDefault(require("./../../ListingAPI"));
 
+var _templateObject, _templateObject2, _templateObject3, _templateObject4;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject4() {
-  const data = _taggedTemplateLiteral(["\n          <div class=\"flex-container\">\n            <section class=\"display-flex\">\n              <h1>", "</h1>\n              <h3>Based in ", "</h3>\n              <p>", "hr certified | ", "</p>\n              \n              <h4>Class Type</h4>\n              <p>", "</p>\n            \n              <h4>Level</h4>\n              <p>", "</p>\n\n              <h4>Essence Statement</h4>\n              <p>", "</p>\n\n              <!-- Contact button = show contact info in sl-dialog -->\n              <!-- note: .bind(this) = binds .this to the class (listingView) rather than the button the event handler is being called from -->\n              <div class=\"listing-btns\">\n                <sl-button class=\"btn-shadow\" @click=", ">\n                  <sl-icon slot=\"prefix\" name=\"suit-heart-fill\"></sl-icon>\n                  Add to Favourites\n                </sl-button>\n                <sl-button class=\"btn-shadow\" @click=", ">Contact</sl-button>\n              </div>\n            </section>\n            \n            <section class=\"display-flex\">\n              <img class=\"listing-image\" src=\"", "/images/", "\">\n            </section>\n          </div>\n        "]);
-
-  _templateObject4 = function _templateObject4() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject3() {
-  const data = _taggedTemplateLiteral(["\n        <sl-spinner></sl-spinner>\n        "]);
-
-  _templateObject3 = function _templateObject3() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject2() {
-  const data = _taggedTemplateLiteral(["\n    <!-- styles specific to this view here: -->\n    <style>\n      h3, h4 {\n        color: var(--brand-color);\n        margin-bottom: 0px;\n        margin-top: 2em;\n      }\n      h4 {\n        font-weight: 550;\n      }\n      .listing-btns {\n        margin-top: 2em;\n        justify-content: center;\n      }\n      .listing-image {\n        max-width: 450px;\n        min-width: 200px;\n        height: auto;\n        animation: fadeIn ease 5s;;\n      } \n    </style>\n      <va-app-header title=\"Essence Listing\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\"> \n        <!-- f this.listing == empty ? do this : else do this -->\n        ", "\n        \n    </div>      \n    "]);
-
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <h2>Contact ", "</h2>\n    <sl-form class=\"form-overview\">\n      <sl-input name=\"name\" type=\"text\" label=\"Your name\"></sl-input>\n      <br>\n      <sl-input name=\"name\" type=\"text\" label=\"Your email\"></sl-input>\n      <br>\n      <sl-textarea name=\"comment\" label=\"Question or comment\"></sl-textarea>\n      <br>\n      <sl-button type=\"primary\" pill submit style=\"width: 200px\">Submit</sl-button>\n    </sl-form>\n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -8436,7 +8299,7 @@ class listingView {
 
     dialogEl.className = 'contact-dialog'; // sl-dialog content - using html function (lit-html library)
 
-    const dialogContent = (0, _litHtml.html)(_templateObject(), this.listing.teacherName); // render dialog content inside dialog element (dialogEl)
+    const dialogContent = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    <h2>Contact ", "</h2>\n    <sl-form class=\"form-overview\">\n      <sl-input name=\"name\" type=\"text\" label=\"Your name\"></sl-input>\n      <br>\n      <sl-input name=\"name\" type=\"text\" label=\"Your email\"></sl-input>\n      <br>\n      <sl-textarea name=\"comment\" label=\"Question or comment\"></sl-textarea>\n      <br>\n      <sl-button type=\"primary\" pill submit style=\"width: 200px\">Submit</sl-button>\n    </sl-form>\n    "])), this.listing.teacherName); // render dialog content inside dialog element (dialogEl)
     // render(render this content, inside this element)
 
     (0, _litHtml.render)(dialogContent, dialogEl); // append dialogEl to document.body
@@ -8456,7 +8319,7 @@ class listingView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject2(), JSON.stringify(_Auth.default.currentUser), this.listing == null ? (0, _litHtml.html)(_templateObject3()) : (0, _litHtml.html)(_templateObject4(), this.listing.teacherName, this.listing.location, this.listing.certified, this.listing.gender, this.listing.classType, this.listing.level, this.listing.essenceStatement, this.addFavHandler, this.contactHandler.bind(this), _App.default.apiBase, this.listing.image));
+    const template = (0, _litHtml.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n    <!-- styles specific to this view here: -->\n    <style>\n      h3, h4 {\n        color: var(--brand-color);\n        margin-bottom: 0px;\n        margin-top: 2em;\n      }\n      h4 {\n        font-weight: 550;\n      }\n      .listing-btns {\n        margin-top: 2em;\n        justify-content: center;\n      }\n      .listing-image {\n        max-width: 450px;\n        min-width: 200px;\n        height: auto;\n        animation: fadeIn ease 5s;;\n      } \n    </style>\n      <va-app-header title=\"Essence Listing\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\"> \n        <!-- f this.listing == empty ? do this : else do this -->\n        ", "\n        \n    </div>      \n    "])), JSON.stringify(_Auth.default.currentUser), this.listing == null ? (0, _litHtml.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n        <sl-spinner></sl-spinner>\n        "]))) : (0, _litHtml.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n          <div class=\"flex-container\">\n            <section class=\"display-flex\">\n              <h1>", "</h1>\n              <h3>Based in ", "</h3>\n              <p>", "hr certified | ", "</p>\n              \n              <h4>Class Type</h4>\n              <p>", "</p>\n            \n              <h4>Level</h4>\n              <p>", "</p>\n\n              <h4>Essence Statement</h4>\n              <p>", "</p>\n\n              <!-- Contact button = show contact info in sl-dialog -->\n              <!-- note: .bind(this) = binds .this to the class (listingView) rather than the button the event handler is being called from -->\n              <div class=\"listing-btns\">\n                <sl-button class=\"btn-shadow\" @click=", ">\n                  <sl-icon slot=\"prefix\" name=\"suit-heart-fill\"></sl-icon>\n                  Add to Favourites\n                </sl-button>\n                <sl-button class=\"btn-shadow\" @click=", ">Contact</sl-button>\n              </div>\n            </section>\n            \n            <section class=\"display-flex\">\n              <img class=\"listing-image\" src=\"", "/images/", "\">\n            </section>\n          </div>\n        "])), this.listing.teacherName, this.listing.location, this.listing.certified, this.listing.gender, this.listing.classType, this.listing.level, this.listing.essenceStatement, this.addFavHandler, this.contactHandler.bind(this), _App.default.apiBase, this.listing.image));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
   /*
@@ -8493,17 +8356,9 @@ var _App = _interopRequireDefault(require("./../../App"));
 
 var _litHtml = require("lit-html");
 
+var _templateObject;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["    \n      <div class=\"calign\">\n        <h1>Oops!</h1>\n        <p>Sorry, we couldn't find that.</p>\n      </div>\n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -8515,7 +8370,7 @@ class FourOFourView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject());
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["    \n      <div class=\"calign\">\n        <h1>Oops!</h1>\n        <p>Sorry, we couldn't find that.</p>\n      </div>\n    "])));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -8542,17 +8397,9 @@ var _Auth = _interopRequireDefault(require("./../../Auth"));
 
 var _Utils = _interopRequireDefault(require("./../../Utils"));
 
+var _templateObject;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["   \n      <div class=\"background page-centered\">\n        <div class=\"signinup-box\">\n          <div class='signin-content-box'>\n          <img class=\"signinup-logo\" src=\"/images/logo.svg\">    \n          <h1 class='signinup'>Sign in</h1>      \n          <sl-form class=\"form-signup dark-theme\" @sl-submit=", ">          \n            <div class=\"input-group\">\n              <sl-input name=\"email\" type=\"email\" placeholder=\"Email\" class='form-input' required></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-input name=\"password\" type=\"password\" placeholder=\"Password\" class='form-input' required toggle-password></sl-input>\n            </div>\n            <sl-button class=\"submit-btn\" type=\"primary\" submit style=\"width: 100%;\" pill>Sign in<sl-icon slot=\"suffix\" name=\"arrow-right\"></sl-icon></sl-button>\n          </sl-form>\n          <p class=\"line\">New user?</p> \n          <a href=\"/signup\" @click=", " class='link-txt'>Create an account</a>\n        </div>\n      </div>\n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -8577,7 +8424,7 @@ class SignInView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), this.signInSubmitHandler, _Router.anchorRoute);
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["   \n      <div class=\"background page-centered\">\n        <div class=\"signinup-box\">\n          <div class='signin-content-box'>\n          <img class=\"signinup-logo\" src=\"/images/logo.svg\">    \n          <h1 class='signinup'>Sign in</h1>      \n          <sl-form class=\"form-signup dark-theme\" @sl-submit=", ">          \n            <div class=\"input-group\">\n              <sl-input name=\"email\" type=\"email\" placeholder=\"Email\" class='form-input' required></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-input name=\"password\" type=\"password\" placeholder=\"Password\" class='form-input' required toggle-password></sl-input>\n            </div>\n            <sl-button class=\"submit-btn\" type=\"primary\" submit style=\"width: 100%;\" pill>Sign in<sl-icon slot=\"suffix\" name=\"arrow-right\"></sl-icon></sl-button>\n          </sl-form>\n          <p class=\"line\">New user?</p> \n          <a href=\"/signup\" @click=", " class='link-txt'>Create an account</a>\n        </div>\n      </div>\n    "])), this.signInSubmitHandler, _Router.anchorRoute);
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -8604,17 +8451,9 @@ var _Router = require("./../../Router");
 
 var _Utils = _interopRequireDefault(require("./../../Utils"));
 
+var _templateObject;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["    \n      <div class=\"background page-centered\">      \n        <div class=\"signinup-box\">\n        <img class=\"signinup-logo\" src=\"/images/logo.svg\">\n          <h1 class='signinup'>Sign up</h1>\n          <sl-form class=\"form-signup\" @sl-submit=", ">\n            <div class=\"input-group\">\n              <sl-input name=\"firstName\" type=\"text\" placeholder=\"First Name\" class='form-input' required></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-input name=\"lastName\" type=\"text\" placeholder=\"Last Name\" class='form-input' required></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-input name=\"email\" type=\"email\" placeholder=\"Email\" class='form-input' required></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-input name=\"password\" type=\"password\" placeholder=\"Password\" class='form-input' required toggle-password></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-select name=\"accessLevel\" class='form-input' style=\"color: grey\" placeholder=\"I am a ...\">\n                <sl-menu-item value=\"1\">Yoga Student</sl-menu-item>\n                <sl-menu-item value=\"2\">Yoga Teacher</sl-menu-item>\n              </sl-select>\n            </div>            \n            <sl-button type=\"primary\" class=\"submit-btn\" submit style=\"width: 100%;\" pill>Create account<sl-icon slot=\"suffix\" name=\"arrow-right\"></sl-icon></sl-button>\n          </sl-form>\n          <p class=\"line\">Have an account?</p>\n          <a href=\"/signin\" @click=", " class='link-txt'>Sign In</a>\n        </div>\n      </div>\n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -8639,7 +8478,7 @@ class SignUpView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), this.signUpSubmitHandler, _Router.anchorRoute);
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["    \n      <div class=\"background page-centered\">      \n        <div class=\"signinup-box\">\n        <img class=\"signinup-logo\" src=\"/images/logo.svg\">\n          <h1 class='signinup'>Sign up</h1>\n          <sl-form class=\"form-signup\" @sl-submit=", ">\n            <div class=\"input-group\">\n              <sl-input name=\"firstName\" type=\"text\" placeholder=\"First Name\" class='form-input' required></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-input name=\"lastName\" type=\"text\" placeholder=\"Last Name\" class='form-input' required></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-input name=\"email\" type=\"email\" placeholder=\"Email\" class='form-input' required></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-input name=\"password\" type=\"password\" placeholder=\"Password\" class='form-input' required toggle-password></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-select name=\"accessLevel\" class='form-input' style=\"color: grey\" placeholder=\"I am a ...\">\n                <sl-menu-item value=\"1\">Yoga Student</sl-menu-item>\n                <sl-menu-item value=\"2\">Yoga Teacher</sl-menu-item>\n              </sl-select>\n            </div>            \n            <sl-button type=\"primary\" class=\"submit-btn\" submit style=\"width: 100%;\" pill>Create account<sl-icon slot=\"suffix\" name=\"arrow-right\"></sl-icon></sl-button>\n          </sl-form>\n          <p class=\"line\">Have an account?</p>\n          <a href=\"/signin\" @click=", " class='link-txt'>Sign In</a>\n        </div>\n      </div>\n    "])), this.signUpSubmitHandler, _Router.anchorRoute);
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -14342,77 +14181,9 @@ var _Utils = _interopRequireDefault(require("./../../Utils"));
 
 var _moment = _interopRequireDefault(require("moment"));
 
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject7() {
-  const data = _taggedTemplateLiteral([""]);
-
-  _templateObject7 = function _templateObject7() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject6() {
-  const data = _taggedTemplateLiteral(["\n        <sl-button type=\"primary\" pill style=\"width: 150px;\" @click=", ">Create a Listing</sl-button>\n        "]);
-
-  _templateObject6 = function _templateObject6() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject5() {
-  const data = _taggedTemplateLiteral([" "]);
-
-  _templateObject5 = function _templateObject5() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject4() {
-  const data = _taggedTemplateLiteral(["\n          <h3>Bio</h3>\n            <p>", "</p>\n        "]);
-
-  _templateObject4 = function _templateObject4() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject3() {
-  const data = _taggedTemplateLiteral(["\n        <sl-avatar style=\"--size: 200px; margin-bottom: 1em;\"></sl-avatar>\n        "]);
-
-  _templateObject3 = function _templateObject3() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject2() {
-  const data = _taggedTemplateLiteral(["\n          <sl-avatar style=\"--size: 200px; margin-bottom: 1em;\" image=", "></sl-avatar>\n        "]);
-
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <style>\n      .edit-icon:hover {\n        transform: scale(1.3);\n      }\n    </style>\n      <va-app-header title=\"Account\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\"> <!-- start page content div -->\n      \n      <div class=\"account-box\">\n        <div class=\"profile-heading\">   \n          <h1>My Profile</h1>  \n          <sl-icon-button class=\"edit-icon\" name=\"pencil\" label=\"Edit\" style=\"font-size: 1.5rem;\" @click=", ">Edit Profile</sl-icon-button>\n        </div>  \n        ", "\n        <h2>", " ", "</h2>\n        <p>", "</p>\n        \n        <p>Updated: ", "</p>\n        ", "\n      \n        ", " \n        </div>\n\n      </div> <!-- end page content div -->     \n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -14426,7 +14197,7 @@ class MyAccountView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), () => (0, _Router.gotoRoute)('/editProfile'), _Auth.default.currentUser && _Auth.default.currentUser.avatar ? (0, _litHtml.html)(_templateObject2(), _Auth.default.currentUser && _Auth.default.currentUser.avatar ? "".concat(_App.default.apiBase, "/images/").concat(_Auth.default.currentUser.avatar) : '') : (0, _litHtml.html)(_templateObject3()), _Auth.default.currentUser.firstName, _Auth.default.currentUser.lastName, _Auth.default.currentUser.email, (0, _moment.default)(_Auth.default.currentUser.updatedAt).format('MMMM Do YYYY, @ h:mm a'), _Auth.default.currentUser.bio ? (0, _litHtml.html)(_templateObject4(), _Auth.default.currentUser.bio) : (0, _litHtml.html)(_templateObject5()), _Auth.default.currentUser.accessLevel == 2 ? (0, _litHtml.html)(_templateObject6(), () => (0, _Router.gotoRoute)('/newListing')) : (0, _litHtml.html)(_templateObject7()));
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    <style>\n      .edit-icon:hover {\n        transform: scale(1.3);\n      }\n    </style>\n      <va-app-header title=\"Account\" user=\"", "\"></va-app-header>\n      <div class=\"page-content calign\"> <!-- start page content div -->\n      \n      <div class=\"account-box\">\n        <div class=\"profile-heading\">   \n          <h1>My Profile</h1>  \n          <sl-icon-button class=\"edit-icon\" name=\"pencil\" label=\"Edit\" style=\"font-size: 1.5rem;\" @click=", ">Edit Profile</sl-icon-button>\n        </div>  \n        ", "\n        <h2>", " ", "</h2>\n        <p>", "</p>\n        \n        <p>Updated: ", "</p>\n        ", "\n      \n        ", " \n        </div>\n\n      </div> <!-- end page content div -->     \n    "])), JSON.stringify(_Auth.default.currentUser), () => (0, _Router.gotoRoute)('/editProfile'), _Auth.default.currentUser && _Auth.default.currentUser.avatar ? (0, _litHtml.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n          <sl-avatar style=\"--size: 200px; margin-bottom: 1em;\" image=", "></sl-avatar>\n        "])), _Auth.default.currentUser && _Auth.default.currentUser.avatar ? "".concat(_App.default.apiBase, "/images/").concat(_Auth.default.currentUser.avatar) : '') : (0, _litHtml.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n        <sl-avatar style=\"--size: 200px; margin-bottom: 1em;\"></sl-avatar>\n        "]))), _Auth.default.currentUser.firstName, _Auth.default.currentUser.lastName, _Auth.default.currentUser.email, (0, _moment.default)(_Auth.default.currentUser.updatedAt).format('MMMM Do YYYY, @ h:mm a'), _Auth.default.currentUser.bio ? (0, _litHtml.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n          <h3>Bio</h3>\n            <p>", "</p>\n        "])), _Auth.default.currentUser.bio) : (0, _litHtml.html)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral([" "]))), _Auth.default.currentUser.accessLevel == 2 ? (0, _litHtml.html)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["\n        <sl-button type=\"primary\" pill style=\"width: 150px;\" @click=", ">Create a Listing</sl-button>\n        "])), () => (0, _Router.gotoRoute)('/newListing')) : (0, _litHtml.html)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral([""]))));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -14455,17 +14226,9 @@ var _Utils = _interopRequireDefault(require("./../../Utils"));
 
 var _moment = _interopRequireDefault(require("moment"));
 
+var _templateObject;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n      <va-app-header title=\"My Listing\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\">        \n        <h1>My Listing</h1>\n        <label>Haven't made a listing yet? </label>\n        <sl-button type=\"primary\" @click=", " style=\"width: 200px;\" pill>Create a Listing</sl-button>\n      </div>      \n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -14479,7 +14242,7 @@ class MyListingView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), () => (0, _Router.gotoRoute)('/newListing'));
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <va-app-header title=\"My Listing\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\">        \n        <h1>My Listing</h1>\n        <label>Haven't made a listing yet? </label>\n        <sl-button type=\"primary\" @click=", " style=\"width: 200px;\" pill>Create a Listing</sl-button>\n      </div>      \n    "])), JSON.stringify(_Auth.default.currentUser), () => (0, _Router.gotoRoute)('/newListing'));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -14512,57 +14275,9 @@ var _Toast = _interopRequireDefault(require("../../Toast"));
 
 var _moment = _interopRequireDefault(require("moment"));
 
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject5() {
-  const data = _taggedTemplateLiteral(["\n                <input type=\"file\" name=\"avatar\" />\n              "]);
-
-  _templateObject5 = function _templateObject5() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject4() {
-  const data = _taggedTemplateLiteral(["\n                <sl-avatar image=\"", "/images/", "\"></sl-avatar>\n                <input type=\"file\" name=\"avatar\" />\n              "]);
-
-  _templateObject4 = function _templateObject4() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject3() {
-  const data = _taggedTemplateLiteral(["\n          <h1>Teacher's Lounge</h1>\n          <p>Updated: ", "</p>\n          <sl-form class=\"page-form\" @sl-submit=", ">\n            <div class=\"input-group\">\n              <sl-input label=\"Last name\" type=\"text\" name=\"firstName\" value=\"", "\" placeholder=\"First Name\"></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-input label=\"First name\" type=\"text\" name=\"lastName\" value=\"", "\" placeholder=\"Last Name\"></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-input label=\"Email\" type=\"text\" name=\"email\" value=\"", "\" placeholder=\"Email Address\"></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-textarea name=\"bio\" resize=\"auto\" value=\"", "\" label=\"Add your bio here\"></sl-textarea>\n            </div>            \n            <div class=\"input-group\">\n              <label>Avatar</label><br>          \n              ", "\n            </div>\n            <sl-button type=\"primary\" class=\"submit-btn\" submit pill style=\"width: 250px\">Update Profile</sl-button>\n          </sl-form>\n        "]);
-
-  _templateObject3 = function _templateObject3() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject2() {
-  const data = _taggedTemplateLiteral(["\n          <sl-spinner></sl-spinner>\n        "]);
-
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n      <va-app-header title=\"Edit Profile\" user=", "></va-app-header>\n      <div class=\"page-content\">        \n        ", "\n      </div>\n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -14609,7 +14324,7 @@ class EditProfileView {
   }
 
   render() {
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), this.user == null ? (0, _litHtml.html)(_templateObject2()) : (0, _litHtml.html)(_templateObject3(), (0, _moment.default)(_Auth.default.currentUser.updatedAt).format('MMMM Do YYYY, @ h:mm a'), this.updateProfileSubmitHandler.bind(this), this.user.firstName, this.user.lastName, this.user.email, this.user.bio, this.user.avatar ? (0, _litHtml.html)(_templateObject4(), _App.default.apiBase, this.user.avatar) : (0, _litHtml.html)(_templateObject5())));
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <va-app-header title=\"Edit Profile\" user=", "></va-app-header>\n      <div class=\"page-content\">        \n        ", "\n      </div>\n    "])), JSON.stringify(_Auth.default.currentUser), this.user == null ? (0, _litHtml.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n          <sl-spinner></sl-spinner>\n        "]))) : (0, _litHtml.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n          <h1>Teacher's Lounge</h1>\n          <p>Updated: ", "</p>\n          <sl-form class=\"page-form\" @sl-submit=", ">\n            <div class=\"input-group\">\n              <sl-input label=\"Last name\" type=\"text\" name=\"firstName\" value=\"", "\" placeholder=\"First Name\"></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-input label=\"First name\" type=\"text\" name=\"lastName\" value=\"", "\" placeholder=\"Last Name\"></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-input label=\"Email\" type=\"text\" name=\"email\" value=\"", "\" placeholder=\"Email Address\"></sl-input>\n            </div>\n            <div class=\"input-group\">\n              <sl-textarea name=\"bio\" resize=\"auto\" value=\"", "\" label=\"Add your bio here\"></sl-textarea>\n            </div>            \n            <div class=\"input-group\">\n              <label>Avatar</label><br>          \n              ", "\n            </div>\n            <sl-button type=\"primary\" class=\"submit-btn\" submit pill style=\"width: 250px\">Update Profile</sl-button>\n          </sl-form>\n        "])), (0, _moment.default)(_Auth.default.currentUser.updatedAt).format('MMMM Do YYYY, @ h:mm a'), this.updateProfileSubmitHandler.bind(this), this.user.firstName, this.user.lastName, this.user.email, this.user.bio, this.user.avatar ? (0, _litHtml.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n                <sl-avatar image=\"", "/images/", "\"></sl-avatar>\n                <input type=\"file\" name=\"avatar\" />\n              "])), _App.default.apiBase, this.user.avatar) : (0, _litHtml.html)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n                <input type=\"file\" name=\"avatar\" />\n              "])))));
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -14640,17 +14355,9 @@ var _ListingAPI = _interopRequireDefault(require("./../../ListingAPI"));
 
 var _Toast = _interopRequireDefault(require("../../Toast"));
 
+var _templateObject;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n      <va-app-header title=\"New Listing\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\">        \n        <h1>Create Your Listing</h1>\n        \n        <!-- Create a new listing form (shoelace)-->\n        <sl-form class=\"page-form\" @sl-submit=", ">\n          \n          <!-- hidden field sets the user automatically to the current user -->\n          <input type=\"hidden\" name=\"user\" value=\"", "\" />\n          \n          <div class=\"input-group\"> \n            <label>Full name</label><br>\n            <sl-input name=\"name\" type=\"text\" placeholder=\"Your full name\" required></sl-input>\n          </div>\n         \n          <div class=\"input-group\">\n            <label>My Certification</label><br>\n            <sl-radio-group label=\" My Certification\" no-fieldset>\n              <sl-radio name=\"certified\" value=\"200\">200hr</sl-radio>\n              <sl-radio name=\"certified\" value=\"300\">300hr</sl-radio>\n              <sl-radio name=\"certified\" value=\"500\">500hr</sl-radio>\n            </sl-radio-group>\n          </div>\n          \n          <div class=\"input-group\">\n            <label>My Location</label><br>              \n            <sl-input name=\"location\" type=\"text\" placeholder=\"Enter your location\" required>\n            </sl-input>\n          </div>\n          \n          <div class=\"input-group\">\n            <label>Class Type</label><br>\n            <sl-radio-group label=\"Class Type\" no-fieldset>\n              <sl-radio name=\"classType\" value=\"Studio\">Studio</sl-radio>\n              <sl-radio name=\"classType\" value=\"Private\">Private</sl-radio>\n              <sl-radio name=\"classType\" value=\"Outdoor\">Outdoor</sl-radio>\n            </sl-radio-group>\n          </div>\n          \n          <div class=\"input-group\">\n            <label>Essence Statement</label><br>\n            <sl-textarea name=\"essenceStatement\" rows=\"3\" placeholder=\"What do you want your Essence statement to be?\"></sl-textarea>\n          </div>\n          \n          <div class=\"input-group\">\n            <label>Image</label><br>\n            <input type=\"file\" name=\"image\" />              \n          </div>\n          \n          <div class=\"input-group\">\n            <label>Gender</label><br>\n            <sl-radio-group label=\"Select gender\" no-fieldset>\n              <sl-radio name=\"gender\" value=\"Male\">Male</sl-radio>\n              <sl-radio name=\"gender\" value=\"Female\">Female</sl-radio>\n            </sl-radio-group>\n          </div>\n          \n          <div class=\"input-group\">\n            <label>Level</label><br>\n            <sl-radio-group label=\"Select length\" no-fieldset>\n              <sl-radio name=\"level\" value=\"Beginner\">Beginner</sl-radio>\n              <sl-radio name=\"level\" value=\"Intermediate\">Intermediate</sl-radio>\n              <sl-radio name=\"level\" value=\"Advanced\">Advanced</sl-radio>\n            </sl-radio-group>\n          </div>\n          \n          <sl-button type=\"primary\" class=\"submit-btn\" submit pill style=\"width: 250px\">Create my Listing</sl-button>\n        \n        </sl-form> <!-- END create a new listing form -->\n\n      </div>      \n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -14702,7 +14409,7 @@ class newListingView {
 
   render() {
     // styled in _forms.scss
-    const template = (0, _litHtml.html)(_templateObject(), JSON.stringify(_Auth.default.currentUser), this.newListingSubmitHandler, _Auth.default.currentUser._id);
+    const template = (0, _litHtml.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      <va-app-header title=\"New Listing\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\">        \n        <h1>Create Your Listing</h1>\n        \n        <!-- Create a new listing form (shoelace)-->\n        <sl-form class=\"page-form\" @sl-submit=", ">\n          \n          <!-- hidden field sets the user automatically to the current user -->\n          <input type=\"hidden\" name=\"user\" value=\"", "\" />\n          \n          <div class=\"input-group\"> \n            <label>Full name</label><br>\n            <sl-input name=\"name\" type=\"text\" placeholder=\"Your full name\" required></sl-input>\n          </div>\n         \n          <div class=\"input-group\">\n            <label>My Certification</label><br>\n            <sl-radio-group label=\" My Certification\" no-fieldset>\n              <sl-radio name=\"certified\" value=\"200\">200hr</sl-radio>\n              <sl-radio name=\"certified\" value=\"300\">300hr</sl-radio>\n              <sl-radio name=\"certified\" value=\"500\">500hr</sl-radio>\n            </sl-radio-group>\n          </div>\n          \n          <div class=\"input-group\">\n            <label>My Location</label><br>              \n            <sl-input name=\"location\" type=\"text\" placeholder=\"Enter your location\" required>\n            </sl-input>\n          </div>\n          \n          <div class=\"input-group\">\n            <label>Class Type</label><br>\n            <sl-radio-group label=\"Class Type\" no-fieldset>\n              <sl-radio name=\"classType\" value=\"Studio\">Studio</sl-radio>\n              <sl-radio name=\"classType\" value=\"Private\">Private</sl-radio>\n              <sl-radio name=\"classType\" value=\"Outdoor\">Outdoor</sl-radio>\n            </sl-radio-group>\n          </div>\n          \n          <div class=\"input-group\">\n            <label>Essence Statement</label><br>\n            <sl-textarea name=\"essenceStatement\" rows=\"3\" placeholder=\"What do you want your Essence statement to be?\"></sl-textarea>\n          </div>\n          \n          <div class=\"input-group\">\n            <label>Image</label><br>\n            <input type=\"file\" name=\"image\" />              \n          </div>\n          \n          <div class=\"input-group\">\n            <label>Gender</label><br>\n            <sl-radio-group label=\"Select gender\" no-fieldset>\n              <sl-radio name=\"gender\" value=\"Male\">Male</sl-radio>\n              <sl-radio name=\"gender\" value=\"Female\">Female</sl-radio>\n            </sl-radio-group>\n          </div>\n          \n          <div class=\"input-group\">\n            <label>Level</label><br>\n            <sl-radio-group label=\"Select length\" no-fieldset>\n              <sl-radio name=\"level\" value=\"Beginner\">Beginner</sl-radio>\n              <sl-radio name=\"level\" value=\"Intermediate\">Intermediate</sl-radio>\n              <sl-radio name=\"level\" value=\"Advanced\">Advanced</sl-radio>\n            </sl-radio-group>\n          </div>\n          \n          <sl-button type=\"primary\" class=\"submit-btn\" submit pill style=\"width: 250px\">Create my Listing</sl-button>\n        \n        </sl-form> <!-- END create a new listing form -->\n\n      </div>      \n    "])), JSON.stringify(_Auth.default.currentUser), this.newListingSubmitHandler, _Auth.default.currentUser._id);
     (0, _litHtml.render)(template, _App.default.rootEl);
   }
 
@@ -14717,9 +14424,9 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.gotoRoute = gotoRoute;
 exports.anchorRoute = anchorRoute;
 exports.default = void 0;
+exports.gotoRoute = gotoRoute;
 
 var _welcome = _interopRequireDefault(require("./views/pages/welcome"));
 
@@ -14875,8 +14582,8 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.removeNodesFromTemplate = removeNodesFromTemplate;
 exports.insertNodeIntoTemplate = insertNodeIntoTemplate;
+exports.removeNodesFromTemplate = removeNodesFromTemplate;
 
 var _template = require("./template.js");
 
@@ -15043,25 +14750,25 @@ function insertNodeIntoTemplate(template, node, refNode = null) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-Object.defineProperty(exports, "html", {
-  enumerable: true,
-  get: function () {
-    return _litHtml.html;
-  }
-});
-Object.defineProperty(exports, "svg", {
-  enumerable: true,
-  get: function () {
-    return _litHtml.svg;
-  }
-});
 Object.defineProperty(exports, "TemplateResult", {
   enumerable: true,
   get: function () {
     return _litHtml.TemplateResult;
   }
 });
-exports.render = exports.shadyTemplateFactory = void 0;
+Object.defineProperty(exports, "html", {
+  enumerable: true,
+  get: function () {
+    return _litHtml.html;
+  }
+});
+exports.shadyTemplateFactory = exports.render = void 0;
+Object.defineProperty(exports, "svg", {
+  enumerable: true,
+  get: function () {
+    return _litHtml.svg;
+  }
+});
 
 var _dom = require("./dom.js");
 
@@ -15400,7 +15107,7 @@ exports.render = render;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.UpdatingElement = exports.notEqual = exports.defaultConverter = void 0;
+exports.notEqual = exports.defaultConverter = exports.UpdatingElement = void 0;
 
 /**
  * @license
@@ -16085,7 +15792,7 @@ UpdatingElement.finalized = true;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.eventOptions = exports.queryAll = exports.query = exports.property = exports.customElement = void 0;
+exports.queryAll = exports.query = exports.property = exports.eventOptions = exports.customElement = void 0;
 
 /**
  * @license
@@ -16301,7 +16008,7 @@ exports.eventOptions = eventOptions;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.css = exports.CSSResult = exports.supportsAdoptingStyleSheets = void 0;
+exports.supportsAdoptingStyleSheets = exports.css = exports.CSSResult = void 0;
 
 /**
 @license
@@ -16370,6 +16077,19 @@ var _exportNames = {
   TemplateResult: true,
   SVGTemplateResult: true
 };
+exports.LitElement = void 0;
+Object.defineProperty(exports, "SVGTemplateResult", {
+  enumerable: true,
+  get: function () {
+    return _litHtml2.SVGTemplateResult;
+  }
+});
+Object.defineProperty(exports, "TemplateResult", {
+  enumerable: true,
+  get: function () {
+    return _litHtml2.TemplateResult;
+  }
+});
 Object.defineProperty(exports, "html", {
   enumerable: true,
   get: function () {
@@ -16382,19 +16102,6 @@ Object.defineProperty(exports, "svg", {
     return _litHtml2.svg;
   }
 });
-Object.defineProperty(exports, "TemplateResult", {
-  enumerable: true,
-  get: function () {
-    return _litHtml2.TemplateResult;
-  }
-});
-Object.defineProperty(exports, "SVGTemplateResult", {
-  enumerable: true,
-  get: function () {
-    return _litHtml2.SVGTemplateResult;
-  }
-});
-exports.LitElement = void 0;
 
 var _litHtml = require("lit-html");
 
@@ -16630,117 +16337,9 @@ var _Auth = _interopRequireDefault(require("./../Auth"));
 
 var _App = _interopRequireDefault(require("./../App"));
 
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10, _templateObject11;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject11() {
-  const data = _taggedTemplateLiteral([""]);
-
-  _templateObject11 = function _templateObject11() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject10() {
-  const data = _taggedTemplateLiteral(["\n        <a href=\"/newListing\" @click=\"", "\">Create a Listing</a>\n        "]);
-
-  _templateObject10 = function _templateObject10() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject9() {
-  const data = _taggedTemplateLiteral([""]);
-
-  _templateObject9 = function _templateObject9() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject8() {
-  const data = _taggedTemplateLiteral(["\n        <sl-menu-divider></sl-menu-divider>\n        <a href=\"/teachersLounge\" @click=\"", "\">Teacher's Lounge</a>\n        "]);
-
-  _templateObject8 = function _templateObject8() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject7() {
-  const data = _taggedTemplateLiteral([""]);
-
-  _templateObject7 = function _templateObject7() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject6() {
-  const data = _taggedTemplateLiteral(["\n        <a href=\"/favourites\" @click=\"", "\">Favourites</a>\n        "]);
-
-  _templateObject6 = function _templateObject6() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject5() {
-  const data = _taggedTemplateLiteral([""]);
-
-  _templateObject5 = function _templateObject5() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject4() {
-  const data = _taggedTemplateLiteral(["\n        <a href=\"/newListing\" @click=\"", "\">Create a Listing</a>\n        "]);
-
-  _templateObject4 = function _templateObject4() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject3() {
-  const data = _taggedTemplateLiteral([""]);
-
-  _templateObject3 = function _templateObject3() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject2() {
-  const data = _taggedTemplateLiteral(["\n        <a href=\"/teachersLounge\" @click=\"", "\">Teacher's Lounge</a>\n        "]);
-
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <!-- start styling -->\n    <style>  \n      * {\n        box-sizing: border-box;\n      }\n      .app-header {\n        background: var(--brand-color);\n        position: fixed;\n        top: 0;\n        right: 0;\n        left: 0;\n        height: var(--app-header-height);\n        color: #fff;\n        display: flex;\n        z-index: 9;\n        box-shadow: 4px 0px 10px rgba(0,0,0,0.2);\n        align-items: center;\n        padding-left: 1.75em;\n        padding-right: 1.75em;\n      }\n      \n\n      .app-header-main {\n        flex-grow: 1;\n        display: flex;\n        align-items: center;\n      }\n\n      .app-header-main::slotted(h1){\n        color: #fff;\n      }\n\n      .app-logo a {\n        color: #fff;\n        text-decoration: none;\n        font-weight: bold;\n        font-size: 1.2em;\n        padding: .6em;\n        display: inline-block;        \n      }\n\n      .app-logo img {\n        width: 90px;\n      }\n      \n      .hamburger-btn::part(base) {\n        color: #fff;\n      }\n\n      .app-top-nav {\n        display: flex;\n        height: 100%;\n        align-items: center;\n      }\n\n      .app-top-nav a {\n        display: inline-block;\n        padding: .8em;\n        text-decoration: none;\n        color: #fff;\n        letter-spacing: 0.75px;\n      }\n      .app-top-nav a:hover {\n        color: var(--heading-color);\n        font-weight: 800;\n      }\n      \n      .app-side-menu-items a {\n        display: block;\n        padding: .5em;\n        text-decoration: none;\n        font-size: 1.3em;\n        color: var(--heading-color);\n      }\n      .app-side-menu-items a:hover {\n        color: var(--brand-color);\n        font-weight: 400;\n      }\n      \n\n      .app-side-menu-logo {\n        width: 120px;\n        margin-bottom: 1em;\n        position: absolute;\n        top: 2em;\n        left: 1.5em;\n      }\n\n      .nav-bar-logo {\n        width: 130px;\n      }\n\n      .page-title {\n        color: var(--app-header-txt-color);\n        margin-right: 0.5em;\n        font-size: var(--app-header-title-font-size);\n      }\n\n      /* active nav links */\n      .app-top-nav a.active,\n      .app-side-menu-items a.active {\n        font-weight: bold;\n      }\n\n      /* RESPONSIVE - MOBILE ------------------- */\n      @media all and (max-width: 768px){       \n        \n        .app-top-nav {\n          display: none;\n        }\n      }\n\n    </style>\n    <!-- end styling -->\n\n    <!-- Start HTML (what will be seen on the webpage) -->\n    <!-- Start header -->\n    <header class=\"app-header\">\n      <!-- 'this' refers to the class we're inside (AppHeader) -->       \n      <sl-icon-button class=\"hamburger-btn\" name=\"list\" @click=\"", "\" style=\"font-size: 1.5em;\"></sl-icon-button>       \n      \n      <div class=\"app-header-main\">\n        <img class=\"nav-bar-logo\" src=\"/images/logo-white.svg\">\n        <slot></slot>\n      </div>\n\n      <nav class=\"app-top-nav\">\n      ", " \n        ", " \n        <a href=\"/explore\" @click=\"", "\">Explore</a> \n        ", " \n\n        <sl-dropdown>\n          <a slot=\"trigger\" href=\"#\" @click=\"", "\">\n            <sl-avatar style=\"--size: 24px;\" image=", "></sl-avatar> ", "\n          </a>\n          <sl-menu>            \n            <sl-menu-item @click=\"", "\">My Account</sl-menu-item>\n            <sl-menu-item @click=\"", "\">Edit Profile</sl-menu-item>\n            <sl-menu-item @click=\"", "\">Sign Out</sl-menu-item>\n          </sl-menu>\n        </sl-dropdown>\n      </nav> \n    </header> <!-- End header --> \n\n    <sl-drawer class=\"app-side-menu\" placement=\"left\">\n      <img class=\"app-side-menu-logo\" src=\"/images/logo.svg\">\n      <nav class=\"app-side-menu-items\">\n        <a href=\"/explore\" @click=\"", "\">Explore</a>\n        <a href=\"/favourites\" @click=\"", "\">My Favourites</a>\n        ", " \n        ", " \n        <sl-menu-divider></sl-menu-divider>\n        <a href=\"/myAccount\" @click=\"", "\">My Account</a>\n        <a href=\"#\" @click=\"", "\">Sign Out</a>\n      </nav>  \n    </sl-drawer>\n    <!-- end HTML (what will be seen on the webpage) -->\n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -16815,7 +16414,7 @@ customElements.define('va-app-header', class AppHeader extends _litElement.LitEl
 
 
   render() {
-    return (0, _litElement.html)(_templateObject(), this.hamburgerClick, this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject2(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject3()), this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject4(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject5()), _Router.anchorRoute, this.user.accessLevel == 1 ? (0, _litElement.html)(_templateObject6(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject7()), e => e.preventDefault(), this.user && this.user.avatar ? "".concat(_App.default.apiBase, "/images/").concat(this.user.avatar) : '', this.user && this.user.firstName, () => (0, _Router.gotoRoute)('/myAccount'), () => (0, _Router.gotoRoute)('/editProfile'), () => _Auth.default.signOut(), this.menuClick, this.menuClick, this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject8(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject9()), this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject10(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject11()), this.menuClick, () => _Auth.default.signOut());
+    return (0, _litElement.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    <!-- start styling -->\n    <style>  \n      * {\n        box-sizing: border-box;\n      }\n      .app-header {\n        background: var(--brand-color);\n        position: fixed;\n        top: 0;\n        right: 0;\n        left: 0;\n        height: var(--app-header-height);\n        color: #fff;\n        display: flex;\n        z-index: 9;\n        box-shadow: 4px 0px 10px rgba(0,0,0,0.2);\n        align-items: center;\n        padding-left: 1.75em;\n        padding-right: 1.75em;\n      }\n      \n\n      .app-header-main {\n        flex-grow: 1;\n        display: flex;\n        align-items: center;\n      }\n\n      .app-header-main::slotted(h1){\n        color: #fff;\n      }\n\n      .app-logo a {\n        color: #fff;\n        text-decoration: none;\n        font-weight: bold;\n        font-size: 1.2em;\n        padding: .6em;\n        display: inline-block;        \n      }\n\n      .app-logo img {\n        width: 90px;\n      }\n      \n      .hamburger-btn::part(base) {\n        color: #fff;\n      }\n\n      .app-top-nav {\n        display: flex;\n        height: 100%;\n        align-items: center;\n      }\n\n      .app-top-nav a {\n        display: inline-block;\n        padding: .8em;\n        text-decoration: none;\n        color: #fff;\n        letter-spacing: 0.75px;\n      }\n      .app-top-nav a:hover {\n        color: var(--heading-color);\n        font-weight: 800;\n      }\n      \n      .app-side-menu-items a {\n        display: block;\n        padding: .5em;\n        text-decoration: none;\n        font-size: 1.3em;\n        color: var(--heading-color);\n      }\n      .app-side-menu-items a:hover {\n        color: var(--brand-color);\n        font-weight: 400;\n      }\n      \n\n      .app-side-menu-logo {\n        width: 120px;\n        margin-bottom: 1em;\n        position: absolute;\n        top: 2em;\n        left: 1.5em;\n      }\n\n      .nav-bar-logo {\n        width: 130px;\n      }\n\n      .page-title {\n        color: var(--app-header-txt-color);\n        margin-right: 0.5em;\n        font-size: var(--app-header-title-font-size);\n      }\n\n      /* active nav links */\n      .app-top-nav a.active,\n      .app-side-menu-items a.active {\n        font-weight: bold;\n      }\n\n      /* RESPONSIVE - MOBILE ------------------- */\n      @media all and (max-width: 768px){       \n        \n        .app-top-nav {\n          display: none;\n        }\n      }\n\n    </style>\n    <!-- end styling -->\n\n    <!-- Start HTML (what will be seen on the webpage) -->\n    <!-- Start header -->\n    <header class=\"app-header\">\n      <!-- 'this' refers to the class we're inside (AppHeader) -->       \n      <sl-icon-button class=\"hamburger-btn\" name=\"list\" @click=\"", "\" style=\"font-size: 1.5em;\"></sl-icon-button>       \n      \n      <div class=\"app-header-main\">\n        <img class=\"nav-bar-logo\" src=\"/images/logo-white.svg\">\n        <slot></slot>\n      </div>\n\n      <nav class=\"app-top-nav\">\n      ", " \n        ", " \n        <a href=\"/explore\" @click=\"", "\">Explore</a> \n        ", " \n\n        <sl-dropdown>\n          <a slot=\"trigger\" href=\"#\" @click=\"", "\">\n            <sl-avatar style=\"--size: 24px;\" image=", "></sl-avatar> ", "\n          </a>\n          <sl-menu>            \n            <sl-menu-item @click=\"", "\">My Account</sl-menu-item>\n            <sl-menu-item @click=\"", "\">Edit Profile</sl-menu-item>\n            <sl-menu-item @click=\"", "\">Sign Out</sl-menu-item>\n          </sl-menu>\n        </sl-dropdown>\n      </nav> \n    </header> <!-- End header --> \n\n    <sl-drawer class=\"app-side-menu\" placement=\"left\">\n      <img class=\"app-side-menu-logo\" src=\"/images/logo.svg\">\n      <nav class=\"app-side-menu-items\">\n        <a href=\"/explore\" @click=\"", "\">Explore</a>\n        <a href=\"/favourites\" @click=\"", "\">My Favourites</a>\n        ", " \n        ", " \n        <sl-menu-divider></sl-menu-divider>\n        <a href=\"/myAccount\" @click=\"", "\">My Account</a>\n        <a href=\"#\" @click=\"", "\">Sign Out</a>\n      </nav>  \n    </sl-drawer>\n    <!-- end HTML (what will be seen on the webpage) -->\n    "])), this.hamburgerClick, this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n        <a href=\"/teachersLounge\" @click=\"", "\">Teacher's Lounge</a>\n        "])), _Router.anchorRoute) : (0, _litElement.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral([""]))), this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n        <a href=\"/newListing\" @click=\"", "\">Create a Listing</a>\n        "])), _Router.anchorRoute) : (0, _litElement.html)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral([""]))), _Router.anchorRoute, this.user.accessLevel == 1 ? (0, _litElement.html)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["\n        <a href=\"/favourites\" @click=\"", "\">Favourites</a>\n        "])), _Router.anchorRoute) : (0, _litElement.html)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral([""]))), e => e.preventDefault(), this.user && this.user.avatar ? "".concat(_App.default.apiBase, "/images/").concat(this.user.avatar) : '', this.user && this.user.firstName, () => (0, _Router.gotoRoute)('/myAccount'), () => (0, _Router.gotoRoute)('/editProfile'), () => _Auth.default.signOut(), this.menuClick, this.menuClick, this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["\n        <sl-menu-divider></sl-menu-divider>\n        <a href=\"/teachersLounge\" @click=\"", "\">Teacher's Lounge</a>\n        "])), _Router.anchorRoute) : (0, _litElement.html)(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral([""]))), this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["\n        <a href=\"/newListing\" @click=\"", "\">Create a Listing</a>\n        "])), _Router.anchorRoute) : (0, _litElement.html)(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral([""]))), this.menuClick, () => _Auth.default.signOut());
   } // end render()
 
 
@@ -16835,17 +16434,9 @@ var _UserAPI = _interopRequireDefault(require("./../UserAPI"));
 
 var _Toast = _interopRequireDefault(require("./../Toast"));
 
+var _templateObject;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <style>\n      h2 {\n        text-transform: uppercase;\n        \n      }\n      h3 {\n        color: var(--brand-color);\n      }\n      h4 {\n        color: grey;\n        font-weight: 550;\n      }\n      sl-icon-button {\n        float: right;\n        font-size: 1.5em;\n      }\n    </style>\n\n    <sl-card>\n        <img class=\"listing-card-image\" slot=\"image\" src=\"", "/images/", "\">\n        <h2 class=\"author\">", " ", " </h2>\n        <h3>", "</h3>\n        <h4>", " classes | ", "</h4>\n        <p>", "hr certified | ", "</p>\n\n        <sl-button @click=", ">See More ...</sl-button>\n        <sl-icon-button name=\"suit-heart\" label=\"Add to Favourites\" @click=", "></sl-icon-button>\n    </sl-card>\n   \n    "]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -16920,12 +16511,12 @@ customElements.define('va-listing-card', class Listing extends _litElement.LitEl
 
 
   render() {
-    return (0, _litElement.html)(_templateObject(), _App.default.apiBase, this.image, this.user.firstName, this.user.lastName, this.location, this.classType, this.level, this.certified, this.gender, this.viewListingHandler.bind(this), this.addFavHandler.bind(this));
+    return (0, _litElement.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    <style>\n      h2 {\n        text-transform: uppercase;\n        \n      }\n      h3 {\n        color: var(--brand-color);\n      }\n      h4 {\n        color: grey;\n        font-weight: 550;\n      }\n      sl-icon-button {\n        float: right;\n        font-size: 1.5em;\n      }\n    </style>\n\n    <sl-card>\n        <img class=\"listing-card-image\" slot=\"image\" src=\"", "/images/", "\">\n        <h2 class=\"author\">", " ", " </h2>\n        <h3>", "</h3>\n        <h4>", " classes | ", "</h4>\n        <p>", "hr certified | ", "</p>\n\n        <sl-button @click=", ">See More ...</sl-button>\n        <sl-icon-button name=\"suit-heart\" label=\"Add to Favourites\" @click=", "></sl-icon-button>\n    </sl-card>\n   \n    "])), _App.default.apiBase, this.image, this.user.firstName, this.user.lastName, this.location, this.classType, this.level, this.certified, this.gender, this.viewListingHandler.bind(this), this.addFavHandler.bind(this));
   } // end render()
 
 
 });
-},{"@polymer/lit-element":"../node_modules/@polymer/lit-element/lit-element.js","./../Router":"Router.js","./../Auth":"Auth.js","./../App":"App.js","./../UserAPI":"UserAPI.js","./../Toast":"Toast.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"@polymer/lit-element":"../node_modules/@polymer/lit-element/lit-element.js","./../Router":"Router.js","./../Auth":"Auth.js","./../App":"App.js","./../UserAPI":"UserAPI.js","./../Toast":"Toast.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -16952,12 +16543,12 @@ function getBundleURL() {
 }
 
 function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
 }
 
 exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
-},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+},{}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
 var bundle = require('./bundle-url');
 
 function updateLink(link) {
@@ -16992,12 +16583,12 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"scss/master.scss":[function(require,module,exports) {
+},{"./bundle-url":"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"scss/master.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"index.js":[function(require,module,exports) {
+},{"_css_loader":"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _App = _interopRequireDefault(require("./App.js"));
@@ -17034,7 +16625,7 @@ Where the app is actually 'fired' from:
 document.addEventListener('DOMContentLoaded', () => {
   _App.default.init();
 });
-},{"./App.js":"App.js","./components/va-app-header":"components/va-app-header.js","./components/va-listing-card":"components/va-listing-card.js","./scss/master.scss":"scss/master.scss"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./App.js":"App.js","./components/va-app-header":"components/va-app-header.js","./components/va-listing-card":"components/va-listing-card.js","./scss/master.scss":"scss/master.scss"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -17062,7 +16653,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56933" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57077" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -17238,5 +16829,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
+},{}]},{},["../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
 //# sourceMappingURL=/src.e31bb0bc.js.map
