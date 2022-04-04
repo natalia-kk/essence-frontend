@@ -1,58 +1,74 @@
-// Base
-
-* {
-  box-sizing: border-box; // ("paramount for any modern css")
-  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); // for mobile viewing
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,300;0,500;1,100;1,200;1,500&display=swap");
+:root {
+  --base-txt-color: #222;
+  --heading-color: #5a5a5a;
+  --base-font-family: "Work Sans", sans-serif;
+  --body-bg: #fff;
+  --brand-color: #9fb59b;
+  --link-color: --brand-color;
+  --app-header-height: 60px;
+  --app-header-txt-color: #fff;
+  --app-header-title-font-size: 1.6em;
+  --sl-color-primary-50: #f4f4f4;
+  --sl-color-primary-100: white;
+  --sl-color-primary-200: #f3f6f3;
+  --sl-color-primary-300: #d7e0d6;
+  --sl-color-primary-400: #bbcbb8;
+  --sl-color-primary-500: #9fb59b;
+  --sl-color-primary-600: #839f7e;
+  --sl-color-primary-700: #698664;
+  --sl-color-primary-800: #52694e;
+  --sl-color-primary-900: #3b4c38;
+  --sl-focus-ring-color-primary: rgba(159, 181, 155, 0.1);
 }
 
-body { // bring in base body styles
-  padding: 0;  
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+body {
+  padding: 0;
   margin: 0;
-  color: var(--base-txt-color); // (sass variables set in _vars.scss file)
+  color: var(--base-txt-color);
   font-family: var(--base-font-family);
   font-weight: 300;
   background: var(--body-bg);
   height: 100vh;
 }
 
-
-// headings ------------
-h1,h2,h3,h5,h6 {
-  margin: 0 0 .5em;
+h1, h2, h3, h5, h6 {
+  margin: 0 0 0.5em;
   color: var(--heading-color);
 }
 
-// links ---------------
 a {
   color: var(--link-color);
 }
+
 a:hover {
   opacity: 80%;
 }
 
-
-// app splash screen -------
 .app-splash {
   position: fixed;
   background: #fff;
   color: #777;
   display: flex;
   left: 0;
-  top:0;
+  top: 0;
   right: 0;
   bottom: 0;
   align-items: center;
   justify-content: center;
   text-align: center;
-  .app-logo {
-    width: 180px;
-    display: block;
-    margin-bottom: 1em;
-  }
+}
+.app-splash .app-logo {
+  width: 180px;
+  display: block;
+  margin-bottom: 1em;
 }
 
- 
-// helper classes ---------
 .calign {
   text-align: center;
 }
@@ -65,27 +81,23 @@ a:hover {
   color: var(--brand-color);
 }
 
-// generic-entry ------------
 .generic-entry {
-  box-shadow: 0px 3px 5px rgba(0,0,0,0.07);
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.07);
   border-radius: 5px;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
   padding: 1em;
   background: #fff;
 }
 
-// root ---------------
-// (styling for root div)
 #root {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
-  right: 0;  
+  right: 0;
   overflow: hidden;
 }
 
-// sign in / up pages --------------------
 .background {
   position: absolute;
   top: 0;
@@ -96,8 +108,6 @@ a:hover {
   background-image: radial-gradient(#49725A, #A8C0A4, white);
 }
 
-
-// signed in pages --------------------
 .page-content {
   position: absolute;
   top: var(--app-header-height);
@@ -106,9 +116,9 @@ a:hover {
   bottom: 0;
   overflow-y: scroll;
   padding: 2.25em;
-  &.no-pad {
-    padding: 0;
-  }
+}
+.page-content.no-pad {
+  padding: 0;
 }
 
 .page-centered {
@@ -117,32 +127,26 @@ a:hover {
   justify-content: center;
 }
 
-
-// flexbox styles --------------------
 .flex-container {
   display: flex;
 }
+
 .display-flex {
   width: calc(50% - 1.5em);
   margin: 1.5em;
-  //padding-right: 1.5em;
 }
 
-
-// buttons --------------------
 .btn-shadow {
-  box-shadow: 0px 3px 5px rgba(0,0,0,0.09);
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.09);
 }
 
 sl-button::part(base) {
-  box-shadow: 0px 2px 4px rgba(0,0,0,0.11);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.11);
   font-size: 1em;
   font-family: var(--base-font-family);
 }
 
-// font styles
 h1 {
-  //text-transform: uppercase;
   font-size: 3em;
   animation-name: grow;
   animation-duration: 0.3s;
@@ -154,7 +158,6 @@ h1 {
     font-size: 2em;
   }
 }
-
 .link-txt {
   font-size: 1em;
   color: var(--brand-color);
@@ -167,47 +170,45 @@ p.line {
   margin-top: 20px;
   color: #777;
 }
+
 p.line:before,
 p.line:after {
- background-color: var(--brand-color);
- content: "";
- display: inline-block;
- height: 0.08px;
- position: relative;
- vertical-align: middle;
- width: 50%;
+  background-color: var(--brand-color);
+  content: "";
+  display: inline-block;
+  height: 0.08px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
 }
+
 p.line:before {
- right: 0.5em;
- margin-left: -50%;
+  right: 0.5em;
+  margin-left: -50%;
 }
+
 p.line:after {
- left: 0.5em;
- margin-right: -50%;
+  left: 0.5em;
+  margin-right: -50%;
 }
 
-// keyframes animations
 @keyframes grow {
-  from {font-size: 1em;}
-  to {font-size: 2em;}
+  from {
+    font-size: 1em;
+  }
+  to {
+    font-size: 2em;
+  }
 }
-
-
 @keyframes fadeIn {
   0% {
-    opacity:0;
+    opacity: 0;
   }
   100% {
-    opacity:1;
+    opacity: 1;
   }
 }
-
-
-// VIEW STYLES -----------------------------------------------------------
-
-// sign in + sign up pages ----------
-// .signinup-box, .signup-box 
-.signinup-box {  
+.signinup-box {
   text-align: center;
   background-color: white;
   padding: 40px;
@@ -215,7 +216,7 @@ p.line:after {
   width: 100%;
   max-width: 350px;
   position: relative;
-  box-shadow: 0px 3px 5px rgba(0,0,0,0.2);
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
 }
 
 .signin-content-box {
@@ -226,7 +227,6 @@ p.line:after {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-
 
 h1.signinup {
   margin-bottom: 30px;
@@ -239,36 +239,30 @@ h1.signinup {
   margin-bottom: 1em;
 }
 
-// RESPONSIVE - MOBILE 
-@media all and (max-width: 768px){ 
+@media all and (max-width: 768px) {
   .signinup-box {
     width: 75%;
     max-width: none;
   }
 }
-
-
-// guide page ---------------
 .guide-step {
   padding: 1em;
   margin: 1.5em auto;
   max-width: 600px;
-  img {
-    width: 100%;
-    height: auto;
-  }
+}
+.guide-step img {
+  width: 100%;
+  height: auto;
 }
 
-
-// Account page styles ----------------
 .profile-heading {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  h1 {
-    color: var(--brand-color);
-    padding-right: 0.25em;
-  }
+}
+.profile-heading h1 {
+  color: var(--brand-color);
+  padding-right: 0.25em;
 }
 
 .account-box {
@@ -277,118 +271,154 @@ h1.signinup {
   margin-left: auto;
 }
 
-
-// welcome page styles ----------------
 .welcome-image {
   max-width: 100%;
   height: auto;
   margin-bottom: 1em;
   animation: fadeIn;
-} 
-.content-left {
-  text-align: left;
-  .spacing {
-    padding-top: 0.5em;
-  }
 }
 
-// flex items for welcome page
+.content-left {
+  text-align: left;
+}
+.content-left .spacing {
+  padding-top: 0.5em;
+}
+
 .welcome-items {
   width: calc(50% - 1em);
   margin: 1em;
 }
 
-@media all and (max-width: 900px){ 
+@media all and (max-width: 900px) {
   .welcome-items {
     width: 100%;
   }
+
   .welcome-image {
     max-width: 300px;
     height: auto;
     animation: fadeIn ease 5s;
-  } 
+  }
 }
-@media all and (max-width: 360px){ 
+@media all and (max-width: 360px) {
   .welcome-image {
     max-width: 200px;
     height: auto;
   }
 }
-
-
-// Explore page styles -----------------
-
-// Listing cards *******
-// (sl-card for each listing displayed on Explore view)
 .listings-grid {
   display: flex;
-  flex-wrap: wrap; // allows flex items to wrap onto the next row
+  flex-wrap: wrap;
   width: 100%;
   align-items: center;
   justify-content: center;
   margin-top: 30px;
   background-color: #f7f7f7;
   padding: 20px 0;
-
-  .listing-card { 
-    width: calc(25% - 1em);
-    max-width: 400px; 
-    min-width: 300px;
-    margin: 1em;
-    display: block;
-    box-shadow: 0px 3px 5px rgba(0,0,0,0.17);
-  } 
-  .listing-card:hover {
-    -webkit-transform: scale(0.95);
-    -ms-transform: scale(0.95);
-    transform: scale(0.95);
-  }
-
+}
+.listings-grid .listing-card {
+  width: calc(25% - 1em);
+  max-width: 400px;
+  min-width: 300px;
+  margin: 1em;
+  display: block;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.17);
+}
+.listings-grid .listing-card:hover {
+  -webkit-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  transform: scale(0.95);
 }
 
-
-// Filter menu ******
 .filter-menu {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
 }
+
 .filter-menu > div {
   margin-right: 1em;
 }
+
 #clear-filters {
   float: right;
   margin-top: 1.5em;
 }
 
-// RESPONSIVE - MOBILE 
-@media all and (max-width: 991px){ 
-
-  // Filter menu
+@media all and (max-width: 991px) {
   .filter-menu {
     display: flex;
     flex-direction: column;
-    align-items:flex-start;
+    align-items: flex-start;
     margin-bottom: 1em;
-    
   }
+
   .filter-menu > div {
     margin: 0.5em 0;
     display: block;
   }
 }
-
-
-// Listing page styles ---------------
-
-// RESPONSIVE - MOBILE 
-@media all and (max-width: 768px){ 
-
+@media all and (max-width: 768px) {
   .flex-container {
     flex-wrap: wrap;
   }
+
   .display-flex {
     width: 100%;
   }
-
 }
+.input-group {
+  margin-bottom: 2em;
+}
+
+.page-form {
+  max-width: 700px;
+}
+
+.form-input::part(form-control) {
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.07);
+}
+
+sl-dialog::part(title) {
+  font-weight: 500;
+  font-size: 1.6em;
+}
+
+@media all and (max-width: 768px) {
+  sl-dialog::part(panel) {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    max-width: none;
+  }
+}
+#toasts {
+  position: fixed;
+  left: 50%;
+  top: 1em;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.toast-entry {
+  background: #fff;
+  margin: 0 auto;
+  color: #333;
+  border-radius: 200px;
+  box-shadow: 0px 3px 25px rgba(0, 0, 0, 0.14);
+  padding: 0.7em 1.3em;
+  font-size: 1em;
+  margin-bottom: 0.25em;
+  text-align: center;
+  transition: all 0.2 ease;
+}
+.toast-entry.is-error {
+  background: #d4195d;
+  color: #fff;
+}
+
+/*# sourceMappingURL=/src.e31bb0bc.css.map */

@@ -3,13 +3,15 @@
 :root {
   // base
   --base-txt-color: #222;
-  --heading-color: #333;
+  //--heading-color: #333;
+  --heading-color: #5a5a5a;
   --base-font-family: 'Work Sans', sans-serif;
   --body-bg: #fff;
   
 
   // colors  
-  $brand-color: #7f9c83;
+ // $brand-color: #7f9c83;
+    $brand-color: #9fb59b;
   --brand-color: #{$brand-color};
   --link-color: --brand-color;
   

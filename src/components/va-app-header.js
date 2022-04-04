@@ -135,9 +135,10 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
         padding: .8em;
         text-decoration: none;
         color: #fff;
+        letter-spacing: 0.75px;
       }
       .app-top-nav a:hover {
-        color: black;
+        color: var(--heading-color);
         font-weight: 800;
       }
       
@@ -146,7 +147,7 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
         padding: .5em;
         text-decoration: none;
         font-size: 1.3em;
-        color: #333;
+        color: var(--heading-color);
       }
       .app-side-menu-items a:hover {
         color: var(--brand-color);
@@ -160,6 +161,10 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
         position: absolute;
         top: 2em;
         left: 1.5em;
+      }
+
+      .nav-bar-logo {
+        width: 130px;
       }
 
       .page-title {
@@ -192,19 +197,20 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
       <sl-icon-button class="hamburger-btn" name="list" @click="${this.hamburgerClick}" style="font-size: 1.5em;"></sl-icon-button>       
       
       <div class="app-header-main">
-        ${this.title ? html`
-          <h1 class="page-title">${this.title}</h1>
-        `:``}
+        <img class="nav-bar-logo" src="/images/logo-white.svg">
         <slot></slot>
       </div>
 
       <nav class="app-top-nav">
-        <a href="/explore" @click="${anchorRoute}">Explore</a> 
+      ${this.user.accessLevel == 2 ? html `
+        <a href="/teachersLounge" @click="${anchorRoute}">Teacher's Lounge</a>
+        ` : html ``} 
         ${this.user.accessLevel == 2 ? html `
         <a href="/newListing" @click="${anchorRoute}">Create a Listing</a>
         ` : html ``} 
-        ${this.user.accessLevel == 2 ? html `
-        <a href="/teachersLounge" @click="${anchorRoute}">Teacher's Lounge</a>
+        <a href="/explore" @click="${anchorRoute}">Explore</a> 
+        ${this.user.accessLevel == 1 ? html `
+        <a href="/favourites" @click="${anchorRoute}">Favourites</a>
         ` : html ``} 
 
         <sl-dropdown>
@@ -227,8 +233,10 @@ customElements.define('va-app-header', class AppHeader extends LitElement {
         <a href="/favourites" @click="${this.menuClick}">My Favourites</a>
         ${this.user.accessLevel == 2 ? html `
         <sl-menu-divider></sl-menu-divider>
-        <a href="/newListing" @click="${anchorRoute}">Create a Listing</a>
         <a href="/teachersLounge" @click="${anchorRoute}">Teacher's Lounge</a>
+        ` : html ``} 
+        ${this.user.accessLevel == 2 ? html `
+        <a href="/newListing" @click="${anchorRoute}">Create a Listing</a>
         ` : html ``} 
         <sl-menu-divider></sl-menu-divider>
         <a href="/myAccount" @click="${this.menuClick}">My Account</a>
