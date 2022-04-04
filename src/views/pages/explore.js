@@ -129,37 +129,59 @@ class ExploreView {
   render(){
     const template = html`
     <style>
-      .filter-menu {
-        margin-bottom: 1em;
+
+      h6 {
+        font-size: 1em;
+        color: #878787;
+        font-weight: normal;
       }
       h5 {
-        color: var(--brand-color);
+        margin-top: 1.5em;
+        color: #878787;
         font-size: 1em;
       }
+      h2.explore {
+        color: var(--brand-color);
+        margin-bottom: 1em;
+      }
+      h2.explore {
+        color: var(--brand-color);
+        margin-bottom: 1.5em;
+      }
+      hr.explore-ruler {
+        border-top: 0.5px solid #E1E1E1;
+      }
+      @media all and (max-width: 500px) {
+        h2.explore {
+          font-size: 1.2em;
+        }
+      }
+      
     </style>
       <va-app-header title="Explore" user="${JSON.stringify(Auth.currentUser)}"></va-app-header>
       
       <!-- page-content div start -->
       <div class="page-content">     
-        
+        <h1>Explore yoga</h1> 
+        <h2 class="explore">Find the perfect yoga for you!</h2>
+        <hr class="explore-ruler">
         <div id="clear-filters">
               <sl-button size="medium" @click=${this.clearFilters.bind(this)} pill>Clear filters</sl-button>
         </div> 
-        <h1>Explore yoga</h1>  
         
         <!-- Filter menu -->
         <!-- Button groups from Shoelace library group related filter buttons -->
-        <h5>Filter by:</h5>
+        <h5>FILTER BY:</h5>
         <div class="filter-menu">
           <div>
-            <strong>Gender</strong>
+            <h6>Gender</h6>
             <sl-button-group>
               <sl-button class="filter-btn" size="small" data-field="gender" data-match="Male" @click=${this.handleFilterBtn.bind(this)}>Male</sl-button>
               <sl-button class="filter-btn" size="small" data-field="gender" data-match="Female" @click=${this.handleFilterBtn.bind(this)}>Female</sl-button>
             </sl-button-group>
           </div>
           <div>
-            <strong>Level</strong>
+            <h6>Level</h6>
             <sl-button-group>
               <sl-button class="filter-btn" size="small" data-field="level" data-match="Beginner" @click=${this.handleFilterBtn.bind(this)}>Beginner</sl-button>
               <sl-button class="filter-btn" size="small" data-field="level" data-match="Intermediate" @click=${this.handleFilterBtn.bind(this)}>Intermediate</sl-button>
@@ -167,7 +189,7 @@ class ExploreView {
             </sl-button-group>
           </div>
           <div>
-            <strong>Class Type</strong>
+            <h6>Class Type</h6>
             <sl-button-group>
               <sl-button class="filter-btn" size="small" data-field="classType" data-match="Studio" @click=${this.handleFilterBtn.bind(this)}>Studio</sl-button>
               <sl-button class="filter-btn" size="small" data-field="classType" data-match="Private" @click=${this.handleFilterBtn.bind(this)}>Private</sl-button>

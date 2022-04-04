@@ -4,22 +4,22 @@
   --heading-color: #5a5a5a;
   --base-font-family: "Work Sans", sans-serif;
   --body-bg: #fff;
-  --brand-color: #A8C0A4;
+  --brand-color: #9fb59b;
   --link-color: --brand-color;
   --app-header-height: 60px;
   --app-header-txt-color: #fff;
   --app-header-title-font-size: 1.6em;
   --sl-color-primary-50: #f4f4f4;
   --sl-color-primary-100: white;
-  --sl-color-primary-200: #fefffe;
-  --sl-color-primary-300: #e2eae0;
-  --sl-color-primary-400: #c5d5c2;
-  --sl-color-primary-500: #A8C0A4;
-  --sl-color-primary-600: #8bab86;
-  --sl-color-primary-700: #6f9668;
-  --sl-color-primary-800: #587853;
-  --sl-color-primary-900: #425a3e;
-  --sl-focus-ring-color-primary: rgba(168, 192, 164, 0.1);
+  --sl-color-primary-200: #f3f6f3;
+  --sl-color-primary-300: #d7e0d6;
+  --sl-color-primary-400: #bbcbb8;
+  --sl-color-primary-500: #9fb59b;
+  --sl-color-primary-600: #839f7e;
+  --sl-color-primary-700: #698664;
+  --sl-color-primary-800: #52694e;
+  --sl-color-primary-900: #3b4c38;
+  --sl-focus-ring-color-primary: rgba(159, 181, 155, 0.1);
 }
 
 * {
@@ -132,9 +132,8 @@ a:hover {
 }
 
 .display-flex {
-  width: calc(50% - 5em);
+  width: calc(50% - 1.5em);
   margin: 1.5em;
-  padding-right: 1.5em;
 }
 
 .btn-shadow {
@@ -150,7 +149,7 @@ sl-button::part(base) {
 h1 {
   font-size: 3em;
   animation-name: grow;
-  animation-duration: 0.5s;
+  animation-duration: 0.3s;
   color: var(--heading-color);
 }
 
@@ -344,23 +343,20 @@ h1.signinup {
 
 #clear-filters {
   float: right;
-  padding-right: 2em;
+  margin-top: 1.5em;
 }
 
-@media all and (max-width: 850px) {
+@media all and (max-width: 991px) {
   .filter-menu {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-bottom: 1em;
   }
 
   .filter-menu > div {
-    margin-top: 0.5em;
+    margin: 0.5em 0;
     display: block;
-  }
-
-  #clear-filters {
-    padding-right: 0.5em;
   }
 }
 @media all and (max-width: 768px) {

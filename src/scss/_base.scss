@@ -118,18 +118,18 @@ a:hover {
 }
 
 
-// flexbox styles
+// flexbox styles --------------------
 .flex-container {
   display: flex;
 }
 .display-flex {
-  width: calc(50% - 5em);
+  width: calc(50% - 1.5em);
   margin: 1.5em;
-  padding-right: 1.5em;
+  //padding-right: 1.5em;
 }
 
 
-// buttons
+// buttons --------------------
 .btn-shadow {
   box-shadow: 0px 3px 5px rgba(0,0,0,0.09);
 }
@@ -145,7 +145,7 @@ h1 {
   //text-transform: uppercase;
   font-size: 3em;
   animation-name: grow;
-  animation-duration: 0.5s;
+  animation-duration: 0.3s;
   color: var(--heading-color);
 }
 
@@ -358,29 +358,25 @@ h1.signinup {
 }
 #clear-filters {
   float: right;
-  padding-right: 2em;
+  margin-top: 1.5em;
 }
 
 // RESPONSIVE - MOBILE 
-@media all and (max-width: 850px){ 
+@media all and (max-width: 991px){ 
 
   // Filter menu
   .filter-menu {
     display: flex;
     flex-direction: column;
     align-items:flex-start;
+    margin-bottom: 1em;
     
   }
   .filter-menu > div {
-    margin-top: 0.5em;
+    margin: 0.5em 0;
     display: block;
   }
-  #clear-filters {
-    padding-right: 0.5em;
-  }
-
 }
-
 
 
 // Listing page styles ---------------

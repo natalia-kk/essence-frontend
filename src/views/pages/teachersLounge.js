@@ -22,17 +22,17 @@ class TeachersLoungeView {
         .lounge-content-left > h2, h3, div {
           margin-top: 3em;
         }
-        .display-flex > h1 {
-          font-size: 2em;
-        }
         .lounge-image {
-          max-width: 400px;
+          max-width: 100%;
           height: auto;
           animation: fadeIn ease 5s;
         } 
         .page-content {
           margin-top: -3em;
           padding-top: 0;
+        }
+        .lounge-link {
+          text-decoration: none;
         }
         
       </style>
@@ -42,18 +42,18 @@ class TeachersLoungeView {
         
         <div class="flex-container">
            <section class="display-flex">
-            <img class="lounge-image" src="${App.apiBase}/images/teachers-lounge.jpg">
+            <img class="lounge-image" src="${App.apiBase}/images/teachers-lounge.jpg" width="400">
           </section> 
 
           <section class="display-flex" class="lounge-content-left">
             <h1>Teacher's Lounge</h1>
             <h2 class="anim-in">Namaste, ${Auth.currentUser.firstName}</h2>
-            <h3><a href="/myAccount" @click=${anchorRoute}>Go to my Account <sl-icon class="icon" name="arrow-right-circle-fill"></sl-icon></a></h3>
+            <h3><a href="/myAccount" @click=${anchorRoute} class="lounge-link">Go to my Account <sl-icon class="icon" name="arrow-right-circle-fill"></sl-icon></a></h3>
             
             <div>
-              <h3><a href="/myAccount" @click=${anchorRoute}>View my Listing <sl-icon class="icon" name="arrow-right-circle-fill"></sl-icon></a></h3>
+              <h3><a href="/myAccount" @click=${anchorRoute} class="lounge-link">View my Listing <sl-icon class="icon" name="arrow-right-circle-fill"></sl-icon></a></h3>
               <p>Haven't made a listing yet?</p>
-              <sl-button type="primary" @click=${() => gotoRoute('/newListing')} style="width: 70%;" pill>Create a Listing</sl-button>
+              <sl-button @click=${() => gotoRoute('/newListing')} style="width: 70%;" pill>Create a Listing</sl-button>
             </div>
           </section>  
           

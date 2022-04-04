@@ -8047,7 +8047,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <style>\n      .filter-menu {\n        margin-bottom: 1em;\n      }\n      h5 {\n        color: var(--brand-color);\n        font-size: 1em;\n      }\n    </style>\n      <va-app-header title=\"Explore\" user=\"", "\"></va-app-header>\n      \n      <!-- page-content div start -->\n      <div class=\"page-content\">     \n        \n        <div id=\"clear-filters\">\n              <sl-button size=\"medium\" @click=", " pill>Clear filters</sl-button>\n        </div> \n        <h1>Explore yoga</h1>  \n        \n        <!-- Filter menu -->\n        <!-- Button groups from Shoelace library group related filter buttons -->\n        <h5>Filter by:</h5>\n        <div class=\"filter-menu\">\n          <div>\n            <strong>Gender</strong>\n            <sl-button-group>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"gender\" data-match=\"Male\" @click=", ">Male</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"gender\" data-match=\"Female\" @click=", ">Female</sl-button>\n            </sl-button-group>\n          </div>\n          <div>\n            <strong>Level</strong>\n            <sl-button-group>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"level\" data-match=\"Beginner\" @click=", ">Beginner</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"level\" data-match=\"Intermediate\" @click=", ">Intermediate</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"level\" data-match=\"Advanced\" @click=", ">Advanced</sl-button>\n            </sl-button-group>\n          </div>\n          <div>\n            <strong>Class Type</strong>\n            <sl-button-group>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"classType\" data-match=\"Studio\" @click=", ">Studio</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"classType\" data-match=\"Private\" @click=", ">Private</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"classType\" data-match=\"Outdoor\" @click=", ">Outdoor</sl-button>\n            </sl-button-group>\n          </div>\n\n        </div>\n        \n        \n        <div class=\"listings-grid\">\n          <!-- check if this.listings = empty/null --> \n          ", "\n        </div>\n        \n      </div> <!-- page-content div end -->     \n    "]);
+  const data = _taggedTemplateLiteral(["\n    <style>\n\n      h6 {\n        font-size: 1em;\n        color: #878787;\n        font-weight: normal;\n      }\n      h5 {\n        margin-top: 1.5em;\n        color: #878787;\n        font-size: 1em;\n      }\n      h2.explore {\n        color: var(--brand-color);\n        margin-bottom: 1em;\n      }\n      h2.explore {\n        color: var(--brand-color);\n        margin-bottom: 1.5em;\n      }\n      hr.explore-ruler {\n        border-top: 0.5px solid #E1E1E1;\n      }\n      @media all and (max-width: 500px) {\n        h2.explore {\n          font-size: 1.2em;\n        }\n      }\n      \n    </style>\n      <va-app-header title=\"Explore\" user=\"", "\"></va-app-header>\n      \n      <!-- page-content div start -->\n      <div class=\"page-content\">     \n        <h1>Explore yoga</h1> \n        <h2 class=\"explore\">Find the perfect yoga for you!</h2>\n        <hr class=\"explore-ruler\">\n        <div id=\"clear-filters\">\n              <sl-button size=\"medium\" @click=", " pill>Clear filters</sl-button>\n        </div> \n        \n        <!-- Filter menu -->\n        <!-- Button groups from Shoelace library group related filter buttons -->\n        <h5>FILTER BY:</h5>\n        <div class=\"filter-menu\">\n          <div>\n            <h6>Gender</h6>\n            <sl-button-group>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"gender\" data-match=\"Male\" @click=", ">Male</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"gender\" data-match=\"Female\" @click=", ">Female</sl-button>\n            </sl-button-group>\n          </div>\n          <div>\n            <h6>Level</h6>\n            <sl-button-group>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"level\" data-match=\"Beginner\" @click=", ">Beginner</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"level\" data-match=\"Intermediate\" @click=", ">Intermediate</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"level\" data-match=\"Advanced\" @click=", ">Advanced</sl-button>\n            </sl-button-group>\n          </div>\n          <div>\n            <h6>Class Type</h6>\n            <sl-button-group>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"classType\" data-match=\"Studio\" @click=", ">Studio</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"classType\" data-match=\"Private\" @click=", ">Private</sl-button>\n              <sl-button class=\"filter-btn\" size=\"small\" data-field=\"classType\" data-match=\"Outdoor\" @click=", ">Outdoor</sl-button>\n            </sl-button-group>\n          </div>\n\n        </div>\n        \n        \n        <div class=\"listings-grid\">\n          <!-- check if this.listings = empty/null --> \n          ", "\n        </div>\n        \n      </div> <!-- page-content div end -->     \n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -8206,7 +8206,7 @@ var _Utils = _interopRequireDefault(require("./../../Utils"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n      <style>\n        \n        .icon, .display-flex > h2 {\n          color: var(--brand-color); \n        }\n        .lounge-content-left > h2, h3, div {\n          margin-top: 3em;\n        }\n        .display-flex > h1 {\n          font-size: 2em;\n        }\n        .lounge-image {\n          max-width: 400px;\n          height: auto;\n          animation: fadeIn ease 5s;\n        } \n        .page-content {\n          margin-top: -3em;\n          padding-top: 0;\n        }\n        \n      </style>\n\n      <va-app-header title=\"Teacher's Lounge\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\"> \n        \n        <div class=\"flex-container\">\n           <section class=\"display-flex\">\n            <img class=\"lounge-image\" src=\"", "/images/teachers-lounge.jpg\">\n          </section> \n\n          <section class=\"display-flex\" class=\"lounge-content-left\">\n            <h1>Teacher's Lounge</h1>\n            <h2 class=\"anim-in\">Namaste, ", "</h2>\n            <h3><a href=\"/myAccount\" @click=", ">Go to my Account <sl-icon class=\"icon\" name=\"arrow-right-circle-fill\"></sl-icon></a></h3>\n            \n            <div>\n              <h3><a href=\"/myAccount\" @click=", ">View my Listing <sl-icon class=\"icon\" name=\"arrow-right-circle-fill\"></sl-icon></a></h3>\n              <p>Haven't made a listing yet?</p>\n              <sl-button type=\"primary\" @click=", " style=\"width: 70%;\" pill>Create a Listing</sl-button>\n            </div>\n          </section>  \n          \n        </div>\n      </div>      \n    "]);
+  const data = _taggedTemplateLiteral(["\n      <style>\n        \n        .icon, .display-flex > h2 {\n          color: var(--brand-color); \n        }\n        .lounge-content-left > h2, h3, div {\n          margin-top: 3em;\n        }\n        .lounge-image {\n          max-width: 100%;\n          height: auto;\n          animation: fadeIn ease 5s;\n        } \n        .page-content {\n          margin-top: -3em;\n          padding-top: 0;\n        }\n        .lounge-link {\n          text-decoration: none;\n        }\n        \n      </style>\n\n      <va-app-header title=\"Teacher's Lounge\" user=\"", "\"></va-app-header>\n      <div class=\"page-content\"> \n        \n        <div class=\"flex-container\">\n           <section class=\"display-flex\">\n            <img class=\"lounge-image\" src=\"", "/images/teachers-lounge.jpg\" width=\"400\">\n          </section> \n\n          <section class=\"display-flex\" class=\"lounge-content-left\">\n            <h1>Teacher's Lounge</h1>\n            <h2 class=\"anim-in\">Namaste, ", "</h2>\n            <h3><a href=\"/myAccount\" @click=", " class=\"lounge-link\">Go to my Account <sl-icon class=\"icon\" name=\"arrow-right-circle-fill\"></sl-icon></a></h3>\n            \n            <div>\n              <h3><a href=\"/myAccount\" @click=", " class=\"lounge-link\">View my Listing <sl-icon class=\"icon\" name=\"arrow-right-circle-fill\"></sl-icon></a></h3>\n              <p>Haven't made a listing yet?</p>\n              <sl-button @click=", " style=\"width: 70%;\" pill>Create a Listing</sl-button>\n            </div>\n          </section>  \n          \n        </div>\n      </div>      \n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -16632,8 +16632,38 @@ var _App = _interopRequireDefault(require("./../App"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _templateObject8() {
+function _templateObject11() {
   const data = _taggedTemplateLiteral([""]);
+
+  _templateObject11 = function _templateObject11() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject10() {
+  const data = _taggedTemplateLiteral(["\n        <a href=\"/newListing\" @click=\"", "\">Create a Listing</a>\n        "]);
+
+  _templateObject10 = function _templateObject10() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject9() {
+  const data = _taggedTemplateLiteral([""]);
+
+  _templateObject9 = function _templateObject9() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject8() {
+  const data = _taggedTemplateLiteral(["\n        <sl-menu-divider></sl-menu-divider>\n        <a href=\"/teachersLounge\" @click=\"", "\">Teacher's Lounge</a>\n        "]);
 
   _templateObject8 = function _templateObject8() {
     return data;
@@ -16643,7 +16673,7 @@ function _templateObject8() {
 }
 
 function _templateObject7() {
-  const data = _taggedTemplateLiteral(["\n        <sl-menu-divider></sl-menu-divider>\n        <a href=\"/teachersLounge\" @click=\"", "\">Teacher's Lounge</a>\n        "]);
+  const data = _taggedTemplateLiteral([""]);
 
   _templateObject7 = function _templateObject7() {
     return data;
@@ -16653,7 +16683,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  const data = _taggedTemplateLiteral([""]);
+  const data = _taggedTemplateLiteral(["\n        <a href=\"/favourites\" @click=\"", "\">Favourites</a>\n        "]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -16663,7 +16693,7 @@ function _templateObject6() {
 }
 
 function _templateObject5() {
-  const data = _taggedTemplateLiteral(["\n        <a href=\"/newListing\" @click=\"", "\">Create a Listing</a>\n        "]);
+  const data = _taggedTemplateLiteral([""]);
 
   _templateObject5 = function _templateObject5() {
     return data;
@@ -16673,7 +16703,7 @@ function _templateObject5() {
 }
 
 function _templateObject4() {
-  const data = _taggedTemplateLiteral([""]);
+  const data = _taggedTemplateLiteral(["\n        <a href=\"/newListing\" @click=\"", "\">Create a Listing</a>\n        "]);
 
   _templateObject4 = function _templateObject4() {
     return data;
@@ -16683,7 +16713,7 @@ function _templateObject4() {
 }
 
 function _templateObject3() {
-  const data = _taggedTemplateLiteral(["\n        <a href=\"/teachersLounge\" @click=\"", "\">Teacher's Lounge</a>\n        "]);
+  const data = _taggedTemplateLiteral([""]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -16693,7 +16723,7 @@ function _templateObject3() {
 }
 
 function _templateObject2() {
-  const data = _taggedTemplateLiteral(["\n          <h1 class=\"page-title\">", "</h1>\n        "]);
+  const data = _taggedTemplateLiteral(["\n        <a href=\"/teachersLounge\" @click=\"", "\">Teacher's Lounge</a>\n        "]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -16703,7 +16733,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n    <!-- start styling -->\n    <style>  \n      * {\n        box-sizing: border-box;\n      }\n      .app-header {\n        background: var(--brand-color);\n        position: fixed;\n        top: 0;\n        right: 0;\n        left: 0;\n        height: var(--app-header-height);\n        color: #fff;\n        display: flex;\n        z-index: 9;\n        box-shadow: 4px 0px 10px rgba(0,0,0,0.2);\n        align-items: center;\n        padding-left: 1.75em;\n        padding-right: 1.75em;\n      }\n      \n\n      .app-header-main {\n        flex-grow: 1;\n        display: flex;\n        align-items: center;\n      }\n\n      .app-header-main::slotted(h1){\n        color: #fff;\n      }\n\n      .app-logo a {\n        color: #fff;\n        text-decoration: none;\n        font-weight: bold;\n        font-size: 1.2em;\n        padding: .6em;\n        display: inline-block;        \n      }\n\n      .app-logo img {\n        width: 90px;\n      }\n      \n      .hamburger-btn::part(base) {\n        color: #fff;\n      }\n\n      .app-top-nav {\n        display: flex;\n        height: 100%;\n        align-items: center;\n      }\n\n      .app-top-nav a {\n        display: inline-block;\n        padding: .8em;\n        text-decoration: none;\n        color: #fff;\n      }\n      .app-top-nav a:hover {\n        color: black;\n        font-weight: 800;\n      }\n      \n      .app-side-menu-items a {\n        display: block;\n        padding: .5em;\n        text-decoration: none;\n        font-size: 1.3em;\n        color: #333;\n      }\n      .app-side-menu-items a:hover {\n        color: var(--brand-color);\n        font-weight: 400;\n      }\n      \n\n      .app-side-menu-logo {\n        width: 120px;\n        margin-bottom: 1em;\n        position: absolute;\n        top: 2em;\n        left: 1.5em;\n      }\n\n      .nav-bar-logo {\n        width: 130px;\n      }\n\n      .page-title {\n        color: var(--app-header-txt-color);\n        margin-right: 0.5em;\n        font-size: var(--app-header-title-font-size);\n      }\n\n      /* active nav links */\n      .app-top-nav a.active,\n      .app-side-menu-items a.active {\n        font-weight: bold;\n      }\n\n      /* RESPONSIVE - MOBILE ------------------- */\n      @media all and (max-width: 768px){       \n        \n        .app-top-nav {\n          display: none;\n        }\n      }\n\n    </style>\n    <!-- end styling -->\n\n    <!-- Start HTML (what will be seen on the webpage) -->\n    <!-- Start header -->\n    <header class=\"app-header\">\n      <!-- 'this' refers to the class we're inside (AppHeader) -->       \n      <sl-icon-button class=\"hamburger-btn\" name=\"list\" @click=\"", "\" style=\"font-size: 1.5em;\"></sl-icon-button>       \n      \n      <div class=\"app-header-main\">\n        <!--\n          n", "\n        -->\n        <img class=\"nav-bar-logo\" src=\"/images/logo-white.svg\">\n        <slot></slot>\n      </div>\n\n      <nav class=\"app-top-nav\">\n      ", " \n        ", " \n        <a href=\"/explore\" @click=\"", "\">Explore</a> \n\n        <sl-dropdown>\n          <a slot=\"trigger\" href=\"#\" @click=\"", "\">\n            <sl-avatar style=\"--size: 24px;\" image=", "></sl-avatar> ", "\n          </a>\n          <sl-menu>            \n            <sl-menu-item @click=\"", "\">My Account</sl-menu-item>\n            <sl-menu-item @click=\"", "\">Edit Profile</sl-menu-item>\n            <sl-menu-item @click=\"", "\">Sign Out</sl-menu-item>\n          </sl-menu>\n        </sl-dropdown>\n      </nav> \n    </header> <!-- End header --> \n\n    <sl-drawer class=\"app-side-menu\" placement=\"left\">\n      <img class=\"app-side-menu-logo\" src=\"/images/logo.svg\">\n      <nav class=\"app-side-menu-items\">\n        <a href=\"/explore\" @click=\"", "\">Explore</a>\n        <a href=\"/favourites\" @click=\"", "\">My Favourites</a>\n        ", " \n        <a href=\"/newListing\" @click=\"", "\">Create a Listing</a>\n        <sl-menu-divider></sl-menu-divider>\n        <a href=\"/myAccount\" @click=\"", "\">My Account</a>\n        <a href=\"#\" @click=\"", "\">Sign Out</a>\n      </nav>  \n    </sl-drawer>\n    <!-- end HTML (what will be seen on the webpage) -->\n    "]);
+  const data = _taggedTemplateLiteral(["\n    <!-- start styling -->\n    <style>  \n      * {\n        box-sizing: border-box;\n      }\n      .app-header {\n        background: var(--brand-color);\n        position: fixed;\n        top: 0;\n        right: 0;\n        left: 0;\n        height: var(--app-header-height);\n        color: #fff;\n        display: flex;\n        z-index: 9;\n        box-shadow: 4px 0px 10px rgba(0,0,0,0.2);\n        align-items: center;\n        padding-left: 1.75em;\n        padding-right: 1.75em;\n      }\n      \n\n      .app-header-main {\n        flex-grow: 1;\n        display: flex;\n        align-items: center;\n      }\n\n      .app-header-main::slotted(h1){\n        color: #fff;\n      }\n\n      .app-logo a {\n        color: #fff;\n        text-decoration: none;\n        font-weight: bold;\n        font-size: 1.2em;\n        padding: .6em;\n        display: inline-block;        \n      }\n\n      .app-logo img {\n        width: 90px;\n      }\n      \n      .hamburger-btn::part(base) {\n        color: #fff;\n      }\n\n      .app-top-nav {\n        display: flex;\n        height: 100%;\n        align-items: center;\n      }\n\n      .app-top-nav a {\n        display: inline-block;\n        padding: .8em;\n        text-decoration: none;\n        color: #fff;\n        letter-spacing: 0.75px;\n      }\n      .app-top-nav a:hover {\n        color: var(--heading-color);\n        font-weight: 800;\n      }\n      \n      .app-side-menu-items a {\n        display: block;\n        padding: .5em;\n        text-decoration: none;\n        font-size: 1.3em;\n        color: var(--heading-color);\n      }\n      .app-side-menu-items a:hover {\n        color: var(--brand-color);\n        font-weight: 400;\n      }\n      \n\n      .app-side-menu-logo {\n        width: 120px;\n        margin-bottom: 1em;\n        position: absolute;\n        top: 2em;\n        left: 1.5em;\n      }\n\n      .nav-bar-logo {\n        width: 130px;\n      }\n\n      .page-title {\n        color: var(--app-header-txt-color);\n        margin-right: 0.5em;\n        font-size: var(--app-header-title-font-size);\n      }\n\n      /* active nav links */\n      .app-top-nav a.active,\n      .app-side-menu-items a.active {\n        font-weight: bold;\n      }\n\n      /* RESPONSIVE - MOBILE ------------------- */\n      @media all and (max-width: 768px){       \n        \n        .app-top-nav {\n          display: none;\n        }\n      }\n\n    </style>\n    <!-- end styling -->\n\n    <!-- Start HTML (what will be seen on the webpage) -->\n    <!-- Start header -->\n    <header class=\"app-header\">\n      <!-- 'this' refers to the class we're inside (AppHeader) -->       \n      <sl-icon-button class=\"hamburger-btn\" name=\"list\" @click=\"", "\" style=\"font-size: 1.5em;\"></sl-icon-button>       \n      \n      <div class=\"app-header-main\">\n        <img class=\"nav-bar-logo\" src=\"/images/logo-white.svg\">\n        <slot></slot>\n      </div>\n\n      <nav class=\"app-top-nav\">\n      ", " \n        ", " \n        <a href=\"/explore\" @click=\"", "\">Explore</a> \n        ", " \n\n        <sl-dropdown>\n          <a slot=\"trigger\" href=\"#\" @click=\"", "\">\n            <sl-avatar style=\"--size: 24px;\" image=", "></sl-avatar> ", "\n          </a>\n          <sl-menu>            \n            <sl-menu-item @click=\"", "\">My Account</sl-menu-item>\n            <sl-menu-item @click=\"", "\">Edit Profile</sl-menu-item>\n            <sl-menu-item @click=\"", "\">Sign Out</sl-menu-item>\n          </sl-menu>\n        </sl-dropdown>\n      </nav> \n    </header> <!-- End header --> \n\n    <sl-drawer class=\"app-side-menu\" placement=\"left\">\n      <img class=\"app-side-menu-logo\" src=\"/images/logo.svg\">\n      <nav class=\"app-side-menu-items\">\n        <a href=\"/explore\" @click=\"", "\">Explore</a>\n        <a href=\"/favourites\" @click=\"", "\">My Favourites</a>\n        ", " \n        ", " \n        <sl-menu-divider></sl-menu-divider>\n        <a href=\"/myAccount\" @click=\"", "\">My Account</a>\n        <a href=\"#\" @click=\"", "\">Sign Out</a>\n      </nav>  \n    </sl-drawer>\n    <!-- end HTML (what will be seen on the webpage) -->\n    "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -16785,7 +16815,7 @@ customElements.define('va-app-header', class AppHeader extends _litElement.LitEl
 
 
   render() {
-    return (0, _litElement.html)(_templateObject(), this.hamburgerClick, this.title ? (0, _litElement.html)(_templateObject2(), this.title) : "", this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject3(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject4()), this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject5(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject6()), _Router.anchorRoute, e => e.preventDefault(), this.user && this.user.avatar ? "".concat(_App.default.apiBase, "/images/").concat(this.user.avatar) : '', this.user && this.user.firstName, () => (0, _Router.gotoRoute)('/myAccount'), () => (0, _Router.gotoRoute)('/editProfile'), () => _Auth.default.signOut(), this.menuClick, this.menuClick, this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject7(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject8()), _Router.anchorRoute, this.menuClick, () => _Auth.default.signOut());
+    return (0, _litElement.html)(_templateObject(), this.hamburgerClick, this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject2(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject3()), this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject4(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject5()), _Router.anchorRoute, this.user.accessLevel == 1 ? (0, _litElement.html)(_templateObject6(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject7()), e => e.preventDefault(), this.user && this.user.avatar ? "".concat(_App.default.apiBase, "/images/").concat(this.user.avatar) : '', this.user && this.user.firstName, () => (0, _Router.gotoRoute)('/myAccount'), () => (0, _Router.gotoRoute)('/editProfile'), () => _Auth.default.signOut(), this.menuClick, this.menuClick, this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject8(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject9()), this.user.accessLevel == 2 ? (0, _litElement.html)(_templateObject10(), _Router.anchorRoute) : (0, _litElement.html)(_templateObject11()), this.menuClick, () => _Auth.default.signOut());
   } // end render()
 
 
@@ -17032,7 +17062,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53823" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50691" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
